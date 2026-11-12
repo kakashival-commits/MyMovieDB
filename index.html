@@ -6,14 +6,14 @@
   <meta name="theme-color" content="#0f172a" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <title>Мій Кінокаталог</title>
+  <title>Мій Кінокаталог 2.0</title>
   <style>
     :root {
-      --bg: #0f172a;
+      --bg: #0b1120;
       --surface: #1e293b;
       --surface-hover: #273549;
       --border: #334155;
-      --text: #f1f5f9;
+      --text: #f8fafc;
       --text-muted: #94a3b8;
       --primary: #3b82f6;
       --primary-hover: #2563eb;
@@ -21,45 +21,47 @@
       --success: #10b981;
       --danger: #ef4444;
       --super: #ec4899;
-      --radius: 12px;
+      --plan: #a855f7;
+      --radius: 14px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif; }
-    body { background-color: var(--bg); color: var(--text); line-height: 1.5; padding-bottom: 40px; overflow-x: hidden; }
+    body { background-color: var(--bg); color: var(--text); line-height: 1.5; padding-bottom: 48px; overflow-x: hidden; }
 
     /* Header */
-    header { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; padding: 12px 16px; }
-    .header-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
-    .logo { font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 8px; color: var(--text); }
+    header { background: rgba(11, 17, 32, 0.88); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; padding: 12px 16px; }
+    .header-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .logo { font-size: 1.2rem; font-weight: 800; display: flex; align-items: center; gap: 8px; letter-spacing: -0.3px; }
     .header-actions { display: flex; align-items: center; gap: 8px; }
 
-    button { background: var(--surface); color: var(--text); border: 1px solid var(--border); padding: 8px 14px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; font-weight: 500; transition: all 0.15s ease; display: inline-flex; align-items: center; gap: 6px; }
+    button { background: var(--surface); color: var(--text); border: 1px solid var(--border); padding: 8px 13px; border-radius: 9px; cursor: pointer; font-size: 0.9rem; font-weight: 500; transition: all 0.15s ease; display: inline-flex; align-items: center; gap: 6px; user-select: none; }
     button:hover { background: var(--surface-hover); }
-    button:active { transform: scale(0.97); }
+    button:active { transform: scale(0.96); }
     button.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
     button.primary:hover { background: var(--primary-hover); }
     button.danger { color: var(--danger); border-color: rgba(239, 68, 68, 0.3); }
     button.danger:hover { background: rgba(239, 68, 68, 0.15); }
-    button.tinder-btn { background: linear-gradient(45deg, #fd297b, #ff655b); border: none; color: white; font-weight: bold; }
-    button.roulette-btn { background: linear-gradient(45deg, #8b5cf6, #d946ef); border: none; color: white; font-weight: bold; display: none; }
+    button.tinder-btn { background: linear-gradient(135deg, #fd297b, #ff655b); border: none; color: #fff; font-weight: 700; box-shadow: 0 4px 15px rgba(253, 41, 123, 0.35); }
+    button.tinder-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    button.roulette-btn { background: linear-gradient(135deg, #8b5cf6, #d946ef); border: none; color: #fff; font-weight: 700; display: none; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.35); }
 
     .sync-status { font-size: 0.78rem; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
     .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); }
-    .dot.ok { background: var(--success); }
+    .dot.ok { background: var(--success); box-shadow: 0 0 8px var(--success); }
     .dot.loading { background: var(--accent); animation: pulse 1s infinite; }
     .dot.err { background: var(--danger); }
-    @keyframes pulse { 50% { opacity: 0.4; } }
+    @keyframes pulse { 50% { opacity: 0.35; } }
 
     /* Container & Search */
     .container { max-width: 1200px; margin: 0 auto; padding: 20px 16px; }
     .search-box { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 24px; }
-    .search-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;}
+    .search-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 10px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
     .search-row { display: flex; gap: 8px; }
-    input, select, textarea { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: 0.95rem; outline: none; width: 100%; }
+    input, select, textarea { background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: 9px; padding: 10px 12px; font-size: 0.95rem; outline: none; width: 100%; }
     input:focus, select:focus, textarea:focus { border-color: var(--primary); }
-    
+
     .tmdb-results { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-top: 16px; }
-    .tmdb-item { display: flex; gap: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 10px; align-items: flex-start; }
+    .tmdb-item { display: flex; gap: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 10px; align-items: flex-start; animation: fadeInUp 0.25s ease both; }
     .tmdb-item img { width: 60px; height: 90px; object-fit: cover; border-radius: 6px; background: #090d16; flex-shrink: 0; }
     .tmdb-info { flex: 1; min-width: 0; }
     .tmdb-info h4 { font-size: 0.95rem; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -68,42 +70,75 @@
     /* Controls */
     .controls-bar { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
     .tabs { display: flex; gap: 6px; flex-wrap: wrap; }
-    .tab { padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; }
-    .tab.active { background: var(--primary); border-color: var(--primary); color: #fff; }
-    .tab.plan { background: rgba(245, 158, 11, 0.1); border-color: var(--accent); color: var(--accent); }
-    .tab.plan.active { background: var(--accent); color: #000; }
-    .filter-inputs { display: flex; gap: 8px; flex: 1; max-width: 480px; min-width: 260px; align-items: center; }
+    .tab { padding: 7px 13px; border-radius: 20px; font-size: 0.85rem; background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; }
+    .tab.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3); }
+    .tab.plan { background: rgba(168, 85, 247, 0.12); border-color: var(--plan); color: #d8b4fe; }
+    .tab.plan.active { background: var(--plan); color: #fff; }
+    .filter-inputs { display: flex; gap: 8px; flex: 1; max-width: 520px; min-width: 260px; align-items: center; }
 
-    /* Catalog */
-    .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 16px; }
+    /* Catalog Grid & 3D Cards */
+    .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 16px; perspective: 1000px; }
     @media (max-width: 480px) { .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.15s ease; position: relative;}
-    .card:hover { transform: translateY(-3px); border-color: #475569; }
-    .poster-wrap { position: relative; aspect-ratio: 2 / 3; background: #090d16; }
-    .poster-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    
-    .badge-rating { position: absolute; top: 8px; right: 8px; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--accent); color: var(--accent); font-weight: 700; font-size: 0.85rem; padding: 2px 8px; border-radius: 6px; }
-    .badge-rating.super { border-color: var(--super); color: var(--super); }
-    .badge-plan { position: absolute; top: 8px; right: 8px; background: rgba(15, 23, 42, 0.9); border: 1px solid #a855f7; color: #a855f7; font-weight: 700; font-size: 0.8rem; padding: 2px 8px; border-radius: 6px; }
-    .badge-type { position: absolute; top: 8px; left: 8px; background: rgba(15, 23, 42, 0.85); color: #e2e8f0; font-size: 0.7rem; padding: 2px 7px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.12); }
-    
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(16px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.18s ease-out, box-shadow 0.2s ease, border-color 0.2s ease;
+      animation: fadeInUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+      will-change: transform;
+    }
+    .card:hover { border-color: #64748b; box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45); z-index: 2; }
+
+    /* Glare overlay for 3D tilt */
+    .card-glare {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.22), transparent 65%);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      z-index: 5;
+      mix-blend-mode: overlay;
+    }
+    .card:hover .card-glare { opacity: 1; }
+
+    .poster-wrap { position: relative; aspect-ratio: 2 / 3; background: #090d16; overflow: hidden; }
+    .poster-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease; }
+    .card:hover .poster-wrap img { transform: scale(1.03); }
+
+    .badge-rating { position: absolute; top: 8px; right: 8px; background: rgba(11, 17, 32, 0.9); border: 1px solid var(--accent); color: var(--accent); font-weight: 700; font-size: 0.85rem; padding: 2px 8px; border-radius: 6px; z-index: 3; }
+    .badge-rating.super { border-color: var(--super); color: #f472b6; box-shadow: 0 0 10px rgba(236, 72, 153, 0.4); }
+    .badge-plan { position: absolute; top: 8px; right: 8px; background: rgba(11, 17, 32, 0.9); border: 1px solid var(--plan); color: #d8b4fe; font-weight: 700; font-size: 0.8rem; padding: 2px 8px; border-radius: 6px; z-index: 3; }
+    .badge-type { position: absolute; top: 8px; left: 8px; background: rgba(11, 17, 32, 0.85); color: #e2e8f0; font-size: 0.7rem; padding: 2px 7px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.12); z-index: 3; }
+
     .card-body { padding: 10px; display: flex; flex-direction: column; flex: 1; }
     .card-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .card-year { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 6px; }
-    .card-note { font-size: 0.8rem; color: #cbd5e1; background: rgba(15, 23, 42, 0.5); padding: 6px 8px; border-radius: 6px; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-note { font-size: 0.8rem; color: #cbd5e1; background: rgba(11, 17, 32, 0.55); padding: 6px 8px; border-radius: 6px; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
     .card-actions { margin-top: auto; display: flex; gap: 6px; }
     .card-actions button { flex: 1; justify-content: center; padding: 6px; font-size: 0.8rem; }
-    
-    /* Modals (Adaptive Desktop vs Mobile) */
-    .modal-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 100; backdrop-filter: blur(3px); }
+
+    /* Modals (Bottom Sheet on Mobile, Center on Desktop) */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.78); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 100; backdrop-filter: blur(4px); }
     .modal-backdrop.open { display: flex; }
-    .modal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; padding: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+    .modal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; padding: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65); }
     .modal-handle { display: none; }
-    
+
     @media (max-width: 480px) {
       .modal-backdrop { align-items: flex-end; padding: 0; }
-      .modal { border-radius: 20px 20px 0 0; max-height: 85vh; padding-bottom: 40px; animation: slideUp 0.3s ease-out; border-bottom: none; }
-      .modal-handle { display: block; width: 40px; height: 5px; background: var(--border); border-radius: 5px; margin: 0 auto 15px auto; }
+      .modal { border-radius: 22px 22px 0 0; max-height: 88vh; padding-bottom: 36px; animation: slideUp 0.28s cubic-bezier(0.22, 1, 0.36, 1); border-bottom: none; }
+      .modal-handle { display: block; width: 42px; height: 5px; background: #475569; border-radius: 5px; margin: 0 auto 14px auto; }
     }
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
@@ -112,59 +147,214 @@
     .form-group label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; }
     .rating-selector { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; }
     .rate-btn { padding: 8px 0; justify-content: center; font-weight: 700; font-size: 0.85rem; }
-    .rate-btn.selected { background: var(--accent); color: #000; border-color: var(--accent); box-shadow: 0 0 10px rgba(245, 158, 11, 0.3); transform: scale(1.05); }
+    .rate-btn.selected { background: var(--accent); color: #000; border-color: var(--accent); box-shadow: 0 0 12px rgba(245, 158, 11, 0.45); transform: scale(1.06); }
     .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
-    .help-text { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; }
     .empty-state { text-align: center; padding: 48px 16px; color: var(--text-muted); }
-    .toast { position: fixed; bottom: 20px; right: 20px; background: #1e293b; border: 1px solid var(--primary); color: #fff; padding: 10px 16px; border-radius: 8px; font-size: 0.9rem; box-shadow: 0 10px 25px rgba(0,0,0,0.5); transform: translateY(100px); opacity: 0; transition: all 0.25s ease; z-index: 200; }
+
+    .toast { position: fixed; bottom: 20px; right: 20px; background: #1e293b; border: 1px solid var(--primary); color: #fff; padding: 10px 16px; border-radius: 10px; font-size: 0.9rem; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5); transform: translateY(100px); opacity: 0; transition: all 0.25s ease; z-index: 2000; }
     .toast.show { transform: translateY(0); opacity: 1; }
 
-    /* Roulette Visuals */
-    #rouletteDisplay { height: 320px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #090d16; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; position: relative; margin-bottom: 15px;}
-    .r-poster { height: 240px; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.5); object-fit: cover; transition: transform 0.1s;}
-    .r-title { margin-top: 15px; font-weight: bold; font-size: 1.1rem; text-align: center; padding: 0 10px; }
-    .r-winner { animation: popWinner 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; border: 3px solid var(--accent); }
-    @keyframes popWinner { 0% { transform: scale(0.8); opacity: 0.5; } 100% { transform: scale(1.05); opacity: 1; } }
+    /* ================= HORIZONTAL CASE-STYLE ROULETTE ================= */
+    .roulette-viewport {
+      position: relative;
+      width: 100%;
+      height: 230px;
+      background: #070b14;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin: 12px 0 18px 0;
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.85);
+      display: flex;
+      align-items: center;
+    }
+    .roulette-viewport::before, .roulette-viewport::after {
+      content: "";
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 65px;
+      z-index: 4;
+      pointer-events: none;
+    }
+    .roulette-viewport::before { left: 0; background: linear-gradient(to right, #070b14, transparent); }
+    .roulette-viewport::after { right: 0; background: linear-gradient(to left, #070b14, transparent); }
 
-    /* Tinder Mode Overlay */
-    .tinder-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 999; display: none; flex-direction: column; }
-    .tinder-header { padding: 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
-    .tinder-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-    
-    .tinder-card-container { position: relative; width: 300px; height: 450px; perspective: 1000px; z-index: 10; touch-action: none; }
-    @media (max-height: 700px) { .tinder-card-container { width: 240px; height: 360px; } }
-    
-    .tinder-card { width: 100%; height: 100%; position: absolute; transform-style: preserve-3d; transition: transform 0.4s ease; cursor: grab; }
-    .tinder-card.flipped { transform: rotateY(180deg); }
-    .tinder-card.moving { transition: none; }
-    
-    .tinder-card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: var(--radius); overflow: hidden; background: var(--surface); box-shadow: 0 15px 35px rgba(0,0,0,0.5); border: 1px solid var(--border); display: flex; flex-direction: column; }
+    /* Center Neon Needle */
+    .roulette-needle {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%;
+      width: 3px;
+      background: var(--accent);
+      box-shadow: 0 0 14px var(--accent), 0 0 4px #fff;
+      transform: translateX(-50%);
+      z-index: 5;
+      pointer-events: none;
+    }
+    .roulette-needle::before, .roulette-needle::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+    }
+    .roulette-needle::before { top: 0; border-top: 10px solid var(--accent); }
+    .roulette-needle::after { bottom: 0; border-bottom: 10px solid var(--accent); }
+
+    .roulette-track {
+      display: flex;
+      gap: 12px;
+      padding-left: 50%;
+      will-change: transform;
+    }
+    .roulette-slot {
+      width: 126px;
+      height: 192px;
+      flex-shrink: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      border: 2px solid #1e293b;
+      background: #111827;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .roulette-slot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .roulette-slot .slot-title {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.92));
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 18px 6px 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .roulette-slot.winner {
+      border-color: var(--accent);
+      box-shadow: 0 0 24px rgba(245, 158, 11, 0.75);
+      transform: scale(1.06);
+      z-index: 3;
+    }
+
+    /* ================= TINDER 2.0 OVERLAY ================= */
+    .tinder-overlay { position: fixed; inset: 0; background: #070b14; z-index: 999; display: none; flex-direction: column; overflow: hidden; }
+
+    /* Ambilight dynamic backdrop */
+    .tinder-ambilight {
+      position: absolute;
+      inset: -40px;
+      background-size: cover;
+      background-position: center;
+      filter: blur(55px) saturate(1.7) brightness(0.42);
+      transition: background-image 0.55s ease;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .tinder-header { position: relative; z-index: 10; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: rgba(7, 11, 20, 0.55); backdrop-filter: blur(10px); flex-wrap: wrap; }
+
+    .tinder-modes { display: flex; gap: 6px; background: rgba(15, 23, 42, 0.85); padding: 4px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); }
+    .tmode-btn { padding: 5px 11px; border-radius: 8px; border: none; background: transparent; color: var(--text-muted); font-size: 0.82rem; font-weight: 600; }
+    .tmode-btn.active { background: var(--primary); color: #fff; box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4); }
+
+    .tinder-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 5; padding: 12px; }
+
+    .tinder-stack { position: relative; width: 310px; height: 460px; perspective: 1200px; touch-action: none; }
+    @media (max-height: 720px) { .tinder-stack { width: 255px; height: 380px; } }
+
+    .tinder-card {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease, filter 0.3s ease;
+      will-change: transform;
+      border-radius: 18px;
+    }
+    .tinder-card.top-card { z-index: 3; cursor: grab; }
+    .tinder-card.top-card:active { cursor: grabbing; }
+    .tinder-card.second-card { z-index: 2; transform: scale(0.94) translateY(16px); filter: brightness(0.7); pointer-events: none; }
+    .tinder-card.third-card { z-index: 1; transform: scale(0.88) translateY(32px); filter: brightness(0.45); pointer-events: none; }
+    .tinder-card.flipped { transform: rotateY(180deg) !important; }
+    .tinder-card.moving { transition: none !important; }
+
+    .tinder-card-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--surface);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65);
+      border: 2px solid rgba(255, 255, 255, 0.14);
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    /* Neon border glow during swipe */
+    .tinder-card.glow-right .tinder-card-face { border-color: var(--success); box-shadow: 0 0 30px rgba(16, 185, 129, 0.55); }
+    .tinder-card.glow-left .tinder-card-face { border-color: var(--danger); box-shadow: 0 0 30px rgba(239, 68, 68, 0.55); }
+    .tinder-card.glow-up .tinder-card-face { border-color: var(--plan); box-shadow: 0 0 30px rgba(168, 85, 247, 0.55); }
+    .tinder-card.glow-down .tinder-card-face { border-color: var(--super); box-shadow: 0 0 35px rgba(236, 72, 153, 0.7); }
+
     .tinder-card-front img { width: 100%; height: 100%; object-fit: cover; }
-    .tinder-card-front .tinder-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 60px 15px 15px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); color: white; pointer-events: none;}
-    .tinder-card-front h2 { font-size: 1.3rem; margin: 0; line-height: 1.2; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);}
-    .tinder-card-front p { font-size: 0.9rem; color: #cbd5e1; margin-top: 4px; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);}
-    
-    .tinder-card-back { transform: rotateY(180deg); padding: 20px; overflow-y: auto; background: var(--surface); color: var(--text); display: flex; flex-direction: column; pointer-events: auto;}
-    .tinder-card-back h3 { margin-bottom: 10px; color: var(--primary); }
-    .tinder-card-back .overview { font-size: 0.95rem; line-height: 1.5; color: #e2e8f0; }
-    .tinder-card-back .rating { margin-top: auto; padding-top: 15px; font-weight: bold; color: var(--accent); }
-    
-    .tinder-flip-btn { position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; border-radius: 50%; background: rgba(15,23,42,0.7); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; z-index: 20; }
-    
-    .tinder-controls { display: flex; gap: 15px; margin-top: 30px; z-index: 10; flex-wrap: wrap; justify-content: center; }
-    .tinder-btn-circle { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; cursor: pointer; border: 2px solid; background: var(--bg); transition: transform 0.1s; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-    @media (max-height: 700px) { .tinder-btn-circle { width: 48px; height: 48px; font-size: 1.3rem; } }
-    .tinder-btn-circle:active { transform: scale(0.85); }
-    .tinder-btn-skip { border-color: var(--danger); color: var(--danger); }
-    .tinder-btn-super { border-color: var(--super); color: var(--super); }
-    .tinder-btn-plan { border-color: #a855f7; color: #a855f7; }
-    .tinder-btn-seen { border-color: var(--success); color: var(--success); }
+    .tinder-card-front .tinder-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 70px 16px 16px; background: linear-gradient(transparent, rgba(0, 0, 0, 0.94)); color: #fff; pointer-events: none; }
+    .tinder-card-front h2 { font-size: 1.3rem; line-height: 1.2; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9); }
+    .tinder-card-front p { font-size: 0.88rem; color: #cbd5e1; margin-top: 4px; }
+
+    /* Stamp on card */
+    .card-stamp {
+      position: absolute;
+      top: 22px;
+      left: 16px;
+      padding: 6px 14px;
+      border: 3px solid;
+      border-radius: 10px;
+      font-weight: 900;
+      font-size: 1.15rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: rotate(-12deg) scale(0.8);
+      transition: opacity 0.12s ease, transform 0.12s ease;
+      background: rgba(11, 17, 32, 0.78);
+      backdrop-filter: blur(4px);
+      pointer-events: none;
+      z-index: 12;
+    }
+    .card-stamp.visible { opacity: 1; transform: rotate(-10deg) scale(1); }
+
+    .tinder-card-back { transform: rotateY(180deg); padding: 20px; overflow-y: auto; background: #131c31; color: var(--text); display: flex; flex-direction: column; }
+    .tinder-card-back h3 { margin-bottom: 10px; color: #60a5fa; padding-right: 42px; }
+    .tinder-card-back .overview { font-size: 0.94rem; line-height: 1.55; color: #e2e8f0; }
+    .tinder-card-back .rating { margin-top: auto; padding-top: 14px; font-weight: 700; color: var(--accent); }
+
+    .tinder-flip-btn { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border-radius: 50%; background: rgba(11, 17, 32, 0.78); backdrop-filter: blur(6px); border: 1px solid rgba(255, 255, 255, 0.25); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; cursor: pointer; z-index: 20; }
+
+    .tinder-controls { display: flex; gap: 16px; margin-top: 34px; z-index: 10; justify-content: center; }
+    .tinder-btn-circle { width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; cursor: pointer; border: 2px solid; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(6px); transition: transform 0.12s ease, box-shadow 0.15s ease; }
+    @media (max-height: 720px) { .tinder-btn-circle { width: 50px; height: 50px; font-size: 1.35rem; } .tinder-controls { margin-top: 26px; } }
+    .tinder-btn-circle:hover { transform: translateY(-3px) scale(1.06); }
+    .tinder-btn-circle:active { transform: scale(0.9); }
+    .tinder-btn-skip { border-color: var(--danger); color: var(--danger); box-shadow: 0 6px 18px rgba(239, 68, 68, 0.25); }
+    .tinder-btn-super { border-color: var(--super); color: var(--super); box-shadow: 0 6px 18px rgba(236, 72, 153, 0.3); }
+    .tinder-btn-plan { border-color: var(--plan); color: var(--plan); box-shadow: 0 6px 18px rgba(168, 85, 247, 0.25); }
+    .tinder-btn-seen { border-color: var(--success); color: var(--success); box-shadow: 0 6px 18px rgba(16, 185, 129, 0.25); }
 
     .tinder-loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 5; color: var(--text-muted); }
-    .swipe-indicator { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); font-size: 1.5rem; font-weight: bold; opacity: 0; transition: opacity 0.2s; pointer-events: none; padding: 10px 20px; border-radius: 10px; border: 3px solid; z-index: 15; text-transform: uppercase; background: rgba(15,23,42,0.8); text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
+
+    /* Particle Burst Canvas */
+    #fxCanvas { position: fixed; inset: 0; pointer-events: none; z-index: 1500; }
   </style>
 </head>
 <body>
+
+<canvas id="fxCanvas"></canvas>
 
 <header>
   <div class="header-inner">
@@ -173,6 +363,7 @@
       <div class="sync-status" id="syncStatus">
         <span class="dot" id="syncDot"></span><span id="syncText">Локально</span>
       </div>
+      <button id="soundToggleBtn" onclick="toggleSound()" title="Звукові ефекти">🔊</button>
       <button onclick="syncFromGist()" title="Оновити з GitHub Gist">🔄</button>
       <button onclick="openSettings()">⚙️ Налаштування</button>
     </div>
@@ -197,16 +388,16 @@
   <div class="controls-bar">
     <div class="tabs" id="categoryTabs">
       <button class="tab active" data-cat="all" onclick="setCategory('all')">Переглянуті (<span id="cnt-all">0</span>)</button>
-      <button class="tab" data-cat="movie" onclick="setCategory('movie')">Фільми</button>
-      <button class="tab" data-cat="tv" onclick="setCategory('tv')">Серіали</button>
-      <button class="tab" data-cat="doc" onclick="setCategory('doc')">Документальні</button>
+      <button class="tab" data-cat="movie" onclick="setCategory('movie')">Фільми (<span id="cnt-movie">0</span>)</button>
+      <button class="tab" data-cat="tv" onclick="setCategory('tv')">Серіали (<span id="cnt-tv">0</span>)</button>
+      <button class="tab" data-cat="doc" onclick="setCategory('doc')">Документальні (<span id="cnt-doc">0</span>)</button>
       <button class="tab plan" data-cat="plan" onclick="setCategory('plan')">⬆️ Буду дивитись (<span id="cnt-plan">0</span>)</button>
     </div>
 
     <div class="filter-inputs">
       <button class="roulette-btn" id="btnRoulette" onclick="openRoulette()">🎲 Що подивитися?</button>
-      <input type="text" id="localSearch" placeholder="Пошук..." oninput="renderCatalog()" style="max-width:150px;" />
-      <select id="sortSelect" onchange="renderCatalog()" style="max-width: 160px;">
+      <input type="text" id="localSearch" placeholder="Пошук у списку..." oninput="renderCatalog()" />
+      <select id="sortSelect" onchange="renderCatalog()" style="max-width: 165px;">
         <option value="added_desc">Новіші зверху</option>
         <option value="rating_desc">Вища оцінка</option>
         <option value="rating_asc">Нижча оцінка</option>
@@ -220,20 +411,26 @@
   <div class="catalog-grid" id="catalogGrid"></div>
 </div>
 
-<!-- TINDER РЕЖИМ OVERLAY -->
+<!-- TINDER 2.0 OVERLAY -->
 <div class="tinder-overlay" id="tinderOverlay">
+  <div class="tinder-ambilight" id="tinderAmbilight"></div>
+
   <div class="tinder-header">
-    <div class="logo">🔥 Топ 500 популярних</div>
-    <button onclick="closeTinderMode()">Закрити ❌</button>
+    <div class="tinder-modes" id="tinderModes">
+      <button class="tmode-btn active" data-mode="movie" onclick="switchTinderMode('movie')">🎬 Фільми</button>
+      <button class="tmode-btn" data-mode="tv" onclick="switchTinderMode('tv')">📺 Серіали</button>
+      <button class="tmode-btn" data-mode="top" onclick="switchTinderMode('top')">🏆 Топ рейтингу</button>
+    </div>
+    <button onclick="closeTinderMode()">Закрити ✕</button>
   </div>
-  
+
   <div class="tinder-area">
     <div class="tinder-loading" id="tinderLoading">
-      <div style="font-size: 2rem; margin-bottom: 10px;">⏳</div>
+      <div style="font-size: 2.2rem; margin-bottom: 10px;">⏳</div>
       <div>Завантаження карток з TMDb...</div>
     </div>
-    <div class="swipe-indicator" id="swipeIndicator"></div>
-    <div class="tinder-card-container" id="tinderContainer"></div>
+
+    <div class="tinder-stack" id="tinderStack"></div>
 
     <div class="tinder-controls">
       <button class="tinder-btn-circle tinder-btn-skip" onclick="triggerSwipe('left')" title="Не бачив / Пропустити">❌</button>
@@ -248,19 +445,24 @@
 <div class="modal-backdrop" id="rouletteModal">
   <div class="modal" style="text-align:center;">
     <div class="modal-handle"></div>
-    <h3 style="color:var(--accent); font-size:1.4rem;">🎲 Рулетка на вечір</h3>
-    <div id="rouletteDisplay">
-      <div style="font-size:5rem; opacity:0.5;">🎰</div>
-      <div style="color:var(--text-muted); margin-top:10px;">Натисніть "Крутити", щоб вибрати випадковий фільм</div>
+    <h3 style="color:var(--accent); font-size:1.35rem; margin-bottom:4px;">🎲 Рулетка на вечір</h3>
+    <div style="font-size:0.85rem; color:var(--text-muted);" id="rouletteSubtitle">Випадковий вибір зі списку «Буду дивитись»</div>
+
+    <div class="roulette-viewport" id="rouletteViewport">
+      <div class="roulette-needle"></div>
+      <div class="roulette-track" id="rouletteTrack"></div>
     </div>
-    <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">
-      <button class="primary" onclick="spinRoulette()" style="justify-content:center; padding:12px; font-size:1.1rem; background:linear-gradient(45deg, #8b5cf6, #d946ef); border:none;">Крутити барабан!</button>
+
+    <div id="rouletteResultBox" style="min-height: 54px; margin-bottom: 12px;"></div>
+
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <button class="primary" id="spinBtn" onclick="spinRoulette()" style="justify-content:center; padding:12px; font-size:1.05rem; background:linear-gradient(135deg, #8b5cf6, #d946ef); border:none; font-weight:700;">🎰 Крутити стрічку!</button>
       <button onclick="closeModal('rouletteModal')" style="justify-content:center;">Закрити</button>
     </div>
   </div>
 </div>
 
-<!-- Модальне вікно ДОДАВАННЯ/РЕДАГУВАННЯ -->
+<!-- Модальне вікно ДОДАВАННЯ / РЕДАГУВАННЯ -->
 <div class="modal-backdrop" id="itemModal">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -336,6 +538,15 @@
         <button type="button" onclick="createNewGist()">+ Створити</button>
       </div>
     </div>
+    <hr style="border:0; border-top:1px solid var(--border); margin:16px 0;" />
+    <div class="form-group">
+      <label>Резервна копія файлом (JSON)</label>
+      <div style="display:flex; gap:8px;">
+        <button type="button" onclick="exportJSON()">⬇️ Експорт</button>
+        <button type="button" onclick="document.getElementById('importFile').click()">⬆️ Імпорт</button>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)" />
+      </div>
+    </div>
     <div class="modal-footer">
       <button onclick="closeModal('settingsModal')">Закрити</button>
       <button class="primary" onclick="saveSettings()">Зберегти</button>
@@ -352,27 +563,187 @@
   const NO_POSTER = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450" fill="%231e293b"><rect width="300" height="450"/><text x="50%" y="50%" fill="%2394a3b8" font-family="sans-serif" font-size="20" text-anchor="middle">Без постера</text></svg>';
 
   let catalog = [];
-  let config = { tmdbKey: '', ghToken: '', gistId: '' };
+  let config = { tmdbKey: '', ghToken: '', gistId: '', sound: true };
   let currentCategory = 'all';
   let activeItem = null;
-  let selectedRating = null; 
+  let selectedRating = null;
 
+  // Tinder 2.0 State
+  let tinderMode = 'movie'; // 'movie' | 'tv' | 'top'
   let tinderQueue = [];
-  let tinderPage = 1;
+  let tinderPages = { movie: 1, tv: 1, top: 1 };
   let currentTinderItem = null;
-  let startX, startY, currentX, currentY;
-  let cardEl;
+  let isFetchingTinder = false;
+  let topCardEl = null;
+
+  // Roulette State
   let isRouletteSpinning = false;
 
-  // Haptic feedback wrapper
-  function vibe(pattern) {
-    if (navigator.vibrate) {
-      try { navigator.vibrate(pattern); } catch(e){}
+  /* ================= PROCEDURAL WEB AUDIO ENGINE ================= */
+  let audioCtx = null;
+  function getAudioCtx() {
+    if (!audioCtx) {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (Ctx) audioCtx = new Ctx();
+    }
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+
+  function playSound(type) {
+    if (!config.sound) return;
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    const now = ctx.currentTime;
+
+    if (type === 'tick') {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(620, now);
+      osc.frequency.exponentialRampToValueAtTime(180, now + 0.035);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(now); osc.stop(now + 0.04);
+    } else if (type === 'swipe') {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(240, now);
+      osc.frequency.exponentialRampToValueAtTime(520, now + 0.14);
+      gain.gain.setValueAtTime(0.1, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(now); osc.stop(now + 0.16);
+    } else if (type === 'skip') {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(300, now);
+      osc.frequency.exponentialRampToValueAtTime(140, now + 0.12);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(now); osc.stop(now + 0.14);
+    } else if (type === 'super' || type === 'win') {
+      const notes = type === 'super' ? [523.25, 659.25, 783.99, 1046.5] : [440, 554.37, 659.25, 880];
+      notes.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.065);
+        gain.gain.setValueAtTime(0.11, now + idx * 0.065);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.065 + 0.35);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(now + idx * 0.065);
+        osc.stop(now + idx * 0.065 + 0.36);
+      });
     }
   }
 
+  function toggleSound() {
+    config.sound = !config.sound;
+    localStorage.setItem(CFG_KEY, JSON.stringify(config));
+    updateSoundIcon();
+    if (config.sound) playSound('tick');
+    showToast(config.sound ? 'Звук увімкнено 🔊' : 'Звук вимкнено 🔇');
+  }
+
+  function updateSoundIcon() {
+    document.getElementById('soundToggleBtn').textContent = config.sound ? '🔊' : '🔇';
+  }
+
+  function vibe(pattern) {
+    if (navigator.vibrate) {
+      try { navigator.vibrate(pattern); } catch (e) {}
+    }
+  }
+
+  /* ================= PARTICLE FX ENGINE (CONFETTI & HEARTS) ================= */
+  const fxCanvas = document.getElementById('fxCanvas');
+  const fxCtx = fxCanvas.getContext('2d');
+  let particles = [];
+  let fxAnimRunning = false;
+
+  function resizeFxCanvas() {
+    fxCanvas.width = window.innerWidth;
+    fxCanvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeFxCanvas);
+  resizeFxCanvas();
+
+  function spawnParticles(mode = 'confetti', originX = window.innerWidth / 2, originY = window.innerHeight / 2) {
+    const colors = mode === 'hearts'
+      ? ['#ec4899', '#f43f5e', '#fbbf24', '#f472b6']
+      : ['#f59e0b', '#3b82f6', '#10b981', '#ec4899', '#a855f7'];
+
+    const count = mode === 'hearts' ? 42 : 65;
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 4 + Math.random() * 10;
+      particles.push({
+        x: originX,
+        y: originY,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 4,
+        size: mode === 'hearts' ? (12 + Math.random() * 10) : (6 + Math.random() * 6),
+        color: colors[Math.floor(Math.random() * colors.length)],
+        alpha: 1,
+        rot: Math.random() * 360,
+        vRot: (Math.random() - 0.5) * 12,
+        isHeart: mode === 'hearts'
+      });
+    }
+    if (!fxAnimRunning) renderParticles();
+  }
+
+  function renderParticles() {
+    fxAnimRunning = true;
+    fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.28; // gravity
+      p.vx *= 0.98;
+      p.rot += p.vRot;
+      p.alpha -= 0.016;
+
+      if (p.alpha <= 0) {
+        particles.splice(i, 1);
+        continue;
+      }
+
+      fxCtx.save();
+      fxCtx.globalAlpha = p.alpha;
+      fxCtx.translate(p.x, p.y);
+      fxCtx.rotate((p.rot * Math.PI) / 180);
+
+      if (p.isHeart) {
+        fxCtx.font = `${p.size}px sans-serif`;
+        fxCtx.textAlign = 'center';
+        fxCtx.textBaseline = 'middle';
+        fxCtx.fillText('💖', 0, 0);
+      } else {
+        fxCtx.fillStyle = p.color;
+        fxCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
+      }
+      fxCtx.restore();
+    }
+
+    if (particles.length > 0) {
+      requestAnimationFrame(renderParticles);
+    } else {
+      fxAnimRunning = false;
+      fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+    }
+  }
+
+  /* ================= INITIALIZATION ================= */
   window.addEventListener('DOMContentLoaded', async () => {
     loadConfig();
+    updateSoundIcon();
     loadLocalCatalog();
     buildRatingButtons();
     renderCatalog();
@@ -384,9 +755,18 @@
     }
   });
 
-  /* ================= CORE LOGIC ================= */
-  function loadConfig() { try { const s = JSON.parse(localStorage.getItem(CFG_KEY)); if (s) config = { ...config, ...s }; } catch (e) {} }
-  function loadLocalCatalog() { try { const s = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (Array.isArray(s)) catalog = s; } catch (e) {} }
+  function loadConfig() {
+    try {
+      const s = JSON.parse(localStorage.getItem(CFG_KEY));
+      if (s) config = { ...config, ...s };
+    } catch (e) {}
+  }
+  function loadLocalCatalog() {
+    try {
+      const s = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (Array.isArray(s)) catalog = s;
+    } catch (e) {}
+  }
   function saveLocalCatalog() { localStorage.setItem(STORAGE_KEY, JSON.stringify(catalog)); }
 
   function buildRatingButtons() {
@@ -398,7 +778,8 @@
       btn.className = 'rate-btn' + (i === selectedRating ? ' selected' : '');
       btn.textContent = i;
       btn.onclick = () => {
-        vibe(10); // Light tap on rating select
+        vibe(10);
+        playSound('tick');
         selectedRating = i;
         document.querySelectorAll('.rate-btn').forEach(b => b.classList.remove('selected'));
         btn.classList.add('selected');
@@ -407,26 +788,33 @@
     }
   }
 
-  function setUnrated() { selectedRating = null; document.querySelectorAll('.rate-btn').forEach(b => b.classList.remove('selected')); }
-  function toggleRatingVisibility() { document.getElementById('ratingGroup').style.display = (document.getElementById('itemStatus').value === 'plan') ? 'none' : 'block'; }
+  function setUnrated() {
+    selectedRating = null;
+    document.querySelectorAll('.rate-btn').forEach(b => b.classList.remove('selected'));
+  }
 
+  function toggleRatingVisibility() {
+    document.getElementById('ratingGroup').style.display = (document.getElementById('itemStatus').value === 'plan') ? 'none' : 'block';
+  }
+
+  /* ================= TMDb SEARCH ================= */
   async function searchTMDb(e) {
-    if(e) e.preventDefault();
+    if (e) e.preventDefault();
     const query = document.getElementById('tmdbQuery').value.trim();
     if (!query) return;
     if (!config.tmdbKey) { openSettings(); return showToast('Введіть TMDb API Key'); }
 
     const resultsEl = document.getElementById('tmdbResults');
-    resultsEl.innerHTML = '<div style="color:var(--text-muted);">Пошук...</div>';
+    resultsEl.innerHTML = '<div style="color:var(--text-muted);">Пошук у базі TMDb...</div>';
     try {
       const url = `https://api.themoviedb.org/3/search/multi?api_key=${config.tmdbKey}&language=uk-UA&query=${encodeURIComponent(query)}&include_adult=false`;
       const res = await fetch(url);
       const data = await res.json();
       const items = (data.results || []).filter(r => r.media_type === 'movie' || r.media_type === 'tv').slice(0, 8);
-      
+
       if (!items.length) { resultsEl.innerHTML = '<div>Нічого не знайдено.</div>'; return; }
       resultsEl.innerHTML = '';
-      
+
       items.forEach(item => {
         const isTv = item.media_type === 'tv';
         const isDoc = Array.isArray(item.genre_ids) && item.genre_ids.includes(99);
@@ -442,9 +830,9 @@
           <img src="${poster}" alt="" />
           <div class="tmdb-info">
             <h4 title="${escapeHtml(title)}">${escapeHtml(title)}</h4>
-            <div class="tmdb-meta">${year} • ${isDoc?'Док.':isTv?'Серіал':'Фільм'}</div>
+            <div class="tmdb-meta">${year} • ${isDoc ? 'Документальний' : isTv ? 'Серіал' : 'Фільм'}</div>
             <button class="${existing ? '' : 'primary'}" style="padding:5px 10px; font-size:0.8rem;">
-              ${existing ? `✎ У списку` : '+ Додати'}
+              ${existing ? '✎ У списку' : '+ Додати'}
             </button>
           </div>
         `;
@@ -452,8 +840,8 @@
           vibe(10);
           openItemModal({
             id, tmdbId: item.id, title, year, poster,
-            category: existing ? existing.category : (isDoc?'doc':isTv?'tv':'movie'),
-            status: existing ? (existing.status||'watched') : 'watched',
+            category: existing ? existing.category : (isDoc ? 'doc' : isTv ? 'tv' : 'movie'),
+            status: existing ? (existing.status || 'watched') : 'watched',
             rating: existing ? existing.rating : null,
             watchedDate: existing ? existing.watchedDate : new Date().toISOString().slice(0, 10),
             note: existing ? existing.note : ''
@@ -461,12 +849,15 @@
         };
         resultsEl.appendChild(div);
       });
-    } catch (err) { resultsEl.innerHTML = `<div style="color:var(--danger);">${err.message}</div>`; }
+    } catch (err) {
+      resultsEl.innerHTML = `<div style="color:var(--danger);">${err.message}</div>`;
+    }
   }
 
+  /* ================= ITEM MODAL ================= */
   function openItemModal(item) {
     activeItem = item;
-    document.getElementById('modalTitle').textContent = catalog.some(c => c.id === item.id) ? 'Редагувати' : 'Додати у список';
+    document.getElementById('modalTitle').textContent = catalog.some(c => c.id === item.id) ? 'Редагувати запис' : 'Додати у список';
     document.getElementById('modalPoster').src = item.poster || NO_POSTER;
     document.getElementById('modalMovieName').textContent = item.title;
     document.getElementById('modalMovieYear').textContent = item.year;
@@ -501,37 +892,42 @@
     closeModal('itemModal');
     document.getElementById('tmdbResults').innerHTML = '';
     document.getElementById('tmdbQuery').value = '';
-    vibe([20, 30, 20]); // Success save haptic
+    vibe([20, 30, 20]);
+    playSound('swipe');
+    if (entry.rating === 10) spawnParticles('hearts');
     renderCatalog();
     showToast('Збережено!');
     backgroundGistSync();
   }
 
   async function deleteItem(id) {
-    vibe([50, 50, 50]);
+    vibe([40, 40]);
     if (!confirm('Видалити цей запис?')) return;
     catalog = catalog.filter(c => c.id !== id);
-    saveLocalCatalog(); renderCatalog();
+    saveLocalCatalog();
+    playSound('skip');
+    renderCatalog();
     backgroundGistSync();
   }
 
+  /* ================= CATALOG RENDER & 3D TILT ================= */
   function setCategory(cat) {
     vibe(10);
+    playSound('tick');
     currentCategory = cat;
     document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.cat === cat));
-    
-    // Toggle Roulette button visibility
-    const rBtn = document.getElementById('btnRoulette');
-    if(cat === 'plan') { rBtn.style.display = 'inline-flex'; } else { rBtn.style.display = 'none'; }
-    
+    document.getElementById('btnRoulette').style.display = (cat === 'plan') ? 'inline-flex' : 'none';
     renderCatalog();
   }
 
   function renderCatalog() {
-    const allWatched = catalog.filter(c => c.status !== 'plan');
+    const watched = catalog.filter(c => c.status !== 'plan');
     const plans = catalog.filter(c => c.status === 'plan');
 
-    document.getElementById('cnt-all').textContent = allWatched.length;
+    document.getElementById('cnt-all').textContent = watched.length;
+    document.getElementById('cnt-movie').textContent = watched.filter(c => c.category === 'movie').length;
+    document.getElementById('cnt-tv').textContent = watched.filter(c => c.category === 'tv').length;
+    document.getElementById('cnt-doc').textContent = watched.filter(c => c.category === 'doc').length;
     document.getElementById('cnt-plan').textContent = plans.length;
 
     const query = document.getElementById('localSearch').value.trim().toLowerCase();
@@ -542,123 +938,199 @@
       if (isPlanCat && item.status !== 'plan') return false;
       if (!isPlanCat && item.status === 'plan') return false;
       if (currentCategory !== 'all' && currentCategory !== 'plan' && item.category !== currentCategory) return false;
-      if (query && !item.title.toLowerCase().includes(query) && !(item.note||'').toLowerCase().includes(query)) return false;
+      if (query && !item.title.toLowerCase().includes(query) && !(item.note || '').toLowerCase().includes(query)) return false;
       return true;
     });
 
     list.sort((a, b) => {
-      if (sort === 'rating_desc') return (b.rating||0) - (a.rating||0);
-      if (sort === 'rating_asc') return (a.rating||0) - (b.rating||0);
-      if (sort === 'year_desc') return (parseInt(b.year)||0) - (parseInt(a.year)||0);
+      if (sort === 'rating_desc') return (b.rating || 0) - (a.rating || 0);
+      if (sort === 'rating_asc') return (a.rating || 0) - (b.rating || 0);
+      if (sort === 'year_desc') return (parseInt(b.year) || 0) - (parseInt(a.year) || 0);
       if (sort === 'title_asc') return a.title.localeCompare(b.title, 'uk');
       return (b.updatedAt || 0) - (a.updatedAt || 0);
     });
 
     const grid = document.getElementById('catalogGrid');
     if (!list.length) {
-      grid.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;">Нічого не знайдено.</div>`;
+      grid.innerHTML = `<div class="empty-state" style="grid-column: 1 / -1;">У цій вкладці поки порожньо.</div>`;
       return;
     }
 
     const catNames = { movie: 'Фільм', tv: 'Серіал', doc: 'Документальний' };
     grid.innerHTML = '';
-    list.forEach(item => {
+
+    list.forEach((item, index) => {
       const isSuper = item.rating === 10 && item.note && item.note.includes('Улюблене');
-      const badge = item.status === 'plan' 
-        ? `<span class="badge-plan">Планую</span>` 
+      const badge = item.status === 'plan'
+        ? `<span class="badge-plan">Планую</span>`
         : `<span class="badge-rating ${isSuper ? 'super' : ''}">★ ${item.rating !== null ? item.rating : '—'}</span>`;
 
-      grid.innerHTML += `
-        <div class="card">
-          <div class="poster-wrap">
-            <img src="${item.poster || NO_POSTER}" alt="" loading="lazy" />
-            <span class="badge-type">${catNames[item.category]}</span>
-            ${badge}
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.style.animationDelay = `${Math.min(index * 30, 450)}ms`;
+      card.innerHTML = `
+        <div class="card-glare"></div>
+        <div class="poster-wrap">
+          <img src="${item.poster || NO_POSTER}" alt="" loading="lazy" />
+          <span class="badge-type">${catNames[item.category] || 'Кіно'}</span>
+          ${badge}
+        </div>
+        <div class="card-body">
+          <div class="card-title">${escapeHtml(item.title)}</div>
+          <div class="card-year">${item.year}</div>
+          ${item.note ? `<div class="card-note">${escapeHtml(item.note)}</div>` : ''}
+          <div class="card-actions">
+            <button onclick='editById("${item.id}")'>✏️</button>
+            <button class="danger" onclick='deleteItem("${item.id}")'>🗑️</button>
           </div>
-          <div class="card-body">
-            <div class="card-title">${escapeHtml(item.title)}</div>
-            <div class="card-year">${item.year}</div>
-            ${item.note ? `<div class="card-note">${escapeHtml(item.note)}</div>` : ''}
-            <div class="card-actions">
-              <button onclick='editById("${item.id}")'>✏️</button>
-              <button class="danger" onclick='deleteItem("${item.id}")'>🗑️</button>
-            </div>
-          </div>
-        </div>`;
+        </div>
+      `;
+
+      // 3D Tilt + Glare on mouse move
+      const glare = card.querySelector('.card-glare');
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rx = ((y / rect.height) - 0.5) * -10;
+        const ry = ((x / rect.width) - 0.5) * 10;
+        card.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-3px)`;
+        glare.style.background = `radial-gradient(circle at ${(x / rect.width) * 100}% ${(y / rect.height) * 100}%, rgba(255,255,255,0.25), transparent 65%)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+
+      grid.appendChild(card);
     });
   }
 
-  function editById(id) { 
+  function editById(id) {
     vibe(10);
-    const item = catalog.find(c => c.id === id); 
-    if (item) openItemModal(item); 
+    const item = catalog.find(c => c.id === id);
+    if (item) openItemModal(item);
   }
 
-  /* ================= ROULETTE MODE ================= */
+  /* ================= HORIZONTAL SLOT-MACHINE ROULETTE ================= */
   function openRoulette() {
     const plans = catalog.filter(c => c.status === 'plan');
-    if (plans.length < 2) return showToast('Додайте хоча б два фільми у "Буду дивитись"!');
-    
+    if (plans.length < 2) return showToast('Додайте хоча б 2 фільми у «Буду дивитись»!');
     vibe(15);
-    document.getElementById('rouletteModal').classList.add('open');
-    document.getElementById('rouletteDisplay').innerHTML = `
-      <div style="font-size:5rem; opacity:0.5;">🎰</div>
-      <div style="color:var(--text-muted); margin-top:10px;">Натисніть "Крутити", щоб вибрати випадковий фільм</div>
-    `;
     isRouletteSpinning = false;
+    document.getElementById('rouletteResultBox').innerHTML = '';
+    document.getElementById('spinBtn').disabled = false;
+    document.getElementById('spinBtn').textContent = '🎰 Крутити стрічку!';
+
+    const track = document.getElementById('rouletteTrack');
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(-63px)';
+    track.innerHTML = '';
+
+    // Fill initial preview slots
+    for (let i = 0; i < 12; i++) {
+      const p = plans[i % plans.length];
+      track.appendChild(createRouletteSlot(p));
+    }
+
+    document.getElementById('rouletteModal').classList.add('open');
+  }
+
+  function createRouletteSlot(item) {
+    const div = document.createElement('div');
+    div.className = 'roulette-slot';
+    div.innerHTML = `
+      <img src="${item.poster || NO_POSTER}" alt="" />
+      <div class="slot-title">${escapeHtml(item.title)}</div>
+    `;
+    return div;
   }
 
   function spinRoulette() {
     if (isRouletteSpinning) return;
     const plans = catalog.filter(c => c.status === 'plan');
-    if(plans.length === 0) return;
-    
-    isRouletteSpinning = true;
-    const display = document.getElementById('rouletteDisplay');
-    
-    // Slot machine logic
-    let ticks = 0;
-    const maxTicks = 20 + Math.floor(Math.random() * 15); // Random spin duration
-    let delay = 30; // Start fast
+    if (plans.length < 2) return;
 
-    function tick() {
-      const r = plans[Math.floor(Math.random() * plans.length)];
-      display.innerHTML = `
-        <img src="${r.poster||NO_POSTER}" class="r-poster"/>
-        <div class="r-title">${escapeHtml(r.title)}</div>
-      `;
-      vibe(15); // Haptic tick per poster
-      
-      ticks++;
-      if (ticks < maxTicks) {
-        // Slow down formula
-        delay += (ticks > maxTicks/2) ? 15 : 2; 
-        setTimeout(tick, delay);
-      } else {
-        // Final winner
-        vibe([100, 50, 200, 50, 100]); // Jackpot haptic
-        display.innerHTML = `
-          <div style="color:var(--accent); font-weight:bold; margin-bottom:10px; font-size:1.1rem; text-transform:uppercase;">🎉 Переможець! 🎉</div>
-          <img src="${r.poster||NO_POSTER}" class="r-poster r-winner"/>
-          <div class="r-title" style="color:var(--text); font-size:1.2rem;">${escapeHtml(r.title)}</div>
-          <div style="margin-top:10px;">
-             <button class="primary" style="padding:6px 12px; font-size:0.85rem;" onclick="editById('${r.id}'); closeModal('rouletteModal');">Відмітити як переглянуто</button>
-          </div>
-        `;
-        isRouletteSpinning = false;
-      }
+    isRouletteSpinning = true;
+    const spinBtn = document.getElementById('spinBtn');
+    spinBtn.disabled = true;
+    spinBtn.textContent = 'Крутиться...';
+    document.getElementById('rouletteResultBox').innerHTML = '';
+
+    const track = document.getElementById('rouletteTrack');
+    track.style.transition = 'none';
+    track.style.transform = 'translateX(0px)';
+    track.innerHTML = '';
+
+    const totalSlots = 46;
+    const winnerIndex = 38;
+    const winnerItem = plans[Math.floor(Math.random() * plans.length)];
+
+    const slotElements = [];
+    for (let i = 0; i < totalSlots; i++) {
+      const item = (i === winnerIndex) ? winnerItem : plans[Math.floor(Math.random() * plans.length)];
+      const el = createRouletteSlot(item);
+      track.appendChild(el);
+      slotElements.push(el);
     }
-    tick();
+
+    const slotStep = 138; // 126px width + 12px gap
+    const randomOffset = Math.floor((Math.random() - 0.5) * 60);
+    const targetTranslate = -(winnerIndex * slotStep + 63 + randomOffset);
+
+    // Tick sound & haptic tracker during animation
+    let lastPassedSlot = -1;
+    const startTime = performance.now();
+    const duration = 4200;
+
+    function trackTicks(now) {
+      if (!isRouletteSpinning) return;
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Approximate cubic-bezier(0.12, 0.85, 0.18, 1)
+      const eased = 1 - Math.pow(1 - progress, 3.6);
+      const currentPos = Math.abs(targetTranslate * eased);
+      const currentSlot = Math.floor(currentPos / slotStep);
+
+      if (currentSlot !== lastPassedSlot) {
+        lastPassedSlot = currentSlot;
+        playSound('tick');
+        vibe(8);
+      }
+      if (progress < 1) requestAnimationFrame(trackTicks);
+    }
+
+    requestAnimationFrame(() => {
+      track.style.transition = `transform ${duration}ms cubic-bezier(0.12, 0.85, 0.18, 1)`;
+      track.style.transform = `translateX(${targetTranslate}px)`;
+      requestAnimationFrame(trackTicks);
+    });
+
+    setTimeout(() => {
+      isRouletteSpinning = false;
+      slotElements[winnerIndex].classList.add('winner');
+      playSound('win');
+      vibe([80, 40, 160]);
+      spawnParticles('confetti');
+
+      spinBtn.disabled = false;
+      spinBtn.textContent = '🔄 Крутити ще раз';
+
+      document.getElementById('rouletteResultBox').innerHTML = `
+        <div style="color:var(--accent); font-weight:800; font-size:1.1rem; margin-bottom:8px;">🎉 Сьогодні дивимось: ${escapeHtml(winnerItem.title)} (${winnerItem.year})</div>
+        <button class="primary" style="padding:7px 14px; font-size:0.85rem;" onclick="editById('${winnerItem.id}'); closeModal('rouletteModal');">✅ Відмітити як переглянуто</button>
+      `;
+    }, duration + 80);
   }
 
-  /* ================= TINDER MODE ================= */
+  /* ================= TINDER 2.0 (LIVE STACK + AMBILIGHT + MODES) ================= */
   async function openTinderMode() {
     if (!config.tmdbKey) { showToast('Введіть TMDb API Key для Tinder-режиму!'); return openSettings(); }
-    vibe([20, 20, 20]);
+    vibe([15, 25]);
     document.getElementById('tinderOverlay').style.display = 'flex';
     document.body.style.overflow = 'hidden';
-    if (tinderQueue.length < 5) await fetchTinderBatch();
-    renderNextTinderCard();
+
+    if (tinderQueue.length < 6) await fetchTinderBatch();
+    renderTinderStack();
   }
 
   function closeTinderMode() {
@@ -667,78 +1139,149 @@
     renderCatalog();
   }
 
+  async function switchTinderMode(mode) {
+    if (tinderMode === mode) return;
+    vibe(12);
+    playSound('tick');
+    tinderMode = mode;
+    tinderQueue = [];
+    document.querySelectorAll('.tmode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+    document.getElementById('tinderStack').innerHTML = '';
+    await fetchTinderBatch();
+    renderTinderStack();
+  }
+
   async function fetchTinderBatch() {
-    document.getElementById('tinderLoading').style.display = 'flex';
+    if (isFetchingTinder) return;
+    isFetchingTinder = true;
+    if (tinderQueue.length === 0) document.getElementById('tinderLoading').style.display = 'flex';
+
+    const today = new Date().toISOString().slice(0, 10);
+
     try {
-      for(let i=0; i<2; i++) {
-        const url = `https://api.themoviedb.org/3/discover/movie?api_key=${config.tmdbKey}&language=uk-UA&sort_by=popularity.desc&vote_count.gte=1000&page=${tinderPage}`;
+      for (let i = 0; i < 2; i++) {
+        const page = tinderPages[tinderMode];
+        let url = '';
+        let mediaType = 'movie';
+
+        if (tinderMode === 'movie') {
+          url = `https://api.themoviedb.org/3/discover/movie?api_key=${config.tmdbKey}&language=uk-UA&sort_by=popularity.desc&vote_count.gte=800&primary_release_date.lte=${today}&page=${page}`;
+          mediaType = 'movie';
+        } else if (tinderMode === 'tv') {
+          url = `https://api.themoviedb.org/3/discover/tv?api_key=${config.tmdbKey}&language=uk-UA&sort_by=popularity.desc&vote_count.gte=400&first_air_date.lte=${today}&page=${page}`;
+          mediaType = 'tv';
+        } else {
+          url = `https://api.themoviedb.org/3/movie/top_rated?api_key=${config.tmdbKey}&language=uk-UA&page=${page}`;
+          mediaType = 'movie';
+        }
+
         const res = await fetch(url);
         const data = await res.json();
-        
-        (data.results || []).forEach(item => {
-          const id = `movie_${item.id}`;
-          if (!catalog.some(c => c.id === id) && !tinderQueue.some(q => q.id === id)) tinderQueue.push(item);
+
+        (data.results || []).forEach(raw => {
+          const item = { ...raw, _mediaType: mediaType };
+          const id = `${mediaType}_${item.id}`;
+          if (!catalog.some(c => c.id === id) && !tinderQueue.some(q => `${q._mediaType}_${q.id}` === id)) {
+            // Preload poster image in browser cache
+            if (item.poster_path) {
+              const img = new Image();
+              img.src = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
+            }
+            tinderQueue.push(item);
+          }
         });
-        tinderPage++;
-        if(tinderPage > 25) tinderPage = 1;
+
+        tinderPages[tinderMode] = page >= 25 ? 1 : page + 1;
       }
-    } catch(err) { console.error(err); }
+    } catch (err) {
+      console.error(err);
+    }
+
+    isFetchingTinder = false;
     document.getElementById('tinderLoading').style.display = 'none';
   }
 
-  function renderNextTinderCard() {
-    const container = document.getElementById('tinderContainer');
-    container.innerHTML = '';
-    
+  function renderTinderStack() {
+    const stack = document.getElementById('tinderStack');
+    stack.innerHTML = '';
+
     if (tinderQueue.length === 0) {
-      container.innerHTML = '<div style="color:white; text-align:center;">Шукаю ще фільми...</div>';
-      fetchTinderBatch().then(renderNextTinderCard);
+      fetchTinderBatch().then(renderTinderStack);
       return;
     }
 
-    currentTinderItem = tinderQueue.shift();
-    if (tinderQueue.length < 5) fetchTinderBatch();
+    if (tinderQueue.length < 8) fetchTinderBatch();
 
-    const item = currentTinderItem;
+    currentTinderItem = tinderQueue[0];
+
+    // Update Ambilight background from top card poster
+    const ambilight = document.getElementById('tinderAmbilight');
+    if (currentTinderItem.poster_path) {
+      ambilight.style.backgroundImage = `url(https://image.tmdb.org/t/p/w342${currentTinderItem.poster_path})`;
+    } else {
+      ambilight.style.backgroundImage = 'none';
+    }
+
+    // Render up to 3 cards in stack (bottom to top)
+    const visibleItems = tinderQueue.slice(0, 3).reverse();
+    visibleItems.forEach((item, revIdx) => {
+      const stackPos = visibleItems.length - 1 - revIdx; // 0 = top, 1 = second, 2 = third
+      const card = buildTinderCardElement(item, stackPos);
+      stack.appendChild(card);
+      if (stackPos === 0) {
+        topCardEl = card;
+        initSwipe(card);
+      }
+    });
+  }
+
+  function buildTinderCardElement(item, stackPos) {
+    const isTv = item._mediaType === 'tv';
+    const isDoc = Array.isArray(item.genre_ids) && item.genre_ids.includes(99);
+    const title = isTv ? item.name : item.title;
+    const year = (isTv ? item.first_air_date : item.release_date)?.slice(0, 4) || '';
     const poster = item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : NO_POSTER;
-    const year = (item.release_date || '').slice(0,4);
+    const typeTag = isDoc ? 'Документальний' : (isTv ? 'Серіал' : 'Фільм');
 
-    cardEl = document.createElement('div');
-    cardEl.className = 'tinder-card';
-    
-    cardEl.innerHTML = `
+    const card = document.createElement('div');
+    card.className = 'tinder-card ' + (stackPos === 0 ? 'top-card' : stackPos === 1 ? 'second-card' : 'third-card');
+
+    card.innerHTML = `
       <div class="tinder-card-face tinder-card-front">
-        <img src="${poster}" alt="" draggable="false"/>
+        <div class="card-stamp" id="cardStamp"></div>
+        <img src="${poster}" alt="" draggable="false" />
         <div class="tinder-flip-btn" onclick="flipTinderCard(event)" title="Прочитати сюжет">ℹ️</div>
         <div class="tinder-info">
-          <h2>${escapeHtml(item.title)}</h2>
-          <p>${year} • ★ ${item.vote_average?.toFixed(1)}</p>
+          <div style="font-size:0.75rem; color:#93c5fd; font-weight:700; text-transform:uppercase; margin-bottom:2px;">${typeTag}</div>
+          <h2>${escapeHtml(title)}</h2>
+          <p>${year} • ★ ${item.vote_average ? item.vote_average.toFixed(1) : '—'}</p>
         </div>
       </div>
       <div class="tinder-card-face tinder-card-back">
         <div class="tinder-flip-btn" onclick="flipTinderCard(event)">🔙</div>
-        <h3>${escapeHtml(item.title)}</h3>
-        <p class="overview">${escapeHtml(item.overview) || 'Опис українською відсутній.'}</p>
-        <div class="rating">Оцінка TMDb: ${item.vote_average?.toFixed(1)}</div>
+        <h3>${escapeHtml(title)}</h3>
+        <p class="overview">${escapeHtml(item.overview) || 'Опис українською мовою відсутній у базі TMDb.'}</p>
+        <div class="rating">Рейтинг TMDb: ★ ${item.vote_average ? item.vote_average.toFixed(1) : '—'}</div>
       </div>
     `;
-
-    container.appendChild(cardEl);
-    initSwipe(cardEl);
+    return card;
   }
 
-  function flipTinderCard(e) { 
-    e.stopPropagation(); 
-    if(cardEl) {
+  function flipTinderCard(e) {
+    e.stopPropagation();
+    if (topCardEl) {
       vibe(15);
-      cardEl.classList.toggle('flipped'); 
+      playSound('tick');
+      topCardEl.classList.toggle('flipped');
     }
   }
 
   function initSwipe(el) {
     let isDown = false;
-    let thresholdHit = false; // Prevents buzzing continuously when holding past threshold
-    
+    let startX = 0, startY = 0, currentX = 0, currentY = 0;
+    let thresholdHit = false;
+    const stamp = el.querySelector('#cardStamp');
+
     const handleStart = (e) => {
       if (e.target.closest('.tinder-flip-btn') || el.classList.contains('flipped')) return;
       isDown = true;
@@ -746,116 +1289,195 @@
       el.classList.add('moving');
       startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
       startY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
+      currentX = startX;
+      currentY = startY;
     };
-    
+
     const handleMove = (e) => {
       if (!isDown) return;
       currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
       currentY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
-      
+
       const dx = currentX - startX;
       const dy = currentY - startY;
-      const rotate = dx * 0.05;
-      
+      const rotate = dx * 0.055;
+
       el.style.transform = `translate(${dx}px, ${dy}px) rotate(${rotate}deg)`;
-      
-      const ind = document.getElementById('swipeIndicator');
-      let currentThreshold = false;
+      el.classList.remove('glow-right', 'glow-left', 'glow-up', 'glow-down');
 
-      if (dx > 100) { ind.textContent = '✅ Вже бачив'; ind.style.borderColor = 'var(--success)'; ind.style.color = 'var(--success)'; ind.style.opacity = 1; currentThreshold = true; }
-      else if (dx < -100) { ind.textContent = '❌ Не бачив'; ind.style.borderColor = 'var(--danger)'; ind.style.color = 'var(--danger)'; ind.style.opacity = 1; currentThreshold = true; }
-      else if (dy > 100 && Math.abs(dx) < 60) { ind.textContent = '💖 Улюблене (10/10)'; ind.style.borderColor = 'var(--super)'; ind.style.color = 'var(--super)'; ind.style.opacity = 1; currentThreshold = true; }
-      else if (dy < -100 && Math.abs(dx) < 60) { ind.textContent = '⬆️ Буду дивитись'; ind.style.borderColor = '#a855f7'; ind.style.color = '#a855f7'; ind.style.opacity = 1; currentThreshold = true; }
-      else { ind.style.opacity = 0; currentThreshold = false; }
+      let activeDir = false;
+      if (dx > 95) {
+        el.classList.add('glow-right');
+        stamp.textContent = '✅ Вже бачив';
+        stamp.style.color = 'var(--success)';
+        stamp.style.borderColor = 'var(--success)';
+        stamp.classList.add('visible');
+        activeDir = true;
+      } else if (dx < -95) {
+        el.classList.add('glow-left');
+        stamp.textContent = '❌ Не бачив';
+        stamp.style.color = 'var(--danger)';
+        stamp.style.borderColor = 'var(--danger)';
+        stamp.classList.add('visible');
+        activeDir = true;
+      } else if (dy > 95 && Math.abs(dx) < 70) {
+        el.classList.add('glow-down');
+        stamp.textContent = '💖 Улюблене 10/10';
+        stamp.style.color = 'var(--super)';
+        stamp.style.borderColor = 'var(--super)';
+        stamp.classList.add('visible');
+        activeDir = true;
+      } else if (dy < -95 && Math.abs(dx) < 70) {
+        el.classList.add('glow-up');
+        stamp.textContent = '⬆️ Буду дивитись';
+        stamp.style.color = 'var(--plan)';
+        stamp.style.borderColor = 'var(--plan)';
+        stamp.classList.add('visible');
+        activeDir = true;
+      } else {
+        stamp.classList.remove('visible');
+      }
 
-      // Haptic feedback when crossing the trigger threshold
-      if (currentThreshold && !thresholdHit) { vibe(20); thresholdHit = true; }
-      else if (!currentThreshold && thresholdHit) { thresholdHit = false; }
+      if (activeDir && !thresholdHit) {
+        vibe(18);
+        thresholdHit = true;
+      } else if (!activeDir && thresholdHit) {
+        thresholdHit = false;
+      }
     };
 
     const handleEnd = () => {
       if (!isDown) return;
       isDown = false;
-      el.classList.remove('moving');
-      document.getElementById('swipeIndicator').style.opacity = 0;
-      
+      el.classList.remove('moving', 'glow-right', 'glow-left', 'glow-up', 'glow-down');
+      stamp.classList.remove('visible');
+
       const dx = currentX - startX;
       const dy = currentY - startY;
-      
-      if (dx > 120) { triggerSwipe('right'); }
-      else if (dx < -120) { triggerSwipe('left'); }
-      else if (dy > 120 && Math.abs(dx) < 80) { triggerSwipe('down'); }
-      else if (dy < -120 && Math.abs(dx) < 80) { triggerSwipe('up'); }
-      else { el.style.transform = ''; } // Snap back if threshold not met
-      
-      currentX = startX; currentY = startY;
+
+      cleanupListeners();
+
+      if (dx > 110) triggerSwipe('right');
+      else if (dx < -110) triggerSwipe('left');
+      else if (dy > 110 && Math.abs(dx) < 85) triggerSwipe('down');
+      else if (dy < -110 && Math.abs(dx) < 85) triggerSwipe('up');
+      else {
+        el.style.transform = '';
+        initSwipe(el); // Re-attach if snapped back
+      }
     };
 
-    el.addEventListener('mousedown', handleStart);
-    el.addEventListener('touchstart', handleStart, {passive: true});
+    function cleanupListeners() {
+      window.removeEventListener('mousemove', handleMove);
+      window.removeEventListener('touchmove', handleMove);
+      window.removeEventListener('mouseup', handleEnd);
+      window.removeEventListener('touchend', handleEnd);
+    }
+
+    el.addEventListener('mousedown', handleStart, { once: true });
+    el.addEventListener('touchstart', handleStart, { passive: true, once: true });
     window.addEventListener('mousemove', handleMove);
-    window.addEventListener('touchmove', handleMove, {passive: true});
+    window.addEventListener('touchmove', handleMove, { passive: true });
     window.addEventListener('mouseup', handleEnd);
     window.addEventListener('touchend', handleEnd);
   }
 
   function triggerSwipe(direction) {
-    if(!cardEl || !currentTinderItem) return;
-    
-    const x = direction === 'right' ? window.innerWidth : (direction === 'left' ? -window.innerWidth : 0);
-    const y = direction === 'up' ? -window.innerHeight : (direction === 'down' ? window.innerHeight : 0);
-    
-    cardEl.style.transition = 'transform 0.4s ease-out';
-    cardEl.style.transform = `translate(${x}px, ${y}px) rotate(${x * 0.05}deg)`;
-    
-    // Final action haptic
-    if(direction === 'right') vibe(40);
-    else if(direction === 'left') vibe([10, 30, 10]);
-    else if(direction === 'up') vibe(30);
-    else if(direction === 'down') vibe([50, 50, 100]); // Heavy superlike vibe
+    if (!topCardEl || !currentTinderItem) return;
 
+    const swipedEl = topCardEl;
+    const item = tinderQueue.shift(); // Remove top item immediately
+    topCardEl = null;
+
+    const x = direction === 'right' ? window.innerWidth * 1.2 : (direction === 'left' ? -window.innerWidth * 1.2 : 0);
+    const y = direction === 'up' ? -window.innerHeight * 1.2 : (direction === 'down' ? window.innerHeight * 1.2 : 0);
+
+    swipedEl.classList.add(`glow-${direction}`);
+    swipedEl.style.transition = 'transform 0.36s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease';
+    swipedEl.style.transform = `translate(${x}px, ${y}px) rotate(${x * 0.04}deg)`;
+    swipedEl.style.opacity = '0';
+
+    // Promote 2nd and 3rd cards smoothly right away
+    const stackCards = document.querySelectorAll('#tinderStack .tinder-card');
+    stackCards.forEach(c => {
+      if (c === swipedEl) return;
+      if (c.classList.contains('second-card')) {
+        c.classList.remove('second-card');
+        c.classList.add('top-card');
+      } else if (c.classList.contains('third-card')) {
+        c.classList.remove('third-card');
+        c.classList.add('second-card');
+      }
+    });
+
+    // Audio, Haptics & Particle FX
+    if (direction === 'right') {
+      vibe(35);
+      playSound('swipe');
+    } else if (direction === 'left') {
+      vibe([12, 25, 12]);
+      playSound('skip');
+    } else if (direction === 'up') {
+      vibe(30);
+      playSound('swipe');
+    } else if (direction === 'down') {
+      vibe([50, 40, 110]);
+      playSound('super');
+      spawnParticles('hearts');
+    }
+
+    // Save to catalog
     if (direction === 'right' || direction === 'up' || direction === 'down') {
+      const isTv = item._mediaType === 'tv';
+      const isDoc = Array.isArray(item.genre_ids) && item.genre_ids.includes(99);
       const isPlan = direction === 'up';
       const isSuper = direction === 'down';
-      const item = currentTinderItem;
+
       const newEntry = {
-        id: `movie_${item.id}`,
+        id: `${item._mediaType}_${item.id}`,
         tmdbId: item.id,
-        title: item.title,
-        year: (item.release_date || '').slice(0,4),
+        title: isTv ? item.name : item.title,
+        year: (isTv ? item.first_air_date : item.release_date)?.slice(0, 4) || '',
         poster: item.poster_path ? `https://image.tmdb.org/t/p/w342${item.poster_path}` : '',
-        category: 'movie',
+        category: isDoc ? 'doc' : (isTv ? 'tv' : 'movie'),
         status: isPlan ? 'plan' : 'watched',
         rating: isSuper ? 10 : null,
         watchedDate: new Date().toISOString().slice(0, 10),
         note: isSuper ? '💖 Улюблене' : '',
         updatedAt: Date.now()
       };
-      
-      if(!catalog.some(c => c.id === newEntry.id)){
+
+      if (!catalog.some(c => c.id === newEntry.id)) {
         catalog.unshift(newEntry);
         saveLocalCatalog();
         backgroundGistSync();
       }
     }
 
-    setTimeout(() => renderNextTinderCard(), 300);
+    setTimeout(() => renderTinderStack(), 260);
   }
 
-  /* ================= GITHUB GIST SYNC ================= */
-  function setSyncState(state, text) { document.getElementById('syncDot').className = 'dot ' + state; document.getElementById('syncText').textContent = text; }
+  /* ================= GITHUB GIST SYNC & BACKUP ================= */
+  function setSyncState(state, text) {
+    document.getElementById('syncDot').className = 'dot ' + state;
+    document.getElementById('syncText').textContent = text;
+  }
 
   async function createNewGist() {
     vibe(10);
     const t = document.getElementById('cfgGhToken').value.trim();
-    if(!t) return showToast('Введіть GitHub Token');
+    if (!t) return showToast('Введіть GitHub Token');
     try {
-      const res = await fetch('https://api.github.com/gists', { method: 'POST', headers: { 'Authorization': `Bearer ${t}`, 'Accept': 'application/vnd.github+json' }, body: JSON.stringify({ public: false, files: { [GIST_FILENAME]: { content: JSON.stringify(catalog, null, 2) } } }) });
-      if(!res.ok) throw new Error('Помилка Gist');
+      const res = await fetch('https://api.github.com/gists', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${t}`, 'Accept': 'application/vnd.github+json' },
+        body: JSON.stringify({ public: false, files: { [GIST_FILENAME]: { content: JSON.stringify(catalog, null, 2) } } })
+      });
+      if (!res.ok) throw new Error('Помилка створення Gist');
       const data = await res.json();
       document.getElementById('cfgGistId').value = data.id;
-      showToast('Gist створено!');
-    } catch(e) { showToast(e.message); }
+      showToast('Приватний Gist створено!');
+    } catch (e) { showToast(e.message); }
   }
 
   let syncTimeout;
@@ -863,14 +1485,18 @@
     if (!config.ghToken || !config.gistId) return;
     clearTimeout(syncTimeout);
     setSyncState('loading', 'Очікування...');
-    syncTimeout = setTimeout(pushToGist, 2000);
+    syncTimeout = setTimeout(pushToGist, 1800);
   }
 
   async function pushToGist() {
     if (!config.ghToken || !config.gistId) return;
     setSyncState('loading', 'Збереження...');
     try {
-      await fetch(`https://api.github.com/gists/${config.gistId}`, { method: 'PATCH', headers: { 'Authorization': `Bearer ${config.ghToken}`, 'Accept': 'application/vnd.github+json' }, body: JSON.stringify({ files: { [GIST_FILENAME]: { content: JSON.stringify(catalog, null, 2) } } }) });
+      await fetch(`https://api.github.com/gists/${config.gistId}`, {
+        method: 'PATCH',
+        headers: { 'Authorization': `Bearer ${config.ghToken}`, 'Accept': 'application/vnd.github+json' },
+        body: JSON.stringify({ files: { [GIST_FILENAME]: { content: JSON.stringify(catalog, null, 2) } } })
+      });
       setSyncState('ok', 'Синхронізовано');
     } catch (e) { setSyncState('err', 'Помилка'); }
   }
@@ -879,38 +1505,91 @@
     if (!config.ghToken || !config.gistId) return;
     setSyncState('loading', 'Оновлення...');
     try {
-      const res = await fetch(`https://api.github.com/gists/${config.gistId}?t=${Date.now()}`, { headers: { 'Authorization': `Bearer ${config.ghToken}` }});
+      const res = await fetch(`https://api.github.com/gists/${config.gistId}?t=${Date.now()}`, {
+        headers: { 'Authorization': `Bearer ${config.ghToken}` }
+      });
       const data = await res.json();
       const content = data.files[GIST_FILENAME]?.content;
-      if (content) { catalog = JSON.parse(content); saveLocalCatalog(); renderCatalog(); }
+      if (content) {
+        catalog = JSON.parse(content);
+        saveLocalCatalog();
+        renderCatalog();
+      }
       setSyncState('ok', 'Синхронізовано');
-      if(!silent) showToast('Дані оновлено');
+      if (!silent) showToast('Дані оновлено з хмари');
     } catch (e) { setSyncState('err', 'Помилка'); }
   }
 
+  function exportJSON() {
+    const blob = new Blob([JSON.stringify(catalog, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `cinema_backup_${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+  }
+
+  function importJSON(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async (ev) => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        if (Array.isArray(data)) {
+          catalog = data;
+          saveLocalCatalog();
+          renderCatalog();
+          showToast(`Імпортовано: ${catalog.length}`);
+          if (config.ghToken && config.gistId) await pushToGist();
+        }
+      } catch (err) { showToast('Невірний формат JSON'); }
+    };
+    reader.readAsText(file);
+  }
+
   /* ================= UTILS ================= */
-  function openSettings() { 
+  function openSettings() {
     vibe(10);
-    document.getElementById('cfgTmdbKey').value = config.tmdbKey || ''; document.getElementById('cfgGhToken').value = config.ghToken || ''; document.getElementById('cfgGistId').value = config.gistId || ''; document.getElementById('settingsModal').classList.add('open'); 
+    document.getElementById('cfgTmdbKey').value = config.tmdbKey || '';
+    document.getElementById('cfgGhToken').value = config.ghToken || '';
+    document.getElementById('cfgGistId').value = config.gistId || '';
+    document.getElementById('settingsModal').classList.add('open');
   }
-  function saveSettings() { 
-    vibe([20, 20]);
-    config.tmdbKey = document.getElementById('cfgTmdbKey').value.trim(); config.ghToken = document.getElementById('cfgGhToken').value.trim(); config.gistId = document.getElementById('cfgGistId').value.trim(); localStorage.setItem(CFG_KEY, JSON.stringify(config)); closeModal('settingsModal'); showToast('Збережено'); if (config.ghToken && config.gistId) syncFromGist(); 
+
+  function saveSettings() {
+    vibe([15, 25]);
+    config.tmdbKey = document.getElementById('cfgTmdbKey').value.trim();
+    config.ghToken = document.getElementById('cfgGhToken').value.trim();
+    config.gistId = document.getElementById('cfgGistId').value.trim();
+    localStorage.setItem(CFG_KEY, JSON.stringify(config));
+    closeModal('settingsModal');
+    showToast('Налаштування збережено');
+    if (config.ghToken && config.gistId) syncFromGist();
   }
-  function closeModal(id) { 
+
+  function closeModal(id) {
     vibe(10);
-    document.getElementById(id).classList.remove('open'); 
+    document.getElementById(id).classList.remove('open');
   }
-  
-  // Close modal when tapping on the backdrop (mobile UX)
+
   document.querySelectorAll('.modal-backdrop').forEach(bd => {
     bd.addEventListener('click', (e) => {
-      if(e.target === bd) { closeModal(bd.id); }
+      if (e.target === bd) closeModal(bd.id);
     });
   });
 
-  function escapeHtml(s) { return String(s||'').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-  let tTimer; function showToast(m) { const e = document.getElementById('toast'); e.textContent=m; e.classList.add('show'); clearTimeout(tTimer); tTimer=setTimeout(()=>e.classList.remove('show'),3000); }
+  function escapeHtml(s) {
+    return String(s || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+  }
+
+  let tTimer;
+  function showToast(m) {
+    const e = document.getElementById('toast');
+    e.textContent = m;
+    e.classList.add('show');
+    clearTimeout(tTimer);
+    tTimer = setTimeout(() => e.classList.remove('show'), 3000);
+  }
 </script>
 </body>
 </html>
