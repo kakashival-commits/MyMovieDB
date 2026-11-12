@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#0f172a" />
+  <meta name="theme-color" content="#0b1120" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <title>Мій Кінокаталог 2.1</title>
+  <title>Мій Кінокаталог 3.0</title>
   <style>
     :root {
       --bg: #0b1120;
@@ -20,8 +20,13 @@
       --accent: #f59e0b;
       --success: #10b981;
       --danger: #ef4444;
-      --super: #ec4899;
       --plan: #a855f7;
+      --gold: #fbbf24;
+      --gold-deep: #b45309;
+      --silver: #e2e8f0;
+      --silver-deep: #64748b;
+      --bronze: #d97706;
+      --bronze-deep: #78350f;
       --radius: 14px;
     }
 
@@ -79,8 +84,8 @@
     .filter-inputs input { flex: 1 1 170px; min-width: 150px; }
     .filter-inputs select { flex: 0 1 175px; min-width: 145px; }
 
-    /* Catalog Grid & 3D Cards */
-    .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 16px; perspective: 1000px; }
+    /* ================= COLLECTIBLE CARD RANKS (GOLD / SILVER / BRONZE) ================= */
+    .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(178px, 1fr)); gap: 18px; perspective: 1000px; }
     @media (max-width: 480px) { .catalog-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
 
     @keyframes fadeInUp {
@@ -88,20 +93,68 @@
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
+    @keyframes foilShimmer {
+      0% { transform: translateX(-140%) rotate(25deg); }
+      45%, 100% { transform: translateX(220%) rotate(25deg); }
+    }
+
     .card {
       background: var(--surface);
-      border: 1px solid var(--border);
+      border: 1.5px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
       display: flex;
       flex-direction: column;
       position: relative;
       transform-style: preserve-3d;
-      transition: transform 0.18s ease-out, box-shadow 0.2s ease, border-color 0.2s ease;
+      transition: transform 0.18s ease-out, box-shadow 0.25s ease, border-color 0.25s ease;
       animation: fadeInUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
       will-change: transform;
     }
     .card:hover { border-color: #64748b; box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45); z-index: 2; }
+
+    /* Rank: GOLD (10/10) */
+    .card.rank-gold {
+      border: 2px solid #fbbf24;
+      background: linear-gradient(165deg, #292112 0%, #1c1917 55%, #2b210e 100%);
+      box-shadow: 0 0 22px rgba(251, 191, 36, 0.26), inset 0 0 14px rgba(251, 191, 36, 0.14);
+    }
+    .card.rank-gold:hover {
+      border-color: #fde68a;
+      box-shadow: 0 12px 32px rgba(251, 191, 36, 0.42), inset 0 0 18px rgba(251, 191, 36, 0.2);
+    }
+    .card.rank-gold::after {
+      content: "";
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 55%; height: 200%;
+      background: linear-gradient(90deg, transparent, rgba(253, 230, 138, 0.22), transparent);
+      animation: foilShimmer 5.5s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    /* Rank: SILVER (9/10) */
+    .card.rank-silver {
+      border: 2px solid #cbd5e1;
+      background: linear-gradient(165deg, #232b38 0%, #18202c 55%, #273140 100%);
+      box-shadow: 0 0 18px rgba(203, 213, 225, 0.2), inset 0 0 12px rgba(226, 232, 240, 0.1);
+    }
+    .card.rank-silver:hover {
+      border-color: #f8fafc;
+      box-shadow: 0 12px 28px rgba(203, 213, 225, 0.34), inset 0 0 15px rgba(248, 250, 252, 0.16);
+    }
+
+    /* Rank: BRONZE (8/10) */
+    .card.rank-bronze {
+      border: 2px solid #cd7f32;
+      background: linear-gradient(165deg, #271c16 0%, #1a181b 55%, #261b14 100%);
+      box-shadow: 0 0 16px rgba(205, 127, 50, 0.2), inset 0 0 10px rgba(205, 127, 50, 0.1);
+    }
+    .card.rank-bronze:hover {
+      border-color: #e59a54;
+      box-shadow: 0 12px 26px rgba(205, 127, 50, 0.32), inset 0 0 14px rgba(229, 154, 84, 0.15);
+    }
 
     .card-glare {
       position: absolute;
@@ -124,21 +177,49 @@
       top: 8px;
       right: 8px;
       background: rgba(11, 17, 32, 0.92);
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      font-weight: 700;
-      font-size: 0.85rem;
+      border: 1px solid #475569;
+      color: #e2e8f0;
+      font-weight: 800;
+      font-size: 0.84rem;
       padding: 3px 9px;
       border-radius: 7px;
       z-index: 6;
       cursor: pointer;
       transition: transform 0.12s ease, background 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
     }
     .badge-rating:hover { transform: scale(1.1); background: #1e293b; }
-    .badge-rating.super { border-color: var(--super); color: #f472b6; box-shadow: 0 0 10px rgba(236, 72, 153, 0.4); }
-    .badge-rating.unrated { border-style: dashed; color: #cbd5e1; }
+    .badge-rating.gold {
+      background: linear-gradient(135deg, #451a03, #78350f);
+      border-color: #fbbf24;
+      color: #fde68a;
+      box-shadow: 0 0 12px rgba(251, 191, 36, 0.5);
+    }
+    .badge-rating.silver {
+      background: linear-gradient(135deg, #1e293b, #334155);
+      border-color: #e2e8f0;
+      color: #f8fafc;
+      box-shadow: 0 0 10px rgba(226, 232, 240, 0.35);
+    }
+    .badge-rating.bronze {
+      background: linear-gradient(135deg, #431407, #7c2d12);
+      border-color: #d97706;
+      color: #fed7aa;
+      box-shadow: 0 0 10px rgba(217, 119, 6, 0.35);
+    }
+    .badge-rating.unrated { border-style: dashed; color: #94a3b8; }
+
     .badge-plan { position: absolute; top: 8px; right: 8px; background: rgba(11, 17, 32, 0.9); border: 1px solid var(--plan); color: #d8b4fe; font-weight: 700; font-size: 0.8rem; padding: 2px 8px; border-radius: 6px; z-index: 3; }
     .badge-type { position: absolute; top: 8px; left: 8px; background: rgba(11, 17, 32, 0.85); color: #e2e8f0; font-size: 0.7rem; padding: 2px 7px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.12); z-index: 3; }
+
+    .card-body { padding: 10px; display: flex; flex-direction: column; flex: 1; }
+    .card-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-year { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 6px; }
+    .card-note { font-size: 0.8rem; color: #cbd5e1; background: rgba(11, 17, 32, 0.55); padding: 6px 8px; border-radius: 6px; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .card-actions { margin-top: auto; display: flex; gap: 6px; }
+    .card-actions button { flex: 1; justify-content: center; padding: 6px; font-size: 0.8rem; }
 
     /* Quick Inline Rating Popover */
     .quick-rate-popover {
@@ -165,15 +246,11 @@
       background: var(--surface);
     }
     .qr-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+    .qr-btn.r-10 { border-color: rgba(251, 191, 36, 0.55); color: #fde68a; }
+    .qr-btn.r-9 { border-color: rgba(226, 232, 240, 0.45); color: #f8fafc; }
+    .qr-btn.r-8 { border-color: rgba(217, 119, 6, 0.45); color: #fed7aa; }
 
-    .card-body { padding: 10px; display: flex; flex-direction: column; flex: 1; }
-    .card-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .card-year { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 6px; }
-    .card-note { font-size: 0.8rem; color: #cbd5e1; background: rgba(11, 17, 32, 0.55); padding: 6px 8px; border-radius: 6px; margin-bottom: 8px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-    .card-actions { margin-top: auto; display: flex; gap: 6px; }
-    .card-actions button { flex: 1; justify-content: center; padding: 6px; font-size: 0.8rem; }
-
-    /* Modals (Bottom Sheet on Mobile, Center on Desktop) */
+    /* Modals */
     .modal-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.78); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 100; backdrop-filter: blur(4px); }
     .modal-backdrop.open { display: flex; }
     .modal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; padding: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65); }
@@ -245,12 +322,7 @@
     .roulette-needle::before { top: 0; border-top: 10px solid var(--accent); }
     .roulette-needle::after { bottom: 0; border-bottom: 10px solid var(--accent); }
 
-    .roulette-track {
-      display: flex;
-      gap: 12px;
-      padding-left: 50%;
-      will-change: transform;
-    }
+    .roulette-track { display: flex; gap: 12px; padding-left: 50%; will-change: transform; }
     .roulette-slot {
       width: 126px;
       height: 190px;
@@ -282,7 +354,6 @@
       z-index: 3;
     }
 
-    /* Fixed-height result box prevents layout jump */
     #rouletteResultBox {
       min-height: 76px;
       display: flex;
@@ -292,7 +363,7 @@
       margin-bottom: 12px;
     }
 
-    /* ================= TINDER 2.1 OVERLAY ================= */
+    /* ================= TINDER 3.0 OVERLAY ================= */
     .tinder-overlay { position: fixed; inset: 0; background: #070b14; z-index: 999; display: none; flex-direction: column; overflow: hidden; }
 
     .tinder-ambilight {
@@ -318,8 +389,8 @@
 
     .tinder-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 5; padding: 12px; }
 
-    .tinder-stack { position: relative; width: 310px; height: 455px; perspective: 1200px; touch-action: none; }
-    @media (max-height: 730px) { .tinder-stack { width: 250px; height: 370px; } }
+    .tinder-stack { position: relative; width: 312px; height: 460px; perspective: 1200px; touch-action: none; }
+    @media (max-height: 730px) { .tinder-stack { width: 252px; height: 375px; } }
 
     .tinder-card {
       width: 100%;
@@ -327,7 +398,7 @@
       position: absolute;
       inset: 0;
       transform-style: preserve-3d;
-      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease, filter 0.3s ease;
+      transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease, filter 0.3s ease;
       will-change: transform;
       border-radius: 18px;
     }
@@ -349,60 +420,136 @@
       border: 2px solid rgba(255, 255, 255, 0.14);
       display: flex;
       flex-direction: column;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
     }
 
     .tinder-card.glow-right .tinder-card-face { border-color: var(--success); box-shadow: 0 0 30px rgba(16, 185, 129, 0.55); }
     .tinder-card.glow-left .tinder-card-face { border-color: var(--danger); box-shadow: 0 0 30px rgba(239, 68, 68, 0.55); }
     .tinder-card.glow-up .tinder-card-face { border-color: var(--plan); box-shadow: 0 0 30px rgba(168, 85, 247, 0.55); }
-    .tinder-card.glow-down .tinder-card-face { border-color: var(--super); box-shadow: 0 0 35px rgba(236, 72, 153, 0.7); }
+
+    /* Golden Award transformation on Swipe Down */
+    .tinder-card.glow-down .tinder-card-face {
+      border: 3px solid #fbbf24;
+      box-shadow: 0 0 42px rgba(251, 191, 36, 0.85), inset 0 0 24px rgba(251, 191, 36, 0.35);
+    }
+    .tinder-card.glow-down .tinder-card-front::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.25), transparent 55%, rgba(253, 230, 138, 0.3));
+      pointer-events: none;
+      z-index: 6;
+    }
 
     .tinder-card-front img { width: 100%; height: 100%; object-fit: cover; }
     .tinder-card-front .tinder-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 70px 16px 16px; background: linear-gradient(transparent, rgba(0, 0, 0, 0.94)); color: #fff; pointer-events: none; }
     .tinder-card-front h2 { font-size: 1.3rem; line-height: 1.2; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9); }
     .tinder-card-front p { font-size: 0.88rem; color: #cbd5e1; margin-top: 4px; }
 
+    /* Stamp on card */
     .card-stamp {
       position: absolute;
       top: 22px;
       left: 16px;
       padding: 6px 14px;
-      border: 3px solid;
+      border: 2.5px solid;
       border-radius: 10px;
       font-weight: 900;
-      font-size: 1.1rem;
-      letter-spacing: 0.8px;
+      font-size: 1.02rem;
+      letter-spacing: 0.9px;
       text-transform: uppercase;
       opacity: 0;
-      transform: rotate(-12deg) scale(0.8);
-      transition: opacity 0.12s ease, transform 0.12s ease;
-      background: rgba(11, 17, 32, 0.82);
-      backdrop-filter: blur(4px);
+      transform: rotate(-12deg) scale(0.82);
+      transition: opacity 0.14s ease, transform 0.14s ease;
+      background: rgba(11, 17, 32, 0.86);
+      backdrop-filter: blur(6px);
       pointer-events: none;
       z-index: 12;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
-    .card-stamp.visible { opacity: 1; transform: rotate(-10deg) scale(1); }
+    .card-stamp.visible { opacity: 1; transform: rotate(-9deg) scale(1); }
+    .card-stamp.gold-stamp {
+      background: linear-gradient(135deg, rgba(41, 26, 5, 0.95), rgba(85, 48, 8, 0.95));
+      border-color: #fbbf24;
+      color: #fde68a;
+      box-shadow: 0 8px 25px rgba(251, 191, 36, 0.45);
+    }
 
-    .tinder-card-back { transform: rotateY(180deg); padding: 20px; overflow-y: auto; background: #131c31; color: var(--text); display: flex; flex-direction: column; }
-    .tinder-card-back h3 { margin-bottom: 10px; color: #60a5fa; padding-right: 42px; }
-    .tinder-card-back .overview { font-size: 0.94rem; line-height: 1.55; color: #e2e8f0; }
-    .tinder-card-back .rating { margin-top: auto; padding-top: 14px; font-weight: 700; color: var(--accent); }
+    /* Back face of Tinder card */
+    .tinder-card-back { transform: rotateY(180deg); padding: 20px; overflow-y: auto; background: linear-gradient(180deg, #162038 0%, #0f172a 100%); color: var(--text); display: flex; flex-direction: column; }
+    .tinder-card-back h3 { margin-bottom: 8px; color: #f8fafc; font-size: 1.15rem; padding-right: 44px; line-height: 1.25; }
 
-    .tinder-flip-btn { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border-radius: 50%; background: rgba(11, 17, 32, 0.78); backdrop-filter: blur(6px); border: 1px solid rgba(255, 255, 255, 0.25); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; cursor: pointer; z-index: 20; }
+    .back-meta-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .meta-chip {
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 7px;
+      background: rgba(59, 130, 246, 0.14);
+      border: 1px solid rgba(96, 165, 250, 0.28);
+      color: #93c5fd;
+    }
+    .meta-chip.country {
+      background: rgba(245, 158, 11, 0.12);
+      border-color: rgba(251, 191, 36, 0.28);
+      color: #fde68a;
+    }
+
+    .tinder-card-back .overview { font-size: 0.91rem; line-height: 1.55; color: #cbd5e1; }
+    .tinder-card-back .back-footer {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+    .tinder-card-back .rating { color: var(--accent); }
+    .tinder-card-back .runtime { color: var(--text-muted); font-weight: 600; }
+
+    /* Minimalist Vector Flip Button */
+    .tinder-flip-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(11, 17, 32, 0.78);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      color: #f8fafc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 20;
+      transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+    .tinder-flip-btn:hover { background: rgba(30, 41, 59, 0.95); border-color: rgba(255, 255, 255, 0.5); transform: scale(1.06); }
 
     .tinder-controls { display: flex; gap: 13px; margin-top: 32px; z-index: 10; justify-content: center; align-items: center; }
-    .tinder-btn-circle { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.55rem; cursor: pointer; border: 2px solid; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(6px); transition: transform 0.12s ease, box-shadow 0.15s ease; }
-    .tinder-btn-circle.small { width: 44px; height: 44px; font-size: 1.2rem; }
+    .tinder-btn-circle { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid; background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(6px); transition: transform 0.12s ease, box-shadow 0.15s ease; }
+    .tinder-btn-circle.small { width: 44px; height: 44px; }
     @media (max-height: 730px) {
-      .tinder-btn-circle { width: 48px; height: 48px; font-size: 1.3rem; }
-      .tinder-btn-circle.small { width: 40px; height: 40px; font-size: 1.05rem; }
+      .tinder-btn-circle { width: 48px; height: 48px; }
+      .tinder-btn-circle.small { width: 40px; height: 40px; }
       .tinder-controls { margin-top: 24px; gap: 10px; }
     }
     .tinder-btn-circle:hover:not(:disabled) { transform: translateY(-3px) scale(1.06); }
     .tinder-btn-circle:active:not(:disabled) { transform: scale(0.9); }
-    .tinder-btn-undo { border-color: var(--accent); color: var(--accent); box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25); }
+    .tinder-btn-undo { border-color: #94a3b8; color: #cbd5e1; }
     .tinder-btn-skip { border-color: var(--danger); color: var(--danger); box-shadow: 0 6px 18px rgba(239, 68, 68, 0.25); }
-    .tinder-btn-super { border-color: var(--super); color: var(--super); box-shadow: 0 6px 18px rgba(236, 72, 153, 0.3); }
+    .tinder-btn-super { border-color: #fbbf24; color: #fbbf24; box-shadow: 0 6px 20px rgba(251, 191, 36, 0.35); background: linear-gradient(145deg, rgba(41, 26, 5, 0.95), rgba(15, 23, 42, 0.95)); }
     .tinder-btn-plan { border-color: var(--plan); color: var(--plan); box-shadow: 0 6px 18px rgba(168, 85, 247, 0.25); }
     .tinder-btn-seen { border-color: var(--success); color: var(--success); box-shadow: 0 6px 18px rgba(16, 185, 129, 0.25); }
 
@@ -414,8 +561,6 @@
 <body>
 
 <canvas id="fxCanvas"></canvas>
-
-<!-- Quick Inline Rating Popover -->
 <div class="quick-rate-popover" id="quickRatePopover"></div>
 
 <header>
@@ -473,7 +618,7 @@
   <div class="catalog-grid" id="catalogGrid"></div>
 </div>
 
-<!-- TINDER 2.1 OVERLAY -->
+<!-- TINDER 3.0 OVERLAY -->
 <div class="tinder-overlay" id="tinderOverlay">
   <div class="tinder-ambilight" id="tinderAmbilight"></div>
 
@@ -507,11 +652,21 @@
     <div class="tinder-stack" id="tinderStack"></div>
 
     <div class="tinder-controls">
-      <button class="tinder-btn-circle small tinder-btn-undo" id="btnUndoSwipe" onclick="undoLastSwipe()" title="Повернути попередню картку" disabled>↩️</button>
-      <button class="tinder-btn-circle tinder-btn-skip" onclick="triggerSwipe('left')" title="Не бачив / Пропустити">❌</button>
-      <button class="tinder-btn-circle tinder-btn-super" onclick="triggerSwipe('down')" title="Улюблене (10/10)">💖</button>
-      <button class="tinder-btn-circle tinder-btn-plan" onclick="triggerSwipe('up')" title="Буду дивитись">⬆️</button>
-      <button class="tinder-btn-circle tinder-btn-seen" onclick="triggerSwipe('right')" title="Вже бачив">✅</button>
+      <button class="tinder-btn-circle small tinder-btn-undo" id="btnUndoSwipe" onclick="undoLastSwipe()" title="Повернути попередню картку" disabled>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>
+      </button>
+      <button class="tinder-btn-circle tinder-btn-skip" onclick="triggerSwipe('left')" title="Не бачив / Пропустити">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+      <button class="tinder-btn-circle tinder-btn-super" onclick="triggerSwipe('down')" title="Шедевр — Золота картка (10/10)">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </button>
+      <button class="tinder-btn-circle tinder-btn-plan" onclick="triggerSwipe('up')" title="Буду дивитись">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+      </button>
+      <button class="tinder-btn-circle tinder-btn-seen" onclick="triggerSwipe('right')" title="Вже бачив">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </button>
     </div>
   </div>
 </div>
@@ -570,7 +725,7 @@
     </div>
 
     <div class="form-group" id="ratingGroup">
-      <label>Ваша оцінка (1–10)</label>
+      <label>Ваша оцінка (1–10: 10 — Золота, 9 — Срібна, 8 — Бронзова)</label>
       <div class="rating-selector" id="ratingSelector"></div>
       <div style="margin-top:8px;">
         <button type="button" onclick="setUnrated()" style="padding:4px 8px; font-size:0.75rem;">Залишити без оцінки</button>
@@ -639,13 +794,36 @@
   const GIST_FILENAME = 'my_watched_cinema.json';
   const NO_POSTER = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450" fill="%231e293b"><rect width="300" height="450"/><text x="50%" y="50%" fill="%2394a3b8" font-family="sans-serif" font-size="20" text-anchor="middle">Без постера</text></svg>';
 
+  const GENRE_MAP = {
+    28: 'Бойовик', 12: 'Пригоди', 16: 'Мультфільм', 35: 'Комедія', 80: 'Кримінал',
+    99: 'Документальний', 18: 'Драма', 10751: 'Сімейний', 14: 'Фентезі', 36: 'Історія',
+    27: 'Жахи', 10402: 'Музика', 9648: 'Детектив', 10749: 'Мелодрама', 878: 'Фантастика',
+    10770: 'Телефільм', 53: 'Трилер', 10752: 'Військовий', 37: 'Вестерн',
+    10759: 'Екшн і Пригоди', 10762: 'Дитячий', 10763: 'Новини', 10764: 'Реаліті',
+    10765: 'Фантастика та Фентезі', 10766: 'Мильна опера', 10767: 'Ток-шоу', 10768: 'Війна та Політика'
+  };
+
+  const REGION_NAMES_UK = typeof Intl !== 'undefined' && Intl.DisplayNames
+    ? new Intl.DisplayNames(['uk'], { type: 'region' })
+    : null;
+
+  function formatCountry(code) {
+    if (!code) return '';
+    if (code === 'US') return 'США';
+    if (code === 'GB') return 'Велика Британія';
+    if (REGION_NAMES_UK) {
+      try { return REGION_NAMES_UK.of(code); } catch (e) {}
+    }
+    return code;
+  }
+
   let catalog = [];
   let config = { tmdbKey: '', ghToken: '', gistId: '', sound: true };
   let currentCategory = 'all';
   let activeItem = null;
   let selectedRating = null;
 
-  // Tinder 2.1 State
+  // Tinder 3.0 State
   let tinderMode = 'movie';
   let tinderDecade = 'all';
   let tinderQueue = [];
@@ -655,6 +833,7 @@
   let currentTinderItem = null;
   let isFetchingTinder = false;
   let topCardEl = null;
+  const tinderDetailsCache = new Map();
 
   // Roulette State
   let isRouletteSpinning = false;
@@ -714,10 +893,10 @@
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(freq, now + idx * 0.065);
         gain.gain.setValueAtTime(0.11, now + idx * 0.065);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.065 + 0.35);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.065 + 0.38);
         osc.connect(gain); gain.connect(ctx.destination);
         osc.start(now + idx * 0.065);
-        osc.stop(now + idx * 0.065 + 0.36);
+        osc.stop(now + idx * 0.065 + 0.4);
       });
     }
   }
@@ -740,7 +919,7 @@
     }
   }
 
-  /* ================= PARTICLE FX ENGINE ================= */
+  /* ================= PREMIUM GOLDEN BOKEH & CONFETTI PARTICLE ENGINE ================= */
   const fxCanvas = document.getElementById('fxCanvas');
   const fxCtx = fxCanvas.getContext('2d');
   let particles = [];
@@ -754,26 +933,42 @@
   resizeFxCanvas();
 
   function spawnParticles(mode = 'confetti', originX = window.innerWidth / 2, originY = window.innerHeight / 2) {
-    const colors = mode === 'hearts'
-      ? ['#ec4899', '#f43f5e', '#fbbf24', '#f472b6']
-      : ['#f59e0b', '#3b82f6', '#10b981', '#ec4899', '#a855f7'];
-
-    const count = mode === 'hearts' ? 42 : 65;
-    for (let i = 0; i < count; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const speed = 4 + Math.random() * 10;
-      particles.push({
-        x: originX,
-        y: originY,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed - 4,
-        size: mode === 'hearts' ? (12 + Math.random() * 10) : (6 + Math.random() * 6),
-        color: colors[Math.floor(Math.random() * colors.length)],
-        alpha: 1,
-        rot: Math.random() * 360,
-        vRot: (Math.random() - 0.5) * 12,
-        isHeart: mode === 'hearts'
-      });
+    if (mode === 'goldDust') {
+      const goldPalette = ['#fef08a', '#fbbf24', '#f59e0b', '#fde68a', '#ffffff'];
+      for (let i = 0; i < 68; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 1.5 + Math.random() * 6.5;
+        particles.push({
+          type: 'bokeh',
+          x: originX + (Math.random() - 0.5) * 180,
+          y: originY + (Math.random() - 0.5) * 240,
+          vx: Math.cos(angle) * speed * 0.7,
+          vy: Math.sin(angle) * speed * 0.7 - (1.2 + Math.random() * 2.2),
+          radius: 2 + Math.random() * 6.5,
+          color: goldPalette[Math.floor(Math.random() * goldPalette.length)],
+          alpha: 0.95,
+          decay: 0.012 + Math.random() * 0.01,
+          twinkle: Math.random() * Math.PI * 2
+        });
+      }
+    } else {
+      const colors = ['#f59e0b', '#3b82f6', '#10b981', '#fbbf24', '#a855f7'];
+      for (let i = 0; i < 65; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 4 + Math.random() * 10;
+        particles.push({
+          type: 'confetti',
+          x: originX,
+          y: originY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 4,
+          size: 6 + Math.random() * 6,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1,
+          rot: Math.random() * 360,
+          vRot: (Math.random() - 0.5) * 12
+        });
+      }
     }
     if (!fxAnimRunning) renderParticles();
   }
@@ -783,33 +978,52 @@
     fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
     for (let i = particles.length - 1; i >= 0; i--) {
       const p = particles[i];
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vy += 0.28;
-      p.vx *= 0.98;
-      p.rot += p.vRot;
-      p.alpha -= 0.016;
+      if (p.type === 'bokeh') {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vx *= 0.985;
+        p.vy *= 0.985;
+        p.twinkle += 0.14;
+        p.alpha -= p.decay;
 
-      if (p.alpha <= 0) {
-        particles.splice(i, 1);
-        continue;
-      }
+        if (p.alpha <= 0) {
+          particles.splice(i, 1);
+          continue;
+        }
 
-      fxCtx.save();
-      fxCtx.globalAlpha = p.alpha;
-      fxCtx.translate(p.x, p.y);
-      fxCtx.rotate((p.rot * Math.PI) / 180);
-
-      if (p.isHeart) {
-        fxCtx.font = `${p.size}px sans-serif`;
-        fxCtx.textAlign = 'center';
-        fxCtx.textBaseline = 'middle';
-        fxCtx.fillText('💖', 0, 0);
+        const pulseAlpha = Math.max(0, p.alpha * (0.65 + 0.35 * Math.sin(p.twinkle)));
+        fxCtx.save();
+        fxCtx.globalCompositeOperation = 'lighter';
+        const grad = fxCtx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * 2.2);
+        grad.addColorStop(0, `rgba(254, 240, 138, ${pulseAlpha})`);
+        grad.addColorStop(0.45, `rgba(251, 191, 36, ${pulseAlpha * 0.7})`);
+        grad.addColorStop(1, 'rgba(245, 158, 11, 0)');
+        fxCtx.fillStyle = grad;
+        fxCtx.beginPath();
+        fxCtx.arc(p.x, p.y, p.radius * 2.2, 0, Math.PI * 2);
+        fxCtx.fill();
+        fxCtx.restore();
       } else {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.28;
+        p.vx *= 0.98;
+        p.rot += p.vRot;
+        p.alpha -= 0.016;
+
+        if (p.alpha <= 0) {
+          particles.splice(i, 1);
+          continue;
+        }
+
+        fxCtx.save();
+        fxCtx.globalAlpha = p.alpha;
+        fxCtx.translate(p.x, p.y);
+        fxCtx.rotate((p.rot * Math.PI) / 180);
         fxCtx.fillStyle = p.color;
         fxCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
+        fxCtx.restore();
       }
-      fxCtx.restore();
     }
 
     if (particles.length > 0) {
@@ -849,6 +1063,16 @@
   }
   function saveLocalCatalog() { localStorage.setItem(STORAGE_KEY, JSON.stringify(catalog)); }
 
+  function getCardRankInfo(item) {
+    if (item.status === 'plan') return { cardClass: '', badgeClass: '', icon: '' };
+    const r = Number(item.rating);
+    const isFavNote = item.note && (item.note.includes('Улюблене') || item.note.includes('Шедевр'));
+    if (r === 10 || isFavNote) return { cardClass: 'rank-gold', badgeClass: 'gold', icon: '🏆' };
+    if (r === 9) return { cardClass: 'rank-silver', badgeClass: 'silver', icon: '🥈' };
+    if (r === 8) return { cardClass: 'rank-bronze', badgeClass: 'bronze', icon: '🥉' };
+    return { cardClass: '', badgeClass: '', icon: '★' };
+  }
+
   function buildRatingButtons() {
     const wrap = document.getElementById('ratingSelector');
     wrap.innerHTML = '';
@@ -879,20 +1103,19 @@
 
   /* ================= QUICK INLINE RATING POPOVER ================= */
   const quickPopover = document.getElementById('quickRatePopover');
-  let quickRateTargetId = null;
 
   function openQuickRate(e, itemId) {
     e.stopPropagation();
     const item = catalog.find(c => c.id === itemId);
     if (!item) return;
 
-    quickRateTargetId = itemId;
     quickPopover.innerHTML = '';
 
     for (let i = 1; i <= 10; i++) {
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'qr-btn' + (item.rating === i ? ' active' : '');
+      const tierClass = i === 10 ? ' r-10' : i === 9 ? ' r-9' : i === 8 ? ' r-8' : '';
+      btn.className = 'qr-btn' + tierClass + (item.rating === i ? ' active' : '');
       btn.textContent = i;
       btn.onclick = (ev) => {
         ev.stopPropagation();
@@ -936,15 +1159,14 @@
     saveLocalCatalog();
     closeQuickRate();
     playSound(newRating === 10 ? 'super' : 'tick');
-    vibe(18);
-    if (newRating === 10) spawnParticles('hearts');
+    vibe(newRating === 10 ? [40, 30, 80] : 18);
+    if (newRating === 10) spawnParticles('goldDust');
     renderCatalog();
     backgroundGistSync();
   }
 
   function closeQuickRate() {
     quickPopover.classList.remove('open');
-    quickRateTargetId = null;
   }
 
   document.addEventListener('click', (e) => {
@@ -1049,8 +1271,8 @@
     document.getElementById('tmdbResults').innerHTML = '';
     document.getElementById('tmdbQuery').value = '';
     vibe([20, 30, 20]);
-    playSound('swipe');
-    if (entry.rating === 10) spawnParticles('hearts');
+    playSound(entry.rating === 10 ? 'super' : 'swipe');
+    if (entry.rating === 10) spawnParticles('goldDust');
     renderCatalog();
     showToast('Збережено!');
     backgroundGistSync();
@@ -1117,14 +1339,14 @@
     grid.innerHTML = '';
 
     list.forEach((item, index) => {
-      const isSuper = item.rating === 10 && item.note && item.note.includes('Улюблене');
       const isUnrated = item.rating === null || item.rating === undefined;
+      const rank = getCardRankInfo(item);
       const badge = item.status === 'plan'
         ? `<span class="badge-plan">Планую</span>`
-        : `<span class="badge-rating ${isSuper ? 'super' : ''} ${isUnrated ? 'unrated' : ''}" onclick='openQuickRate(event, "${item.id}")' title="Натисніть для швидкої оцінки">★ ${!isUnrated ? item.rating : '—'}</span>`;
+        : `<span class="badge-rating ${rank.badgeClass} ${isUnrated ? 'unrated' : ''}" onclick='openQuickRate(event, "${item.id}")' title="Натисніть для швидкої оцінки">${!isUnrated ? `${rank.icon} ${item.rating}` : '★ —'}</span>`;
 
       const card = document.createElement('div');
-      card.className = 'card';
+      card.className = `card ${rank.cardClass}`;
       card.style.animationDelay = `${Math.min(index * 28, 420)}ms`;
       card.innerHTML = `
         <div class="card-glare"></div>
@@ -1193,7 +1415,6 @@
 
     const track = document.getElementById('rouletteTrack');
     track.style.transition = 'none';
-    // Shift left by 3.5 slots so both left and right halves of the viewport are full of posters
     track.style.transform = 'translateX(-477px)';
     track.innerHTML = '';
 
@@ -1241,7 +1462,7 @@
       slotElements.push(el);
     });
 
-    const slotStep = 138; // 126px width + 12px gap
+    const slotStep = 138;
     const randomOffset = Math.floor((Math.random() - 0.5) * 56);
     const targetTranslate = -(winnerIndex * slotStep + 63 + randomOffset);
 
@@ -1288,7 +1509,7 @@
     }, duration + 80);
   }
 
-  /* ================= TINDER 2.1 (FIXED SWIPE-UP, UNDO, DECADE, COUNTER) ================= */
+  /* ================= TINDER 3.0 (GOLDEN AWARD + GENRES/COUNTRIES ON FLIP) ================= */
   async function openTinderMode() {
     if (!config.tmdbKey) { showToast('Введіть TMDb API Key для Tinder-режиму!'); return openSettings(); }
     vibe([15, 25]);
@@ -1435,6 +1656,14 @@
     const poster = item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : NO_POSTER;
     const typeTag = isDoc ? 'Документальний' : (isTv ? 'Серіал' : 'Фільм');
 
+    const initialGenres = (item.genre_ids || []).map(id => GENRE_MAP[id]).filter(Boolean).slice(0, 3);
+    const initialCountries = (item.origin_country || []).map(formatCountry).filter(Boolean);
+
+    let chipsHtml = '';
+    if (initialGenres.length) chipsHtml += `<span class="meta-chip">${escapeHtml(initialGenres.join(', '))}</span>`;
+    if (initialCountries.length) chipsHtml += `<span class="meta-chip country">${escapeHtml(initialCountries.join(', '))}</span>`;
+    if (!chipsHtml) chipsHtml = `<span class="meta-chip">${typeTag}</span>`;
+
     const card = document.createElement('div');
     card.className = 'tinder-card ' + (stackPos === 0 ? 'top-card' : stackPos === 1 ? 'second-card' : 'third-card');
 
@@ -1442,7 +1671,9 @@
       <div class="tinder-card-face tinder-card-front">
         <div class="card-stamp" id="cardStamp"></div>
         <img src="${poster}" alt="" draggable="false" />
-        <div class="tinder-flip-btn" onclick="flipTinderCard(event)" title="Прочитати сюжет">ℹ️</div>
+        <button type="button" class="tinder-flip-btn" onclick="flipTinderCard(event)" title="Сюжет, жанр і країна">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </button>
         <div class="tinder-info">
           <div style="font-size:0.75rem; color:#93c5fd; font-weight:700; text-transform:uppercase; margin-bottom:2px;">${typeTag}</div>
           <h2>${escapeHtml(title)}</h2>
@@ -1450,21 +1681,70 @@
         </div>
       </div>
       <div class="tinder-card-face tinder-card-back">
-        <div class="tinder-flip-btn" onclick="flipTinderCard(event)">🔙</div>
+        <button type="button" class="tinder-flip-btn" onclick="flipTinderCard(event)" title="Назад до постера">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
         <h3>${escapeHtml(title)}</h3>
+        <div class="back-meta-chips" id="backMetaChips">${chipsHtml}</div>
         <p class="overview">${escapeHtml(item.overview) || 'Опис українською мовою відсутній у базі TMDb.'}</p>
-        <div class="rating">Рейтинг TMDb: ★ ${item.vote_average ? item.vote_average.toFixed(1) : '—'}</div>
+        <div class="back-footer">
+          <span class="rating">TMDb: ★ ${item.vote_average ? item.vote_average.toFixed(1) : '—'}</span>
+          <span class="runtime" id="backRuntime">${year}</span>
+        </div>
       </div>
     `;
     return card;
   }
 
+  async function enrichTinderCardDetails(card, item) {
+    if (!card || !item || !config.tmdbKey) return;
+    const cacheKey = `${item._mediaType}_${item.id}`;
+    let details = tinderDetailsCache.get(cacheKey);
+
+    if (!details) {
+      try {
+        const res = await fetch(`https://api.themoviedb.org/3/${item._mediaType}/${item.id}?api_key=${config.tmdbKey}&language=uk-UA`);
+        if (res.ok) {
+          details = await res.json();
+          tinderDetailsCache.set(cacheKey, details);
+        }
+      } catch (e) {}
+    }
+
+    if (!details) return;
+
+    const genres = (details.genres || []).map(g => g.name).filter(Boolean);
+    const countries = (details.production_countries || []).map(c => formatCountry(c.iso_3166_1) || c.name).filter(Boolean);
+
+    const chipsEl = card.querySelector('#backMetaChips');
+    if (chipsEl) {
+      let html = '';
+      if (genres.length) html += `<span class="meta-chip">${escapeHtml(genres.join(', '))}</span>`;
+      if (countries.length) html += `<span class="meta-chip country">${escapeHtml(countries.join(', '))}</span>`;
+      if (html) chipsEl.innerHTML = html;
+    }
+
+    const runtimeEl = card.querySelector('#backRuntime');
+    if (runtimeEl) {
+      if (item._mediaType === 'movie' && details.runtime) {
+        const h = Math.floor(details.runtime / 60);
+        const m = details.runtime % 60;
+        runtimeEl.textContent = h > 0 ? `${h} год ${m} хв` : `${m} хв`;
+      } else if (item._mediaType === 'tv' && details.number_of_seasons) {
+        runtimeEl.textContent = `Сезонів: ${details.number_of_seasons}`;
+      }
+    }
+  }
+
   function flipTinderCard(e) {
     e.stopPropagation();
-    if (topCardEl) {
-      vibe(15);
-      playSound('tick');
-      topCardEl.classList.toggle('flipped');
+    if (!topCardEl) return;
+    vibe(15);
+    playSound('tick');
+    const willShowBack = !topCardEl.classList.contains('flipped');
+    topCardEl.classList.toggle('flipped');
+    if (willShowBack && currentTinderItem) {
+      enrichTinderCardDetails(topCardEl, currentTinderItem);
     }
   }
 
@@ -1508,30 +1788,31 @@
 
       el.style.transform = `translate(${dx}px, ${dy}px) rotate(${rotate}deg)`;
       el.classList.remove('glow-right', 'glow-left', 'glow-up', 'glow-down');
+      stamp.classList.remove('gold-stamp');
 
       detectedDirection = detectSwipeDirection(dx, dy);
 
       if (detectedDirection === 'right') {
         el.classList.add('glow-right');
-        stamp.textContent = '✅ Вже бачив';
+        stamp.textContent = '✓ Вже бачив';
         stamp.style.color = 'var(--success)';
         stamp.style.borderColor = 'var(--success)';
         stamp.classList.add('visible');
       } else if (detectedDirection === 'left') {
         el.classList.add('glow-left');
-        stamp.textContent = '❌ Не бачив';
+        stamp.textContent = '✕ Не бачив';
         stamp.style.color = 'var(--danger)';
         stamp.style.borderColor = 'var(--danger)';
         stamp.classList.add('visible');
       } else if (detectedDirection === 'down') {
         el.classList.add('glow-down');
-        stamp.textContent = '💖 Улюблене 10/10';
-        stamp.style.color = 'var(--super)';
-        stamp.style.borderColor = 'var(--super)';
-        stamp.classList.add('visible');
+        stamp.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> ШЕДЕВР • 10/10`;
+        stamp.style.color = '#fde68a';
+        stamp.style.borderColor = '#fbbf24';
+        stamp.classList.add('visible', 'gold-stamp');
       } else if (detectedDirection === 'up') {
         el.classList.add('glow-up');
-        stamp.textContent = '⬆️ Буду дивитись';
+        stamp.textContent = '↑ Буду дивитись';
         stamp.style.color = 'var(--plan)';
         stamp.style.borderColor = 'var(--plan)';
         stamp.classList.add('visible');
@@ -1551,7 +1832,7 @@
       if (!isDown) return;
       isDown = false;
       el.classList.remove('moving', 'glow-right', 'glow-left', 'glow-up', 'glow-down');
-      stamp.classList.remove('visible');
+      stamp.classList.remove('visible', 'gold-stamp');
 
       const finalDir = detectedDirection;
       cleanupListeners();
@@ -1590,36 +1871,53 @@
     const y = direction === 'up' ? -window.innerHeight * 1.2 : (direction === 'down' ? window.innerHeight * 1.2 : 0);
 
     swipedEl.classList.add(`glow-${direction}`);
-    swipedEl.style.transition = 'transform 0.36s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease';
-    swipedEl.style.transform = `translate(${x}px, ${y}px) rotate(${x * 0.04}deg)`;
-    swipedEl.style.opacity = '0';
 
-    const stackCards = document.querySelectorAll('#tinderStack .tinder-card');
-    stackCards.forEach(c => {
-      if (c === swipedEl) return;
-      if (c.classList.contains('second-card')) {
-        c.classList.remove('second-card');
-        c.classList.add('top-card');
-      } else if (c.classList.contains('third-card')) {
-        c.classList.remove('third-card');
-        c.classList.add('second-card');
+    if (direction === 'down') {
+      const stamp = swipedEl.querySelector('#cardStamp');
+      if (stamp) {
+        stamp.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> ЗОЛОТА КАРТКА • 10/10`;
+        stamp.classList.add('visible', 'gold-stamp');
       }
-    });
-
-    if (direction === 'right') {
-      vibe(35);
-      playSound('swipe');
-    } else if (direction === 'left') {
-      vibe([12, 25, 12]);
-      playSound('skip');
-    } else if (direction === 'up') {
-      vibe(30);
-      playSound('swipe');
-    } else if (direction === 'down') {
       vibe([50, 40, 110]);
       playSound('super');
-      spawnParticles('hearts');
+      spawnParticles('goldDust');
+
+      setTimeout(() => {
+        swipedEl.style.transition = 'transform 0.38s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease';
+        swipedEl.style.transform = `translate(0px, ${y}px) scale(0.95)`;
+        swipedEl.style.opacity = '0';
+      }, 160);
+    } else {
+      swipedEl.style.transition = 'transform 0.36s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease';
+      swipedEl.style.transform = `translate(${x}px, ${y}px) rotate(${x * 0.04}deg)`;
+      swipedEl.style.opacity = '0';
+
+      if (direction === 'right') {
+        vibe(35);
+        playSound('swipe');
+      } else if (direction === 'left') {
+        vibe([12, 25, 12]);
+        playSound('skip');
+      } else if (direction === 'up') {
+        vibe(30);
+        playSound('swipe');
+      }
     }
+
+    const promoteDelay = direction === 'down' ? 160 : 0;
+    setTimeout(() => {
+      const stackCards = document.querySelectorAll('#tinderStack .tinder-card');
+      stackCards.forEach(c => {
+        if (c === swipedEl) return;
+        if (c.classList.contains('second-card')) {
+          c.classList.remove('second-card');
+          c.classList.add('top-card');
+        } else if (c.classList.contains('third-card')) {
+          c.classList.remove('third-card');
+          c.classList.add('second-card');
+        }
+      });
+    }, promoteDelay);
 
     let addedCatalogId = null;
     if (direction === 'right' || direction === 'up' || direction === 'down') {
@@ -1638,7 +1936,7 @@
         status: isPlan ? 'plan' : 'watched',
         rating: isSuper ? 10 : null,
         watchedDate: new Date().toISOString().slice(0, 10),
-        note: isSuper ? '💖 Улюблене' : '',
+        note: isSuper ? 'Шедевр • Улюблене' : '',
         updatedAt: Date.now()
       };
 
@@ -1653,7 +1951,7 @@
     tinderHistory.push({ item, addedCatalogId });
     tinderSessionSwiped++;
 
-    setTimeout(() => renderTinderStack(), 260);
+    setTimeout(() => renderTinderStack(), direction === 'down' ? 420 : 260);
   }
 
   function undoLastSwipe() {
@@ -1671,7 +1969,7 @@
     vibe([15, 20]);
     playSound('tick');
     renderTinderStack();
-    showToast('Попередню картку повернуто ↩️');
+    showToast('Попередню картку повернуто');
   }
 
   /* ================= GITHUB GIST SYNC & BACKUP ================= */
