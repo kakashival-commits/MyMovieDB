@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0f172a" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <title>Мій Кінокаталог 2.0</title>
+  <title>Мій Кінокаталог 2.1</title>
   <style>
     :root {
       --bg: #0b1120;
@@ -37,13 +37,14 @@
     button { background: var(--surface); color: var(--text); border: 1px solid var(--border); padding: 8px 13px; border-radius: 9px; cursor: pointer; font-size: 0.9rem; font-weight: 500; transition: all 0.15s ease; display: inline-flex; align-items: center; gap: 6px; user-select: none; }
     button:hover { background: var(--surface-hover); }
     button:active { transform: scale(0.96); }
+    button:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
     button.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
     button.primary:hover { background: var(--primary-hover); }
     button.danger { color: var(--danger); border-color: rgba(239, 68, 68, 0.3); }
     button.danger:hover { background: rgba(239, 68, 68, 0.15); }
     button.tinder-btn { background: linear-gradient(135deg, #fd297b, #ff655b); border: none; color: #fff; font-weight: 700; box-shadow: 0 4px 15px rgba(253, 41, 123, 0.35); }
     button.tinder-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
-    button.roulette-btn { background: linear-gradient(135deg, #8b5cf6, #d946ef); border: none; color: #fff; font-weight: 700; display: none; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.35); }
+    button.roulette-btn { background: linear-gradient(135deg, #8b5cf6, #d946ef); border: none; color: #fff; font-weight: 700; display: none; box-shadow: 0 4px 15px rgba(168, 85, 247, 0.35); white-space: nowrap; flex-shrink: 0; }
 
     .sync-status { font-size: 0.78rem; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
     .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); }
@@ -74,7 +75,9 @@
     .tab.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3); }
     .tab.plan { background: rgba(168, 85, 247, 0.12); border-color: var(--plan); color: #d8b4fe; }
     .tab.plan.active { background: var(--plan); color: #fff; }
-    .filter-inputs { display: flex; gap: 8px; flex: 1; max-width: 520px; min-width: 260px; align-items: center; }
+    .filter-inputs { display: flex; gap: 8px; flex: 1 1 340px; max-width: 640px; align-items: center; flex-wrap: wrap; }
+    .filter-inputs input { flex: 1 1 170px; min-width: 150px; }
+    .filter-inputs select { flex: 0 1 175px; min-width: 145px; }
 
     /* Catalog Grid & 3D Cards */
     .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 16px; perspective: 1000px; }
@@ -100,7 +103,6 @@
     }
     .card:hover { border-color: #64748b; box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45); z-index: 2; }
 
-    /* Glare overlay for 3D tilt */
     .card-glare {
       position: absolute;
       inset: 0;
@@ -117,10 +119,52 @@
     .poster-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s ease; }
     .card:hover .poster-wrap img { transform: scale(1.03); }
 
-    .badge-rating { position: absolute; top: 8px; right: 8px; background: rgba(11, 17, 32, 0.9); border: 1px solid var(--accent); color: var(--accent); font-weight: 700; font-size: 0.85rem; padding: 2px 8px; border-radius: 6px; z-index: 3; }
+    .badge-rating {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(11, 17, 32, 0.92);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 3px 9px;
+      border-radius: 7px;
+      z-index: 6;
+      cursor: pointer;
+      transition: transform 0.12s ease, background 0.15s ease;
+    }
+    .badge-rating:hover { transform: scale(1.1); background: #1e293b; }
     .badge-rating.super { border-color: var(--super); color: #f472b6; box-shadow: 0 0 10px rgba(236, 72, 153, 0.4); }
+    .badge-rating.unrated { border-style: dashed; color: #cbd5e1; }
     .badge-plan { position: absolute; top: 8px; right: 8px; background: rgba(11, 17, 32, 0.9); border: 1px solid var(--plan); color: #d8b4fe; font-weight: 700; font-size: 0.8rem; padding: 2px 8px; border-radius: 6px; z-index: 3; }
     .badge-type { position: absolute; top: 8px; left: 8px; background: rgba(11, 17, 32, 0.85); color: #e2e8f0; font-size: 0.7rem; padding: 2px 7px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.12); z-index: 3; }
+
+    /* Quick Inline Rating Popover */
+    .quick-rate-popover {
+      position: fixed;
+      z-index: 120;
+      background: #0f172a;
+      border: 1px solid var(--accent);
+      border-radius: 12px;
+      padding: 8px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.75);
+      display: none;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 5px;
+      width: 236px;
+      animation: fadeInUp 0.14s ease both;
+    }
+    .quick-rate-popover.open { display: grid; }
+    .qr-btn {
+      padding: 6px 0;
+      justify-content: center;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border-radius: 7px;
+      background: var(--surface);
+    }
+    .qr-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
 
     .card-body { padding: 10px; display: flex; flex-direction: column; flex: 1; }
     .card-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -158,12 +202,12 @@
     .roulette-viewport {
       position: relative;
       width: 100%;
-      height: 230px;
+      height: 224px;
       background: #070b14;
       border-radius: 14px;
       border: 1px solid var(--border);
       overflow: hidden;
-      margin: 12px 0 18px 0;
+      margin: 12px 0 14px 0;
       box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.85);
       display: flex;
       align-items: center;
@@ -172,14 +216,13 @@
       content: "";
       position: absolute;
       top: 0; bottom: 0;
-      width: 65px;
+      width: 55px;
       z-index: 4;
       pointer-events: none;
     }
     .roulette-viewport::before { left: 0; background: linear-gradient(to right, #070b14, transparent); }
     .roulette-viewport::after { right: 0; background: linear-gradient(to left, #070b14, transparent); }
 
-    /* Center Neon Needle */
     .roulette-needle {
       position: absolute;
       top: 0; bottom: 0;
@@ -210,7 +253,7 @@
     }
     .roulette-slot {
       width: 126px;
-      height: 192px;
+      height: 190px;
       flex-shrink: 0;
       border-radius: 10px;
       overflow: hidden;
@@ -239,10 +282,19 @@
       z-index: 3;
     }
 
-    /* ================= TINDER 2.0 OVERLAY ================= */
+    /* Fixed-height result box prevents layout jump */
+    #rouletteResultBox {
+      min-height: 76px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    /* ================= TINDER 2.1 OVERLAY ================= */
     .tinder-overlay { position: fixed; inset: 0; background: #070b14; z-index: 999; display: none; flex-direction: column; overflow: hidden; }
 
-    /* Ambilight dynamic backdrop */
     .tinder-ambilight {
       position: absolute;
       inset: -40px;
@@ -254,16 +306,20 @@
       pointer-events: none;
     }
 
-    .tinder-header { position: relative; z-index: 10; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: rgba(7, 11, 20, 0.55); backdrop-filter: blur(10px); flex-wrap: wrap; }
+    .tinder-header { position: relative; z-index: 10; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: rgba(7, 11, 20, 0.65); backdrop-filter: blur(10px); flex-wrap: wrap; }
 
-    .tinder-modes { display: flex; gap: 6px; background: rgba(15, 23, 42, 0.85); padding: 4px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); }
-    .tmode-btn { padding: 5px 11px; border-radius: 8px; border: none; background: transparent; color: var(--text-muted); font-size: 0.82rem; font-weight: 600; }
+    .tinder-modes { display: flex; gap: 5px; background: rgba(15, 23, 42, 0.85); padding: 4px; border-radius: 11px; border: 1px solid rgba(255, 255, 255, 0.1); }
+    .tmode-btn { padding: 5px 10px; border-radius: 8px; border: none; background: transparent; color: var(--text-muted); font-size: 0.8rem; font-weight: 600; }
     .tmode-btn.active { background: var(--primary); color: #fff; box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4); }
+
+    .tinder-header-right { display: flex; align-items: center; gap: 8px; }
+    .tinder-decade-select { width: auto; padding: 5px 9px; font-size: 0.8rem; background: rgba(15, 23, 42, 0.9); border-color: rgba(255, 255, 255, 0.15); border-radius: 9px; }
+    .session-badge { font-size: 0.78rem; color: #cbd5e1; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.12); padding: 5px 10px; border-radius: 9px; font-weight: 600; white-space: nowrap; }
 
     .tinder-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 5; padding: 12px; }
 
-    .tinder-stack { position: relative; width: 310px; height: 460px; perspective: 1200px; touch-action: none; }
-    @media (max-height: 720px) { .tinder-stack { width: 255px; height: 380px; } }
+    .tinder-stack { position: relative; width: 310px; height: 455px; perspective: 1200px; touch-action: none; }
+    @media (max-height: 730px) { .tinder-stack { width: 250px; height: 370px; } }
 
     .tinder-card {
       width: 100%;
@@ -296,7 +352,6 @@
       transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
 
-    /* Neon border glow during swipe */
     .tinder-card.glow-right .tinder-card-face { border-color: var(--success); box-shadow: 0 0 30px rgba(16, 185, 129, 0.55); }
     .tinder-card.glow-left .tinder-card-face { border-color: var(--danger); box-shadow: 0 0 30px rgba(239, 68, 68, 0.55); }
     .tinder-card.glow-up .tinder-card-face { border-color: var(--plan); box-shadow: 0 0 30px rgba(168, 85, 247, 0.55); }
@@ -307,7 +362,6 @@
     .tinder-card-front h2 { font-size: 1.3rem; line-height: 1.2; text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9); }
     .tinder-card-front p { font-size: 0.88rem; color: #cbd5e1; margin-top: 4px; }
 
-    /* Stamp on card */
     .card-stamp {
       position: absolute;
       top: 22px;
@@ -316,13 +370,13 @@
       border: 3px solid;
       border-radius: 10px;
       font-weight: 900;
-      font-size: 1.15rem;
-      letter-spacing: 1px;
+      font-size: 1.1rem;
+      letter-spacing: 0.8px;
       text-transform: uppercase;
       opacity: 0;
       transform: rotate(-12deg) scale(0.8);
       transition: opacity 0.12s ease, transform 0.12s ease;
-      background: rgba(11, 17, 32, 0.78);
+      background: rgba(11, 17, 32, 0.82);
       backdrop-filter: blur(4px);
       pointer-events: none;
       z-index: 12;
@@ -336,11 +390,17 @@
 
     .tinder-flip-btn { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border-radius: 50%; background: rgba(11, 17, 32, 0.78); backdrop-filter: blur(6px); border: 1px solid rgba(255, 255, 255, 0.25); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.15rem; cursor: pointer; z-index: 20; }
 
-    .tinder-controls { display: flex; gap: 16px; margin-top: 34px; z-index: 10; justify-content: center; }
-    .tinder-btn-circle { width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; cursor: pointer; border: 2px solid; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(6px); transition: transform 0.12s ease, box-shadow 0.15s ease; }
-    @media (max-height: 720px) { .tinder-btn-circle { width: 50px; height: 50px; font-size: 1.35rem; } .tinder-controls { margin-top: 26px; } }
-    .tinder-btn-circle:hover { transform: translateY(-3px) scale(1.06); }
-    .tinder-btn-circle:active { transform: scale(0.9); }
+    .tinder-controls { display: flex; gap: 13px; margin-top: 32px; z-index: 10; justify-content: center; align-items: center; }
+    .tinder-btn-circle { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.55rem; cursor: pointer; border: 2px solid; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(6px); transition: transform 0.12s ease, box-shadow 0.15s ease; }
+    .tinder-btn-circle.small { width: 44px; height: 44px; font-size: 1.2rem; }
+    @media (max-height: 730px) {
+      .tinder-btn-circle { width: 48px; height: 48px; font-size: 1.3rem; }
+      .tinder-btn-circle.small { width: 40px; height: 40px; font-size: 1.05rem; }
+      .tinder-controls { margin-top: 24px; gap: 10px; }
+    }
+    .tinder-btn-circle:hover:not(:disabled) { transform: translateY(-3px) scale(1.06); }
+    .tinder-btn-circle:active:not(:disabled) { transform: scale(0.9); }
+    .tinder-btn-undo { border-color: var(--accent); color: var(--accent); box-shadow: 0 4px 14px rgba(245, 158, 11, 0.25); }
     .tinder-btn-skip { border-color: var(--danger); color: var(--danger); box-shadow: 0 6px 18px rgba(239, 68, 68, 0.25); }
     .tinder-btn-super { border-color: var(--super); color: var(--super); box-shadow: 0 6px 18px rgba(236, 72, 153, 0.3); }
     .tinder-btn-plan { border-color: var(--plan); color: var(--plan); box-shadow: 0 6px 18px rgba(168, 85, 247, 0.25); }
@@ -348,13 +408,15 @@
 
     .tinder-loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 5; color: var(--text-muted); }
 
-    /* Particle Burst Canvas */
     #fxCanvas { position: fixed; inset: 0; pointer-events: none; z-index: 1500; }
   </style>
 </head>
 <body>
 
 <canvas id="fxCanvas"></canvas>
+
+<!-- Quick Inline Rating Popover -->
+<div class="quick-rate-popover" id="quickRatePopover"></div>
 
 <header>
   <div class="header-inner">
@@ -397,7 +459,7 @@
     <div class="filter-inputs">
       <button class="roulette-btn" id="btnRoulette" onclick="openRoulette()">🎲 Що подивитися?</button>
       <input type="text" id="localSearch" placeholder="Пошук у списку..." oninput="renderCatalog()" />
-      <select id="sortSelect" onchange="renderCatalog()" style="max-width: 165px;">
+      <select id="sortSelect" onchange="renderCatalog()">
         <option value="added_desc">Новіші зверху</option>
         <option value="rating_desc">Вища оцінка</option>
         <option value="rating_asc">Нижча оцінка</option>
@@ -411,7 +473,7 @@
   <div class="catalog-grid" id="catalogGrid"></div>
 </div>
 
-<!-- TINDER 2.0 OVERLAY -->
+<!-- TINDER 2.1 OVERLAY -->
 <div class="tinder-overlay" id="tinderOverlay">
   <div class="tinder-ambilight" id="tinderAmbilight"></div>
 
@@ -419,9 +481,21 @@
     <div class="tinder-modes" id="tinderModes">
       <button class="tmode-btn active" data-mode="movie" onclick="switchTinderMode('movie')">🎬 Фільми</button>
       <button class="tmode-btn" data-mode="tv" onclick="switchTinderMode('tv')">📺 Серіали</button>
-      <button class="tmode-btn" data-mode="top" onclick="switchTinderMode('top')">🏆 Топ рейтингу</button>
+      <button class="tmode-btn" data-mode="top" onclick="switchTinderMode('top')">🏆 Топ</button>
     </div>
-    <button onclick="closeTinderMode()">Закрити ✕</button>
+
+    <div class="tinder-header-right">
+      <select class="tinder-decade-select" id="tinderDecade" onchange="changeTinderDecade()">
+        <option value="all">Усі роки</option>
+        <option value="2020">2020-ті</option>
+        <option value="2010">2010-ті</option>
+        <option value="2000">2000-ні</option>
+        <option value="1990">90-ті</option>
+        <option value="1980">80-ті й раніше</option>
+      </select>
+      <span class="session-badge" id="tinderSessionCount">Сесія: 0</span>
+      <button onclick="closeTinderMode()" style="padding:5px 10px;">✕</button>
+    </div>
   </div>
 
   <div class="tinder-area">
@@ -433,6 +507,7 @@
     <div class="tinder-stack" id="tinderStack"></div>
 
     <div class="tinder-controls">
+      <button class="tinder-btn-circle small tinder-btn-undo" id="btnUndoSwipe" onclick="undoLastSwipe()" title="Повернути попередню картку" disabled>↩️</button>
       <button class="tinder-btn-circle tinder-btn-skip" onclick="triggerSwipe('left')" title="Не бачив / Пропустити">❌</button>
       <button class="tinder-btn-circle tinder-btn-super" onclick="triggerSwipe('down')" title="Улюблене (10/10)">💖</button>
       <button class="tinder-btn-circle tinder-btn-plan" onclick="triggerSwipe('up')" title="Буду дивитись">⬆️</button>
@@ -446,14 +521,16 @@
   <div class="modal" style="text-align:center;">
     <div class="modal-handle"></div>
     <h3 style="color:var(--accent); font-size:1.35rem; margin-bottom:4px;">🎲 Рулетка на вечір</h3>
-    <div style="font-size:0.85rem; color:var(--text-muted);" id="rouletteSubtitle">Випадковий вибір зі списку «Буду дивитись»</div>
+    <div style="font-size:0.85rem; color:var(--text-muted);">Випадковий вибір зі списку «Буду дивитись»</div>
 
     <div class="roulette-viewport" id="rouletteViewport">
       <div class="roulette-needle"></div>
       <div class="roulette-track" id="rouletteTrack"></div>
     </div>
 
-    <div id="rouletteResultBox" style="min-height: 54px; margin-bottom: 12px;"></div>
+    <div id="rouletteResultBox">
+      <span style="color:var(--text-muted); font-size:0.88rem;">Натисніть кнопку нижче, щоб запустити стрічку</span>
+    </div>
 
     <div style="display:flex; flex-direction:column; gap:10px;">
       <button class="primary" id="spinBtn" onclick="spinRoulette()" style="justify-content:center; padding:12px; font-size:1.05rem; background:linear-gradient(135deg, #8b5cf6, #d946ef); border:none; font-weight:700;">🎰 Крутити стрічку!</button>
@@ -568,10 +645,13 @@
   let activeItem = null;
   let selectedRating = null;
 
-  // Tinder 2.0 State
-  let tinderMode = 'movie'; // 'movie' | 'tv' | 'top'
+  // Tinder 2.1 State
+  let tinderMode = 'movie';
+  let tinderDecade = 'all';
   let tinderQueue = [];
-  let tinderPages = { movie: 1, tv: 1, top: 1 };
+  let tinderHistory = [];
+  let tinderSessionSwiped = 0;
+  let tinderPage = 1;
   let currentTinderItem = null;
   let isFetchingTinder = false;
   let topCardEl = null;
@@ -660,7 +740,7 @@
     }
   }
 
-  /* ================= PARTICLE FX ENGINE (CONFETTI & HEARTS) ================= */
+  /* ================= PARTICLE FX ENGINE ================= */
   const fxCanvas = document.getElementById('fxCanvas');
   const fxCtx = fxCanvas.getContext('2d');
   let particles = [];
@@ -705,7 +785,7 @@
       const p = particles[i];
       p.x += p.vx;
       p.y += p.vy;
-      p.vy += 0.28; // gravity
+      p.vy += 0.28;
       p.vx *= 0.98;
       p.rot += p.vRot;
       p.alpha -= 0.016;
@@ -796,6 +876,82 @@
   function toggleRatingVisibility() {
     document.getElementById('ratingGroup').style.display = (document.getElementById('itemStatus').value === 'plan') ? 'none' : 'block';
   }
+
+  /* ================= QUICK INLINE RATING POPOVER ================= */
+  const quickPopover = document.getElementById('quickRatePopover');
+  let quickRateTargetId = null;
+
+  function openQuickRate(e, itemId) {
+    e.stopPropagation();
+    const item = catalog.find(c => c.id === itemId);
+    if (!item) return;
+
+    quickRateTargetId = itemId;
+    quickPopover.innerHTML = '';
+
+    for (let i = 1; i <= 10; i++) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'qr-btn' + (item.rating === i ? ' active' : '');
+      btn.textContent = i;
+      btn.onclick = (ev) => {
+        ev.stopPropagation();
+        applyQuickRating(itemId, i);
+      };
+      quickPopover.appendChild(btn);
+    }
+
+    const clearBtn = document.createElement('button');
+    clearBtn.type = 'button';
+    clearBtn.className = 'qr-btn' + (item.rating === null ? ' active' : '');
+    clearBtn.style.gridColumn = 'span 2';
+    clearBtn.textContent = 'Без оцінки';
+    clearBtn.onclick = (ev) => {
+      ev.stopPropagation();
+      applyQuickRating(itemId, null);
+    };
+    quickPopover.appendChild(clearBtn);
+
+    const rect = e.currentTarget.getBoundingClientRect();
+    quickPopover.classList.add('open');
+
+    const popW = 236;
+    const popH = 88;
+    let left = rect.right - popW;
+    let top = rect.bottom + 6;
+    if (left < 10) left = 10;
+    if (top + popH > window.innerHeight - 10) top = rect.top - popH - 6;
+
+    quickPopover.style.left = `${left}px`;
+    quickPopover.style.top = `${top}px`;
+    vibe(10);
+  }
+
+  function applyQuickRating(itemId, newRating) {
+    const idx = catalog.findIndex(c => c.id === itemId);
+    if (idx < 0) return;
+
+    catalog[idx].rating = newRating;
+    catalog[idx].updatedAt = Date.now();
+    saveLocalCatalog();
+    closeQuickRate();
+    playSound(newRating === 10 ? 'super' : 'tick');
+    vibe(18);
+    if (newRating === 10) spawnParticles('hearts');
+    renderCatalog();
+    backgroundGistSync();
+  }
+
+  function closeQuickRate() {
+    quickPopover.classList.remove('open');
+    quickRateTargetId = null;
+  }
+
+  document.addEventListener('click', (e) => {
+    if (quickPopover.classList.contains('open') && !quickPopover.contains(e.target)) {
+      closeQuickRate();
+    }
+  });
 
   /* ================= TMDb SEARCH ================= */
   async function searchTMDb(e) {
@@ -921,6 +1077,7 @@
   }
 
   function renderCatalog() {
+    closeQuickRate();
     const watched = catalog.filter(c => c.status !== 'plan');
     const plans = catalog.filter(c => c.status === 'plan');
 
@@ -961,13 +1118,14 @@
 
     list.forEach((item, index) => {
       const isSuper = item.rating === 10 && item.note && item.note.includes('Улюблене');
+      const isUnrated = item.rating === null || item.rating === undefined;
       const badge = item.status === 'plan'
         ? `<span class="badge-plan">Планую</span>`
-        : `<span class="badge-rating ${isSuper ? 'super' : ''}">★ ${item.rating !== null ? item.rating : '—'}</span>`;
+        : `<span class="badge-rating ${isSuper ? 'super' : ''} ${isUnrated ? 'unrated' : ''}" onclick='openQuickRate(event, "${item.id}")' title="Натисніть для швидкої оцінки">★ ${!isUnrated ? item.rating : '—'}</span>`;
 
       const card = document.createElement('div');
       card.className = 'card';
-      card.style.animationDelay = `${Math.min(index * 30, 450)}ms`;
+      card.style.animationDelay = `${Math.min(index * 28, 420)}ms`;
       card.innerHTML = `
         <div class="card-glare"></div>
         <div class="poster-wrap">
@@ -986,7 +1144,6 @@
         </div>
       `;
 
-      // 3D Tilt + Glare on mouse move
       const glare = card.querySelector('.card-glare');
       card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
@@ -1011,26 +1168,37 @@
     if (item) openItemModal(item);
   }
 
-  /* ================= HORIZONTAL SLOT-MACHINE ROULETTE ================= */
+  /* ================= HORIZONTAL CASE-STYLE ROULETTE ================= */
+  function buildNoAdjacentDuplicatesList(plans, length) {
+    const result = [];
+    let lastId = null;
+    for (let i = 0; i < length; i++) {
+      let pool = plans.filter(p => p.id !== lastId);
+      if (pool.length === 0) pool = plans;
+      const chosen = pool[Math.floor(Math.random() * pool.length)];
+      result.push(chosen);
+      lastId = chosen.id;
+    }
+    return result;
+  }
+
   function openRoulette() {
     const plans = catalog.filter(c => c.status === 'plan');
     if (plans.length < 2) return showToast('Додайте хоча б 2 фільми у «Буду дивитись»!');
     vibe(15);
     isRouletteSpinning = false;
-    document.getElementById('rouletteResultBox').innerHTML = '';
+    document.getElementById('rouletteResultBox').innerHTML = `<span style="color:var(--text-muted); font-size:0.88rem;">Натисніть кнопку нижче, щоб запустити стрічку</span>`;
     document.getElementById('spinBtn').disabled = false;
     document.getElementById('spinBtn').textContent = '🎰 Крутити стрічку!';
 
     const track = document.getElementById('rouletteTrack');
     track.style.transition = 'none';
-    track.style.transform = 'translateX(-63px)';
+    // Shift left by 3.5 slots so both left and right halves of the viewport are full of posters
+    track.style.transform = 'translateX(-477px)';
     track.innerHTML = '';
 
-    // Fill initial preview slots
-    for (let i = 0; i < 12; i++) {
-      const p = plans[i % plans.length];
-      track.appendChild(createRouletteSlot(p));
-    }
+    const previewItems = buildNoAdjacentDuplicatesList(plans, 14);
+    previewItems.forEach(p => track.appendChild(createRouletteSlot(p)));
 
     document.getElementById('rouletteModal').classList.add('open');
   }
@@ -1054,30 +1222,29 @@
     const spinBtn = document.getElementById('spinBtn');
     spinBtn.disabled = true;
     spinBtn.textContent = 'Крутиться...';
-    document.getElementById('rouletteResultBox').innerHTML = '';
+    document.getElementById('rouletteResultBox').innerHTML = `<span style="color:var(--text-muted); font-size:0.88rem;">Обираємо фільм на вечір...</span>`;
 
     const track = document.getElementById('rouletteTrack');
     track.style.transition = 'none';
-    track.style.transform = 'translateX(0px)';
+    track.style.transform = 'translateX(-477px)';
     track.innerHTML = '';
 
-    const totalSlots = 46;
-    const winnerIndex = 38;
-    const winnerItem = plans[Math.floor(Math.random() * plans.length)];
+    const totalSlots = 48;
+    const winnerIndex = 39;
+    const itemsList = buildNoAdjacentDuplicatesList(plans, totalSlots);
+    const winnerItem = itemsList[winnerIndex];
 
     const slotElements = [];
-    for (let i = 0; i < totalSlots; i++) {
-      const item = (i === winnerIndex) ? winnerItem : plans[Math.floor(Math.random() * plans.length)];
+    itemsList.forEach(item => {
       const el = createRouletteSlot(item);
       track.appendChild(el);
       slotElements.push(el);
-    }
+    });
 
     const slotStep = 138; // 126px width + 12px gap
-    const randomOffset = Math.floor((Math.random() - 0.5) * 60);
+    const randomOffset = Math.floor((Math.random() - 0.5) * 56);
     const targetTranslate = -(winnerIndex * slotStep + 63 + randomOffset);
 
-    // Tick sound & haptic tracker during animation
     let lastPassedSlot = -1;
     const startTime = performance.now();
     const duration = 4200;
@@ -1086,9 +1253,8 @@
       if (!isRouletteSpinning) return;
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      // Approximate cubic-bezier(0.12, 0.85, 0.18, 1)
       const eased = 1 - Math.pow(1 - progress, 3.6);
-      const currentPos = Math.abs(targetTranslate * eased);
+      const currentPos = Math.abs(-477 + (targetTranslate + 477) * eased);
       const currentSlot = Math.floor(currentPos / slotStep);
 
       if (currentSlot !== lastPassedSlot) {
@@ -1116,13 +1282,13 @@
       spinBtn.textContent = '🔄 Крутити ще раз';
 
       document.getElementById('rouletteResultBox').innerHTML = `
-        <div style="color:var(--accent); font-weight:800; font-size:1.1rem; margin-bottom:8px;">🎉 Сьогодні дивимось: ${escapeHtml(winnerItem.title)} (${winnerItem.year})</div>
-        <button class="primary" style="padding:7px 14px; font-size:0.85rem;" onclick="editById('${winnerItem.id}'); closeModal('rouletteModal');">✅ Відмітити як переглянуто</button>
+        <div style="color:var(--accent); font-weight:800; font-size:1.05rem; margin-bottom:8px;">🎉 Сьогодні дивимось: ${escapeHtml(winnerItem.title)} (${winnerItem.year})</div>
+        <button class="primary" style="padding:6px 14px; font-size:0.84rem;" onclick="editById('${winnerItem.id}'); closeModal('rouletteModal');">✅ Відмітити як переглянуто</button>
       `;
     }, duration + 80);
   }
 
-  /* ================= TINDER 2.0 (LIVE STACK + AMBILIGHT + MODES) ================= */
+  /* ================= TINDER 2.1 (FIXED SWIPE-UP, UNDO, DECADE, COUNTER) ================= */
   async function openTinderMode() {
     if (!config.tmdbKey) { showToast('Введіть TMDb API Key для Tinder-режиму!'); return openSettings(); }
     vibe([15, 25]);
@@ -1144,6 +1310,7 @@
     vibe(12);
     playSound('tick');
     tinderMode = mode;
+    tinderPage = 1;
     tinderQueue = [];
     document.querySelectorAll('.tmode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
     document.getElementById('tinderStack').innerHTML = '';
@@ -1151,27 +1318,49 @@
     renderTinderStack();
   }
 
+  async function changeTinderDecade() {
+    tinderDecade = document.getElementById('tinderDecade').value;
+    vibe(12);
+    playSound('tick');
+    tinderPage = 1;
+    tinderQueue = [];
+    document.getElementById('tinderStack').innerHTML = '';
+    await fetchTinderBatch();
+    renderTinderStack();
+  }
+
+  function getDecadeQueryParams(isTv) {
+    const today = new Date().toISOString().slice(0, 10);
+    const field = isTv ? 'first_air_date' : 'primary_release_date';
+    if (tinderDecade === '2020') return `&${field}.gte=2020-01-01&${field}.lte=${today}`;
+    if (tinderDecade === '2010') return `&${field}.gte=2010-01-01&${field}.lte=2019-12-31`;
+    if (tinderDecade === '2000') return `&${field}.gte=2000-01-01&${field}.lte=2009-12-31`;
+    if (tinderDecade === '1990') return `&${field}.gte=1990-01-01&${field}.lte=1999-12-31`;
+    if (tinderDecade === '1980') return `&${field}.lte=1989-12-31`;
+    return `&${field}.lte=${today}`;
+  }
+
   async function fetchTinderBatch() {
     if (isFetchingTinder) return;
     isFetchingTinder = true;
     if (tinderQueue.length === 0) document.getElementById('tinderLoading').style.display = 'flex';
 
-    const today = new Date().toISOString().slice(0, 10);
-
     try {
       for (let i = 0; i < 2; i++) {
-        const page = tinderPages[tinderMode];
         let url = '';
         let mediaType = 'movie';
 
         if (tinderMode === 'movie') {
-          url = `https://api.themoviedb.org/3/discover/movie?api_key=${config.tmdbKey}&language=uk-UA&sort_by=popularity.desc&vote_count.gte=800&primary_release_date.lte=${today}&page=${page}`;
+          const dateFilter = getDecadeQueryParams(false);
+          url = `https://api.themoviedb.org/3/discover/movie?api_key=${config.tmdbKey}&language=uk-UA&sort_by=popularity.desc&vote_count.gte=500${dateFilter}&page=${tinderPage}`;
           mediaType = 'movie';
         } else if (tinderMode === 'tv') {
-          url = `https://api.themoviedb.org/3/discover/tv?api_key=${config.tmdbKey}&language=uk-UA&sort_by=popularity.desc&vote_count.gte=400&first_air_date.lte=${today}&page=${page}`;
+          const dateFilter = getDecadeQueryParams(true);
+          url = `https://api.themoviedb.org/3/discover/tv?api_key=${config.tmdbKey}&language=uk-UA&sort_by=popularity.desc&vote_count.gte=300${dateFilter}&page=${tinderPage}`;
           mediaType = 'tv';
         } else {
-          url = `https://api.themoviedb.org/3/movie/top_rated?api_key=${config.tmdbKey}&language=uk-UA&page=${page}`;
+          const dateFilter = getDecadeQueryParams(false);
+          url = `https://api.themoviedb.org/3/discover/movie?api_key=${config.tmdbKey}&language=uk-UA&sort_by=vote_average.desc&vote_count.gte=2500${dateFilter}&page=${tinderPage}`;
           mediaType = 'movie';
         }
 
@@ -1182,7 +1371,6 @@
           const item = { ...raw, _mediaType: mediaType };
           const id = `${mediaType}_${item.id}`;
           if (!catalog.some(c => c.id === id) && !tinderQueue.some(q => `${q._mediaType}_${q.id}` === id)) {
-            // Preload poster image in browser cache
             if (item.poster_path) {
               const img = new Image();
               img.src = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
@@ -1191,7 +1379,7 @@
           }
         });
 
-        tinderPages[tinderMode] = page >= 25 ? 1 : page + 1;
+        tinderPage = tinderPage >= 25 ? 1 : tinderPage + 1;
       }
     } catch (err) {
       console.error(err);
@@ -1201,7 +1389,13 @@
     document.getElementById('tinderLoading').style.display = 'none';
   }
 
+  function updateTinderHeaderControls() {
+    document.getElementById('tinderSessionCount').textContent = `Сесія: ${tinderSessionSwiped}`;
+    document.getElementById('btnUndoSwipe').disabled = tinderHistory.length === 0;
+  }
+
   function renderTinderStack() {
+    updateTinderHeaderControls();
     const stack = document.getElementById('tinderStack');
     stack.innerHTML = '';
 
@@ -1214,7 +1408,6 @@
 
     currentTinderItem = tinderQueue[0];
 
-    // Update Ambilight background from top card poster
     const ambilight = document.getElementById('tinderAmbilight');
     if (currentTinderItem.poster_path) {
       ambilight.style.backgroundImage = `url(https://image.tmdb.org/t/p/w342${currentTinderItem.poster_path})`;
@@ -1222,10 +1415,9 @@
       ambilight.style.backgroundImage = 'none';
     }
 
-    // Render up to 3 cards in stack (bottom to top)
     const visibleItems = tinderQueue.slice(0, 3).reverse();
     visibleItems.forEach((item, revIdx) => {
-      const stackPos = visibleItems.length - 1 - revIdx; // 0 = top, 1 = second, 2 = third
+      const stackPos = visibleItems.length - 1 - revIdx;
       const card = buildTinderCardElement(item, stackPos);
       stack.appendChild(card);
       if (stackPos === 0) {
@@ -1280,12 +1472,24 @@
     let isDown = false;
     let startX = 0, startY = 0, currentX = 0, currentY = 0;
     let thresholdHit = false;
+    let detectedDirection = null;
     const stamp = el.querySelector('#cardStamp');
+
+    function detectSwipeDirection(dx, dy) {
+      const threshold = 85;
+      if (Math.abs(dx) < threshold && Math.abs(dy) < threshold) return null;
+      if (Math.abs(dx) >= Math.abs(dy)) {
+        return dx > 0 ? 'right' : 'left';
+      } else {
+        return dy < 0 ? 'up' : 'down';
+      }
+    }
 
     const handleStart = (e) => {
       if (e.target.closest('.tinder-flip-btn') || el.classList.contains('flipped')) return;
       isDown = true;
       thresholdHit = false;
+      detectedDirection = null;
       el.classList.add('moving');
       startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
       startY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
@@ -1305,43 +1509,40 @@
       el.style.transform = `translate(${dx}px, ${dy}px) rotate(${rotate}deg)`;
       el.classList.remove('glow-right', 'glow-left', 'glow-up', 'glow-down');
 
-      let activeDir = false;
-      if (dx > 95) {
+      detectedDirection = detectSwipeDirection(dx, dy);
+
+      if (detectedDirection === 'right') {
         el.classList.add('glow-right');
         stamp.textContent = '✅ Вже бачив';
         stamp.style.color = 'var(--success)';
         stamp.style.borderColor = 'var(--success)';
         stamp.classList.add('visible');
-        activeDir = true;
-      } else if (dx < -95) {
+      } else if (detectedDirection === 'left') {
         el.classList.add('glow-left');
         stamp.textContent = '❌ Не бачив';
         stamp.style.color = 'var(--danger)';
         stamp.style.borderColor = 'var(--danger)';
         stamp.classList.add('visible');
-        activeDir = true;
-      } else if (dy > 95 && Math.abs(dx) < 70) {
+      } else if (detectedDirection === 'down') {
         el.classList.add('glow-down');
         stamp.textContent = '💖 Улюблене 10/10';
         stamp.style.color = 'var(--super)';
         stamp.style.borderColor = 'var(--super)';
         stamp.classList.add('visible');
-        activeDir = true;
-      } else if (dy < -95 && Math.abs(dx) < 70) {
+      } else if (detectedDirection === 'up') {
         el.classList.add('glow-up');
         stamp.textContent = '⬆️ Буду дивитись';
         stamp.style.color = 'var(--plan)';
         stamp.style.borderColor = 'var(--plan)';
         stamp.classList.add('visible');
-        activeDir = true;
       } else {
         stamp.classList.remove('visible');
       }
 
-      if (activeDir && !thresholdHit) {
+      if (detectedDirection && !thresholdHit) {
         vibe(18);
         thresholdHit = true;
-      } else if (!activeDir && thresholdHit) {
+      } else if (!detectedDirection && thresholdHit) {
         thresholdHit = false;
       }
     };
@@ -1352,18 +1553,14 @@
       el.classList.remove('moving', 'glow-right', 'glow-left', 'glow-up', 'glow-down');
       stamp.classList.remove('visible');
 
-      const dx = currentX - startX;
-      const dy = currentY - startY;
-
+      const finalDir = detectedDirection;
       cleanupListeners();
 
-      if (dx > 110) triggerSwipe('right');
-      else if (dx < -110) triggerSwipe('left');
-      else if (dy > 110 && Math.abs(dx) < 85) triggerSwipe('down');
-      else if (dy < -110 && Math.abs(dx) < 85) triggerSwipe('up');
-      else {
+      if (finalDir) {
+        triggerSwipe(finalDir);
+      } else {
         el.style.transform = '';
-        initSwipe(el); // Re-attach if snapped back
+        initSwipe(el);
       }
     };
 
@@ -1386,7 +1583,7 @@
     if (!topCardEl || !currentTinderItem) return;
 
     const swipedEl = topCardEl;
-    const item = tinderQueue.shift(); // Remove top item immediately
+    const item = tinderQueue.shift();
     topCardEl = null;
 
     const x = direction === 'right' ? window.innerWidth * 1.2 : (direction === 'left' ? -window.innerWidth * 1.2 : 0);
@@ -1397,7 +1594,6 @@
     swipedEl.style.transform = `translate(${x}px, ${y}px) rotate(${x * 0.04}deg)`;
     swipedEl.style.opacity = '0';
 
-    // Promote 2nd and 3rd cards smoothly right away
     const stackCards = document.querySelectorAll('#tinderStack .tinder-card');
     stackCards.forEach(c => {
       if (c === swipedEl) return;
@@ -1410,7 +1606,6 @@
       }
     });
 
-    // Audio, Haptics & Particle FX
     if (direction === 'right') {
       vibe(35);
       playSound('swipe');
@@ -1426,7 +1621,7 @@
       spawnParticles('hearts');
     }
 
-    // Save to catalog
+    let addedCatalogId = null;
     if (direction === 'right' || direction === 'up' || direction === 'down') {
       const isTv = item._mediaType === 'tv';
       const isDoc = Array.isArray(item.genre_ids) && item.genre_ids.includes(99);
@@ -1449,12 +1644,34 @@
 
       if (!catalog.some(c => c.id === newEntry.id)) {
         catalog.unshift(newEntry);
+        addedCatalogId = newEntry.id;
         saveLocalCatalog();
         backgroundGistSync();
       }
     }
 
+    tinderHistory.push({ item, addedCatalogId });
+    tinderSessionSwiped++;
+
     setTimeout(() => renderTinderStack(), 260);
+  }
+
+  function undoLastSwipe() {
+    if (tinderHistory.length === 0) return;
+    const last = tinderHistory.pop();
+    if (tinderSessionSwiped > 0) tinderSessionSwiped--;
+
+    if (last.addedCatalogId) {
+      catalog = catalog.filter(c => c.id !== last.addedCatalogId);
+      saveLocalCatalog();
+      backgroundGistSync();
+    }
+
+    tinderQueue.unshift(last.item);
+    vibe([15, 20]);
+    playSound('tick');
+    renderTinderStack();
+    showToast('Попередню картку повернуто ↩️');
   }
 
   /* ================= GITHUB GIST SYNC & BACKUP ================= */
