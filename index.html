@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0b1120" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <title>Мій Кінокаталог 3.0</title>
+  <title>Мій Кінокаталог 3.1</title>
   <style>
     :root {
       --bg: #0b1120;
@@ -363,7 +363,7 @@
       margin-bottom: 12px;
     }
 
-    /* ================= TINDER 3.0 OVERLAY ================= */
+    /* ================= TINDER 3.1 OVERLAY ================= */
     .tinder-overlay { position: fixed; inset: 0; background: #070b14; z-index: 999; display: none; flex-direction: column; overflow: hidden; }
 
     .tinder-ambilight {
@@ -406,7 +406,7 @@
     .tinder-card.top-card:active { cursor: grabbing; }
     .tinder-card.second-card { z-index: 2; transform: scale(0.94) translateY(16px); filter: brightness(0.7); pointer-events: none; }
     .tinder-card.third-card { z-index: 1; transform: scale(0.88) translateY(32px); filter: brightness(0.45); pointer-events: none; }
-    .tinder-card.flipped { transform: rotateY(180deg) !important; }
+    .tinder-card.flipped { transform: rotateY(180deg) !important; cursor: default; }
     .tinder-card.moving { transition: none !important; }
 
     .tinder-card-face {
@@ -478,7 +478,7 @@
     }
 
     /* Back face of Tinder card */
-    .tinder-card-back { transform: rotateY(180deg); padding: 20px; overflow-y: auto; background: linear-gradient(180deg, #162038 0%, #0f172a 100%); color: var(--text); display: flex; flex-direction: column; }
+    .tinder-card-back { transform: rotateY(180deg); padding: 20px; overflow-y: auto; background: linear-gradient(180deg, #162038 0%, #0f172a 100%); color: var(--text); display: flex; flex-direction: column; touch-action: pan-y; }
     .tinder-card-back h3 { margin-bottom: 8px; color: #f8fafc; font-size: 1.15rem; padding-right: 44px; line-height: 1.25; }
 
     .back-meta-chips {
@@ -618,7 +618,7 @@
   <div class="catalog-grid" id="catalogGrid"></div>
 </div>
 
-<!-- TINDER 3.0 OVERLAY -->
+<!-- TINDER 3.1 OVERLAY -->
 <div class="tinder-overlay" id="tinderOverlay">
   <div class="tinder-ambilight" id="tinderAmbilight"></div>
 
@@ -646,7 +646,7 @@
   <div class="tinder-area">
     <div class="tinder-loading" id="tinderLoading">
       <div style="font-size: 2.2rem; margin-bottom: 10px;">⏳</div>
-      <div>Завантаження карток з TMDb...</div>
+      <div>Завантаження нових карток з TMDb...</div>
     </div>
 
     <div class="tinder-stack" id="tinderStack"></div>
@@ -655,7 +655,7 @@
       <button class="tinder-btn-circle small tinder-btn-undo" id="btnUndoSwipe" onclick="undoLastSwipe()" title="Повернути попередню картку" disabled>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11"/></svg>
       </button>
-      <button class="tinder-btn-circle tinder-btn-skip" onclick="triggerSwipe('left')" title="Не бачив / Пропустити">
+      <button class="tinder-btn-circle tinder-btn-skip" onclick="triggerSwipe('left')" title="Не бачив / Більше не показувати">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
       </button>
       <button class="tinder-btn-circle tinder-btn-super" onclick="triggerSwipe('down')" title="Шедевр — Золота картка (10/10)">
@@ -772,6 +772,14 @@
     </div>
     <hr style="border:0; border-top:1px solid var(--border); margin:16px 0;" />
     <div class="form-group">
+      <label>Tinder-фільтр пропущених («Не бачив»)</label>
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; background:var(--bg); padding:8px 12px; border-radius:9px; border:1px solid var(--border);">
+        <span style="font-size:0.85rem; color:var(--text-muted);">Приховано карток: <strong id="skippedCountLabel" style="color:var(--text);">0</strong></span>
+        <button type="button" class="danger" style="padding:5px 10px; font-size:0.8rem;" onclick="clearSkippedList()">Скинути</button>
+      </div>
+    </div>
+    <hr style="border:0; border-top:1px solid var(--border); margin:16px 0;" />
+    <div class="form-group">
       <label>Резервна копія файлом (JSON)</label>
       <div style="display:flex; gap:8px;">
         <button type="button" onclick="exportJSON()">⬇️ Експорт</button>
@@ -790,8 +798,10 @@
 
 <script>
   const STORAGE_KEY = 'my_cinema_catalog_v1';
+  const SKIPPED_KEY = 'my_cinema_skipped_v1';
   const CFG_KEY = 'my_cinema_cfg_v1';
   const GIST_FILENAME = 'my_watched_cinema.json';
+  const GIST_SKIPPED_FILENAME = 'my_skipped_cinema.json';
   const NO_POSTER = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="450" fill="%231e293b"><rect width="300" height="450"/><text x="50%" y="50%" fill="%2394a3b8" font-family="sans-serif" font-size="20" text-anchor="middle">Без постера</text></svg>';
 
   const GENRE_MAP = {
@@ -818,12 +828,13 @@
   }
 
   let catalog = [];
+  let skippedIds = new Set();
   let config = { tmdbKey: '', ghToken: '', gistId: '', sound: true };
   let currentCategory = 'all';
   let activeItem = null;
   let selectedRating = null;
 
-  // Tinder 3.0 State
+  // Tinder 3.1 State
   let tinderMode = 'movie';
   let tinderDecade = 'all';
   let tinderQueue = [];
@@ -833,6 +844,7 @@
   let currentTinderItem = null;
   let isFetchingTinder = false;
   let topCardEl = null;
+  let activeSwipeCleanup = null;
   const tinderDetailsCache = new Map();
 
   // Roulette State
@@ -1039,6 +1051,7 @@
     loadConfig();
     updateSoundIcon();
     loadLocalCatalog();
+    loadSkippedIds();
     buildRatingButtons();
     renderCatalog();
 
@@ -1062,6 +1075,30 @@
     } catch (e) {}
   }
   function saveLocalCatalog() { localStorage.setItem(STORAGE_KEY, JSON.stringify(catalog)); }
+
+  function loadSkippedIds() {
+    try {
+      const s = JSON.parse(localStorage.getItem(SKIPPED_KEY));
+      if (Array.isArray(s)) skippedIds = new Set(s);
+    } catch (e) {}
+  }
+  function saveSkippedIds() {
+    localStorage.setItem(SKIPPED_KEY, JSON.stringify(Array.from(skippedIds)));
+  }
+
+  function clearSkippedList() {
+    if (skippedIds.size === 0) return showToast('Список пропущених уже порожній');
+    if (!confirm(`Повернути всі ${skippedIds.size} пропущених карток назад у Tinder-потік?`)) return;
+    skippedIds.clear();
+    saveSkippedIds();
+    tinderPage = 1;
+    tinderQueue = [];
+    document.getElementById('skippedCountLabel').textContent = '0';
+    vibe([15, 25]);
+    playSound('tick');
+    showToast('Список пропущених очищено');
+    backgroundGistSync();
+  }
 
   function getCardRankInfo(item) {
     if (item.status === 'plan') return { cardClass: '', badgeClass: '', icon: '' };
@@ -1265,6 +1302,11 @@
 
     const idx = catalog.findIndex(c => c.id === entry.id);
     if (idx >= 0) catalog[idx] = entry; else catalog.unshift(entry);
+
+    if (skippedIds.has(entry.id)) {
+      skippedIds.delete(entry.id);
+      saveSkippedIds();
+    }
 
     saveLocalCatalog();
     closeModal('itemModal');
@@ -1509,18 +1551,28 @@
     }, duration + 80);
   }
 
-  /* ================= TINDER 3.0 (GOLDEN AWARD + GENRES/COUNTRIES ON FLIP) ================= */
+  /* ================= TINDER 3.1 (PERSISTENT SKIPPED LIST + RELIABLE SWIPE AFTER FLIP) ================= */
   async function openTinderMode() {
     if (!config.tmdbKey) { showToast('Введіть TMDb API Key для Tinder-режиму!'); return openSettings(); }
     vibe([15, 25]);
     document.getElementById('tinderOverlay').style.display = 'flex';
     document.body.style.overflow = 'hidden';
 
+    // Filter out any items already added or skipped
+    tinderQueue = tinderQueue.filter(q => {
+      const id = `${q._mediaType}_${q.id}`;
+      return !catalog.some(c => c.id === id) && !skippedIds.has(id);
+    });
+
     if (tinderQueue.length < 6) await fetchTinderBatch();
     renderTinderStack();
   }
 
   function closeTinderMode() {
+    if (activeSwipeCleanup) {
+      activeSwipeCleanup();
+      activeSwipeCleanup = null;
+    }
     document.getElementById('tinderOverlay').style.display = 'none';
     document.body.style.overflow = '';
     renderCatalog();
@@ -1566,8 +1618,12 @@
     isFetchingTinder = true;
     if (tinderQueue.length === 0) document.getElementById('tinderLoading').style.display = 'flex';
 
+    let pagesChecked = 0;
+    const maxPagesToScan = 15; // Automatically skips already-seen/skipped pages
+
     try {
-      for (let i = 0; i < 2; i++) {
+      while (tinderQueue.length < 12 && pagesChecked < maxPagesToScan) {
+        pagesChecked++;
         let url = '';
         let mediaType = 'movie';
 
@@ -1587,11 +1643,16 @@
 
         const res = await fetch(url);
         const data = await res.json();
+        const totalPages = Math.min(data.total_pages || 30, 40);
 
         (data.results || []).forEach(raw => {
           const item = { ...raw, _mediaType: mediaType };
           const id = `${mediaType}_${item.id}`;
-          if (!catalog.some(c => c.id === id) && !tinderQueue.some(q => `${q._mediaType}_${q.id}` === id)) {
+          const alreadyInCatalog = catalog.some(c => c.id === id);
+          const alreadySkipped = skippedIds.has(id);
+          const alreadyInQueue = tinderQueue.some(q => `${q._mediaType}_${q.id}` === id);
+
+          if (!alreadyInCatalog && !alreadySkipped && !alreadyInQueue) {
             if (item.poster_path) {
               const img = new Image();
               img.src = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
@@ -1600,7 +1661,8 @@
           }
         });
 
-        tinderPage = tinderPage >= 25 ? 1 : tinderPage + 1;
+        tinderPage = tinderPage >= totalPages ? 1 : tinderPage + 1;
+        if (totalPages <= 1) break;
       }
     } catch (err) {
       console.error(err);
@@ -1616,12 +1678,23 @@
   }
 
   function renderTinderStack() {
+    if (activeSwipeCleanup) {
+      activeSwipeCleanup();
+      activeSwipeCleanup = null;
+    }
+
     updateTinderHeaderControls();
     const stack = document.getElementById('tinderStack');
     stack.innerHTML = '';
 
     if (tinderQueue.length === 0) {
-      fetchTinderBatch().then(renderTinderStack);
+      fetchTinderBatch().then(() => {
+        if (tinderQueue.length > 0) {
+          renderTinderStack();
+        } else {
+          stack.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:24px;">Усі картки в цій категорії вже переглянуто або пропущено.<br><br><button onclick="clearSkippedList(); switchTinderMode(tinderMode);">Скинути пропущені</button></div>`;
+        }
+      });
       return;
     }
 
@@ -1741,6 +1814,9 @@
     if (!topCardEl) return;
     vibe(15);
     playSound('tick');
+    // Reset any residual drag transform before flipping
+    topCardEl.classList.remove('moving', 'glow-right', 'glow-left', 'glow-up', 'glow-down');
+    topCardEl.style.transform = '';
     const willShowBack = !topCardEl.classList.contains('flipped');
     topCardEl.classList.toggle('flipped');
     if (willShowBack && currentTinderItem) {
@@ -1835,25 +1911,29 @@
       stamp.classList.remove('visible', 'gold-stamp');
 
       const finalDir = detectedDirection;
-      cleanupListeners();
 
       if (finalDir) {
+        cleanupListeners();
         triggerSwipe(finalDir);
       } else {
         el.style.transform = '';
-        initSwipe(el);
       }
     };
 
     function cleanupListeners() {
+      el.removeEventListener('mousedown', handleStart);
+      el.removeEventListener('touchstart', handleStart);
       window.removeEventListener('mousemove', handleMove);
       window.removeEventListener('touchmove', handleMove);
       window.removeEventListener('mouseup', handleEnd);
       window.removeEventListener('touchend', handleEnd);
     }
 
-    el.addEventListener('mousedown', handleStart, { once: true });
-    el.addEventListener('touchstart', handleStart, { passive: true, once: true });
+    activeSwipeCleanup = cleanupListeners;
+
+    // Persistent start listeners (no { once: true }) so flipping the card never breaks dragging
+    el.addEventListener('mousedown', handleStart);
+    el.addEventListener('touchstart', handleStart, { passive: true });
     window.addEventListener('mousemove', handleMove);
     window.addEventListener('touchmove', handleMove, { passive: true });
     window.addEventListener('mouseup', handleEnd);
@@ -1863,9 +1943,17 @@
   function triggerSwipe(direction) {
     if (!topCardEl || !currentTinderItem) return;
 
+    if (activeSwipeCleanup) {
+      activeSwipeCleanup();
+      activeSwipeCleanup = null;
+    }
+
     const swipedEl = topCardEl;
     const item = tinderQueue.shift();
     topCardEl = null;
+
+    // Ensure card is facing front when flying off
+    swipedEl.classList.remove('flipped');
 
     const x = direction === 'right' ? window.innerWidth * 1.2 : (direction === 'left' ? -window.innerWidth * 1.2 : 0);
     const y = direction === 'up' ? -window.innerHeight * 1.2 : (direction === 'down' ? window.innerHeight * 1.2 : 0);
@@ -1919,15 +2007,23 @@
       });
     }, promoteDelay);
 
+    const itemFullId = `${item._mediaType}_${item.id}`;
     let addedCatalogId = null;
-    if (direction === 'right' || direction === 'up' || direction === 'down') {
+    let addedSkippedId = null;
+
+    if (direction === 'left') {
+      skippedIds.add(itemFullId);
+      addedSkippedId = itemFullId;
+      saveSkippedIds();
+      backgroundGistSync();
+    } else if (direction === 'right' || direction === 'up' || direction === 'down') {
       const isTv = item._mediaType === 'tv';
       const isDoc = Array.isArray(item.genre_ids) && item.genre_ids.includes(99);
       const isPlan = direction === 'up';
       const isSuper = direction === 'down';
 
       const newEntry = {
-        id: `${item._mediaType}_${item.id}`,
+        id: itemFullId,
         tmdbId: item.id,
         title: isTv ? item.name : item.title,
         year: (isTv ? item.first_air_date : item.release_date)?.slice(0, 4) || '',
@@ -1948,7 +2044,7 @@
       }
     }
 
-    tinderHistory.push({ item, addedCatalogId });
+    tinderHistory.push({ item, addedCatalogId, addedSkippedId });
     tinderSessionSwiped++;
 
     setTimeout(() => renderTinderStack(), direction === 'down' ? 420 : 260);
@@ -1959,11 +2055,18 @@
     const last = tinderHistory.pop();
     if (tinderSessionSwiped > 0) tinderSessionSwiped--;
 
+    let changed = false;
     if (last.addedCatalogId) {
       catalog = catalog.filter(c => c.id !== last.addedCatalogId);
       saveLocalCatalog();
-      backgroundGistSync();
+      changed = true;
     }
+    if (last.addedSkippedId) {
+      skippedIds.delete(last.addedSkippedId);
+      saveSkippedIds();
+      changed = true;
+    }
+    if (changed) backgroundGistSync();
 
     tinderQueue.unshift(last.item);
     vibe([15, 20]);
@@ -1986,7 +2089,13 @@
       const res = await fetch('https://api.github.com/gists', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${t}`, 'Accept': 'application/vnd.github+json' },
-        body: JSON.stringify({ public: false, files: { [GIST_FILENAME]: { content: JSON.stringify(catalog, null, 2) } } })
+        body: JSON.stringify({
+          public: false,
+          files: {
+            [GIST_FILENAME]: { content: JSON.stringify(catalog, null, 2) },
+            [GIST_SKIPPED_FILENAME]: { content: JSON.stringify(Array.from(skippedIds)) }
+          }
+        })
       });
       if (!res.ok) throw new Error('Помилка створення Gist');
       const data = await res.json();
@@ -2010,7 +2119,12 @@
       await fetch(`https://api.github.com/gists/${config.gistId}`, {
         method: 'PATCH',
         headers: { 'Authorization': `Bearer ${config.ghToken}`, 'Accept': 'application/vnd.github+json' },
-        body: JSON.stringify({ files: { [GIST_FILENAME]: { content: JSON.stringify(catalog, null, 2) } } })
+        body: JSON.stringify({
+          files: {
+            [GIST_FILENAME]: { content: JSON.stringify(catalog, null, 2) },
+            [GIST_SKIPPED_FILENAME]: { content: JSON.stringify(Array.from(skippedIds)) }
+          }
+        })
       });
       setSyncState('ok', 'Синхронізовано');
     } catch (e) { setSyncState('err', 'Помилка'); }
@@ -2024,11 +2138,19 @@
         headers: { 'Authorization': `Bearer ${config.ghToken}` }
       });
       const data = await res.json();
-      const content = data.files[GIST_FILENAME]?.content;
+      const content = data.files?.[GIST_FILENAME]?.content;
       if (content) {
         catalog = JSON.parse(content);
         saveLocalCatalog();
         renderCatalog();
+      }
+      const skippedContent = data.files?.[GIST_SKIPPED_FILENAME]?.content;
+      if (skippedContent) {
+        const parsedSkipped = JSON.parse(skippedContent);
+        if (Array.isArray(parsedSkipped)) {
+          skippedIds = new Set(parsedSkipped);
+          saveSkippedIds();
+        }
       }
       setSyncState('ok', 'Синхронізовано');
       if (!silent) showToast('Дані оновлено з хмари');
@@ -2036,7 +2158,11 @@
   }
 
   function exportJSON() {
-    const blob = new Blob([JSON.stringify(catalog, null, 2)], { type: 'application/json' });
+    const payload = {
+      catalog,
+      skipped: Array.from(skippedIds)
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = `cinema_backup_${new Date().toISOString().slice(0, 10)}.json`;
@@ -2052,11 +2178,20 @@
         const data = JSON.parse(ev.target.result);
         if (Array.isArray(data)) {
           catalog = data;
-          saveLocalCatalog();
-          renderCatalog();
-          showToast(`Імпортовано: ${catalog.length}`);
-          if (config.ghToken && config.gistId) await pushToGist();
+        } else if (data && Array.isArray(data.catalog)) {
+          catalog = data.catalog;
+          if (Array.isArray(data.skipped)) {
+            skippedIds = new Set(data.skipped);
+            saveSkippedIds();
+          }
+        } else {
+          throw new Error('Invalid');
         }
+        saveLocalCatalog();
+        renderCatalog();
+        document.getElementById('skippedCountLabel').textContent = skippedIds.size;
+        showToast(`Імпортовано: ${catalog.length}`);
+        if (config.ghToken && config.gistId) await pushToGist();
       } catch (err) { showToast('Невірний формат JSON'); }
     };
     reader.readAsText(file);
@@ -2068,6 +2203,7 @@
     document.getElementById('cfgTmdbKey').value = config.tmdbKey || '';
     document.getElementById('cfgGhToken').value = config.ghToken || '';
     document.getElementById('cfgGistId').value = config.gistId || '';
+    document.getElementById('skippedCountLabel').textContent = skippedIds.size;
     document.getElementById('settingsModal').classList.add('open');
   }
 
