@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#05070b" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <title>Мій Кінокаталог 4.1</title>
+  <title>Мій Кінокаталог 4.2</title>
   <style>
     :root {
       --bg: #05070b;
@@ -38,6 +38,31 @@
       padding-bottom: 56px;
       overflow-x: hidden;
       min-height: 100vh;
+    }
+
+    /* Global Custom Ultra-Thin Scrollbar (3px) */
+    .custom-scroll {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 3px;
+      height: 3px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.45);
+    }
+    .custom-scroll::-webkit-scrollbar-button {
+      display: none;
+      width: 0;
+      height: 0;
     }
 
     /* Header */
@@ -573,7 +598,7 @@
       margin-bottom: 12px;
     }
 
-    /* ================= TINDER 4.1 FANNED DECK OVERLAY ================= */
+    /* ================= TINDER 4.2 FANNED DECK OVERLAY ================= */
     .tinder-overlay { position: fixed; inset: 0; background: #05070b; z-index: 999; display: none; flex-direction: column; overflow: hidden; }
 
     .tinder-ambilight {
@@ -637,7 +662,6 @@
       border-radius: 18px;
     }
 
-    /* NOTE: No CSS filter on .tinder-card so Chromium preserves 3D backface-visibility */
     .tinder-card.top-card {
       z-index: 3;
       cursor: grab;
@@ -657,7 +681,6 @@
       pointer-events: none;
     }
 
-    /* Dimming veil on background cards without breaking preserve-3d */
     .tinder-card.second-card .tinder-card-front::before,
     .tinder-card.third-card .tinder-card-front::before {
       content: "";
@@ -806,24 +829,37 @@
       box-shadow: 0 0 10px rgba(129, 140, 248, 0.8);
     }
 
-    /* Back face of Tinder card */
+    /* ================= BACK FACE ARCHITECTURE (FIXED HEADER/FOOTER + INNER 3PX SCROLL) ================= */
     .tinder-card-back {
       z-index: 1;
       transform: rotateY(180deg);
-      padding: 18px;
-      overflow-y: auto;
+      padding: 16px 16px 14px 16px;
+      overflow: hidden;
       background: linear-gradient(180deg, #131929 0%, #090d16 100%);
       color: var(--text);
       display: flex;
       flex-direction: column;
-      touch-action: pan-y;
     }
     .tinder-card.flipped .tinder-card-back { z-index: 5; }
-    .tinder-card-back h3 { margin-bottom: 8px; color: #f8fafc; font-size: 1.1rem; padding-right: 42px; line-height: 1.25; }
+
+    .back-header {
+      flex-shrink: 0;
+    }
+    .tinder-card-back h3 {
+      margin-bottom: 8px;
+      color: #f8fafc;
+      font-size: 1.12rem;
+      padding-right: 44px;
+      line-height: 1.25;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
 
     .back-meta-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
     .meta-chip {
-      font-size: 0.74rem;
+      font-size: 0.73rem;
       font-weight: 600;
       padding: 3px 8px;
       border-radius: 7px;
@@ -837,11 +873,41 @@
       color: #fde68a;
     }
 
-    .tinder-card-back .overview { font-size: 0.88rem; line-height: 1.52; color: #cbd5e1; }
+    /* Isolated Synopsis Scroll Area with Bottom Fade-Out */
+    .overview-scroll-wrap {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 6px;
+    }
+    .overview-scroll-wrap::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 4px;
+      height: 22px;
+      background: linear-gradient(to bottom, rgba(10, 14, 24, 0), #0a0e18);
+      pointer-events: none;
+    }
+
+    .tinder-card-back .overview {
+      flex: 1;
+      overflow-y: auto;
+      touch-action: pan-y;
+      padding-right: 7px;
+      padding-bottom: 18px;
+      font-size: 0.88rem;
+      line-height: 1.54;
+      color: #cbd5e1;
+    }
+
     .tinder-card-back .back-footer {
-      margin-top: auto;
-      padding-top: 12px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      flex-shrink: 0;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.09);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -851,6 +917,7 @@
     .tinder-card-back .rating { color: var(--accent); }
     .tinder-card-back .runtime { color: var(--text-muted); font-weight: 600; }
 
+    /* Front Info Button */
     .tinder-flip-btn {
       position: absolute;
       top: 11px;
@@ -858,18 +925,31 @@
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background: rgba(5, 7, 11, 0.68);
+      background: rgba(5, 7, 11, 0.72);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.24);
+      border: 1px solid rgba(255, 255, 255, 0.28);
       color: #f8fafc;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       z-index: 20;
-      transition: transform 0.15s ease, background 0.15s ease;
+      transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
     }
     .tinder-flip-btn:hover { background: rgba(30, 41, 59, 0.95); transform: scale(1.08); }
+
+    /* High-Contrast Back Return Button (‹) */
+    .tinder-card-back .tinder-flip-btn {
+      background: rgba(255, 255, 255, 0.14);
+      border: 1.5px solid rgba(255, 255, 255, 0.38);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+    }
+    .tinder-card-back .tinder-flip-btn:hover {
+      background: rgba(255, 255, 255, 0.24);
+      border-color: rgba(255, 255, 255, 0.65);
+      transform: scale(1.08);
+    }
 
     .tinder-controls { display: flex; gap: 13px; margin-top: 20px; z-index: 10; justify-content: center; align-items: center; }
     .tinder-btn-circle { width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid; background: rgba(11, 15, 25, 0.88); backdrop-filter: blur(8px); transition: transform 0.12s ease, box-shadow 0.15s ease; }
@@ -952,7 +1032,7 @@
   <div class="catalog-grid" id="catalogGrid"></div>
 </div>
 
-<!-- TINDER 4.1 FANNED DECK OVERLAY -->
+<!-- TINDER 4.2 FANNED DECK OVERLAY -->
 <div class="tinder-overlay" id="tinderOverlay">
   <div class="tinder-ambilight" id="tinderAmbilight"></div>
 
@@ -1021,7 +1101,7 @@
 
 <!-- Модальне вікно РУЛЕТКИ -->
 <div class="modal-backdrop" id="rouletteModal">
-  <div class="modal" style="text-align:center;">
+  <div class="modal custom-scroll" style="text-align:center;">
     <div class="modal-handle"></div>
     <h3 style="color:var(--accent); font-size:1.35rem; margin-bottom:4px;">🎲 Рулетка на вечір</h3>
     <div style="font-size:0.85rem; color:var(--text-muted);">Випадковий вибір зі списку «Буду дивитись»</div>
@@ -1044,7 +1124,7 @@
 
 <!-- Модальне вікно ДОДАВАННЯ / РЕДАГУВАННЯ -->
 <div class="modal-backdrop" id="itemModal">
-  <div class="modal">
+  <div class="modal custom-scroll">
     <div class="modal-handle"></div>
     <h3 id="modalTitle">Оцінити запис</h3>
     <div style="display:flex; gap:12px; margin-bottom:14px; align-items:center;">
@@ -1099,7 +1179,7 @@
 
 <!-- Модальне вікно НАЛАШТУВАНЬ -->
 <div class="modal-backdrop" id="settingsModal">
-  <div class="modal">
+  <div class="modal custom-scroll">
     <div class="modal-handle"></div>
     <h3>⚙️ Налаштування та синхронізація</h3>
     <div class="form-group">
@@ -1182,7 +1262,7 @@
   let activeItem = null;
   let selectedRating = null;
 
-  // Tinder 4.1 State
+  // Tinder 4.2 State
   let tinderMode = 'movie';
   let tinderDecade = 'all';
   let tinderQueue = [];
@@ -1919,7 +1999,7 @@
     }, duration + 80);
   }
 
-  /* ================= TINDER 4.1 (FIXED 3D FLIP + ENGLISH FALLBACK SYNOPSIS) ================= */
+  /* ================= TINDER 4.2 ================= */
   async function openTinderMode() {
     if (!config.tmdbKey) { showToast('Введіть TMDb API Key для Tinder-режиму!'); return openSettings(); }
     vibe([15, 25]);
@@ -2143,12 +2223,16 @@
         </button>
       </div>
       <div class="tinder-card-face tinder-card-back">
-        <button type="button" class="tinder-flip-btn" onclick="flipTinderCard(event)" title="Назад до постера">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-        </button>
-        <h3>${escapeHtml(title)}</h3>
-        <div class="back-meta-chips" id="backMetaChips">${chipsHtml}</div>
-        <p class="overview" id="backOverview">${escapeHtml(item.overview) || 'Завантаження опису...'}</p>
+        <div class="back-header">
+          <button type="button" class="tinder-flip-btn" onclick="flipTinderCard(event)" title="Назад до постера">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <h3>${escapeHtml(title)}</h3>
+          <div class="back-meta-chips" id="backMetaChips">${chipsHtml}</div>
+        </div>
+        <div class="overview-scroll-wrap">
+          <p class="overview custom-scroll" id="backOverview">${escapeHtml(item.overview) || 'Завантаження опису...'}</p>
+        </div>
         <div class="back-footer">
           <span class="rating">TMDb: ★ ${item.vote_average ? item.vote_average.toFixed(1) : '—'}</span>
           <span class="runtime" id="backRuntime">${year}</span>
@@ -2168,7 +2252,6 @@
         const res = await fetch(`https://api.themoviedb.org/3/${item._mediaType}/${item.id}?api_key=${config.tmdbKey}&language=uk-UA`);
         if (res.ok) {
           details = await res.json();
-          // Fallback to English overview if Ukrainian overview is empty
           if (!details.overview) {
             const enRes = await fetch(`https://api.themoviedb.org/3/${item._mediaType}/${item.id}?api_key=${config.tmdbKey}&language=en-US`);
             if (enRes.ok) {
