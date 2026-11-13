@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#05070b" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <title>Мій Кінокаталог 4.0</title>
+  <title>Мій Кінокаталог 4.1</title>
   <style>
     :root {
       --bg: #05070b;
@@ -193,7 +193,6 @@
       z-index: 3;
     }
 
-    /* Full-bleed poster image */
     .card-poster {
       position: absolute;
       inset: 0;
@@ -205,7 +204,6 @@
     }
     .card:hover .card-poster { transform: scale(1.05); }
 
-    /* Cinematic vignette gradient over bottom of poster */
     .card-vignette {
       position: absolute;
       inset: 0;
@@ -273,7 +271,6 @@
     }
     .card:hover .card-glare { opacity: 1; }
 
-    /* Top glass pills */
     .badge-type {
       position: absolute;
       top: 10px;
@@ -348,7 +345,6 @@
       z-index: 6;
     }
 
-    /* Overlay Info at Bottom of Poster */
     .card-overlay-info {
       position: absolute;
       bottom: 0;
@@ -397,7 +393,6 @@
       text-overflow: ellipsis;
     }
 
-    /* Floating Glass Action Dock (slides up on hover / mobile tap) */
     .card-glass-dock {
       position: absolute;
       bottom: 8px;
@@ -578,7 +573,7 @@
       margin-bottom: 12px;
     }
 
-    /* ================= TINDER 4.0 FANNED DECK OVERLAY ================= */
+    /* ================= TINDER 4.1 FANNED DECK OVERLAY ================= */
     .tinder-overlay { position: fixed; inset: 0; background: #05070b; z-index: 999; display: none; flex-direction: column; overflow: hidden; }
 
     .tinder-ambilight {
@@ -621,9 +616,9 @@
       position: relative;
       width: 276px;
       height: 410px;
-      perspective: 1300px;
+      perspective: 1400px;
       touch-action: none;
-      margin-right: 26px; /* Visual balance for right-fanned cards */
+      margin-right: 26px;
     }
     @media (max-height: 750px) {
       .tinder-stack { width: 224px; height: 332px; margin-right: 20px; }
@@ -635,47 +630,66 @@
       position: absolute;
       inset: 0;
       transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
       transform-origin: 50% 88%;
-      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease, filter 0.35s ease;
+      transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease;
       will-change: transform;
       border-radius: 18px;
     }
 
-    /* Fanned positions matching reference */
+    /* NOTE: No CSS filter on .tinder-card so Chromium preserves 3D backface-visibility */
     .tinder-card.top-card {
       z-index: 3;
       cursor: grab;
-      transform: translate(0px, 0px) rotate(-2.5deg) scale(1);
-      filter: brightness(1);
+      transform: translate3d(0px, 0px, 0px) rotate(-2.5deg) scale(1);
     }
     .tinder-card.top-card:active { cursor: grabbing; }
 
     .tinder-card.second-card {
       z-index: 2;
-      transform: translate(34px, 8px) rotate(4.5deg) scale(0.94);
-      filter: brightness(0.62) saturate(0.85);
+      transform: translate3d(34px, 8px, -10px) rotate(4.5deg) scale(0.94);
       pointer-events: none;
     }
 
     .tinder-card.third-card {
       z-index: 1;
-      transform: translate(64px, 18px) rotate(10.5deg) scale(0.88);
-      filter: brightness(0.38) saturate(0.75);
+      transform: translate3d(64px, 18px, -20px) rotate(10.5deg) scale(0.88);
       pointer-events: none;
     }
 
+    /* Dimming veil on background cards without breaking preserve-3d */
+    .tinder-card.second-card .tinder-card-front::before,
+    .tinder-card.third-card .tinder-card-front::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      pointer-events: none;
+      z-index: 4;
+      transition: background 0.35s ease;
+    }
+    .tinder-card.second-card .tinder-card-front::before { background: rgba(5, 7, 11, 0.38); }
+    .tinder-card.third-card .tinder-card-front::before { background: rgba(5, 7, 11, 0.62); }
+
     @media (max-width: 420px) {
-      .tinder-card.second-card { transform: translate(26px, 7px) rotate(4deg) scale(0.94); }
-      .tinder-card.third-card { transform: translate(48px, 15px) rotate(9deg) scale(0.88); }
+      .tinder-card.second-card { transform: translate3d(26px, 7px, -10px) rotate(4deg) scale(0.94); }
+      .tinder-card.third-card { transform: translate3d(48px, 15px, -20px) rotate(9deg) scale(0.88); }
     }
 
-    .tinder-card.flipped { transform: rotateY(180deg) rotateZ(0deg) !important; cursor: default; }
+    .tinder-card.flipped {
+      transform: translate3d(0px, 0px, 0px) rotateY(180deg) rotateZ(0deg) !important;
+      cursor: default;
+    }
+    .tinder-card.flipped .tinder-card-front {
+      pointer-events: none;
+    }
     .tinder-card.moving { transition: none !important; }
 
     .tinder-card-face {
       position: absolute;
       inset: 0;
       backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
       border-radius: 18px;
       overflow: hidden;
       background: #111622;
@@ -703,7 +717,7 @@
       z-index: 6;
     }
 
-    /* 100% clean poster inside front face */
+    .tinder-card-front { z-index: 2; transform: rotateY(0deg); }
     .tinder-card-front img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     .card-stamp {
@@ -794,6 +808,7 @@
 
     /* Back face of Tinder card */
     .tinder-card-back {
+      z-index: 1;
       transform: rotateY(180deg);
       padding: 18px;
       overflow-y: auto;
@@ -803,6 +818,7 @@
       flex-direction: column;
       touch-action: pan-y;
     }
+    .tinder-card.flipped .tinder-card-back { z-index: 5; }
     .tinder-card-back h3 { margin-bottom: 8px; color: #f8fafc; font-size: 1.1rem; padding-right: 42px; line-height: 1.25; }
 
     .back-meta-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
@@ -936,7 +952,7 @@
   <div class="catalog-grid" id="catalogGrid"></div>
 </div>
 
-<!-- TINDER 4.0 FANNED DECK OVERLAY -->
+<!-- TINDER 4.1 FANNED DECK OVERLAY -->
 <div class="tinder-overlay" id="tinderOverlay">
   <div class="tinder-ambilight" id="tinderAmbilight"></div>
 
@@ -969,7 +985,6 @@
 
     <div class="tinder-stack" id="tinderStack"></div>
 
-    <!-- Clean Info Caption & Progress Bars Below Fanned Deck -->
     <div class="tinder-caption-area" id="tinderCaptionArea">
       <div class="tinder-tag-label" id="tinderCaptionTag">ЗАРАЗ У ТРЕНДІ</div>
       <div class="tinder-movie-title" id="tinderCaptionTitle">—</div>
@@ -1167,7 +1182,7 @@
   let activeItem = null;
   let selectedRating = null;
 
-  // Tinder 4.0 State
+  // Tinder 4.1 State
   let tinderMode = 'movie';
   let tinderDecade = 'all';
   let tinderQueue = [];
@@ -1755,14 +1770,12 @@
         </div>
       `;
 
-      // Tap card on mobile to toggle action dock
       card.addEventListener('click', () => {
         const wasOpen = card.classList.contains('actions-open');
         document.querySelectorAll('.card.actions-open').forEach(c => c.classList.remove('actions-open'));
         if (!wasOpen) card.classList.add('actions-open');
       });
 
-      // 3D Tilt + Glare on desktop
       const glare = card.querySelector('.card-glare');
       card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
@@ -1906,7 +1919,7 @@
     }, duration + 80);
   }
 
-  /* ================= TINDER 4.0 (FANNED CARD DECK + CLEAN CAPTION + BARS) ================= */
+  /* ================= TINDER 4.1 (FIXED 3D FLIP + ENGLISH FALLBACK SYNOPSIS) ================= */
   async function openTinderMode() {
     if (!config.tmdbKey) { showToast('Введіть TMDb API Key для Tinder-режиму!'); return openSettings(); }
     vibe([15, 25]);
@@ -2046,7 +2059,6 @@
     document.getElementById('tinderCaptionTitle').textContent = title;
     document.getElementById('tinderCaptionSub').textContent = `${typeName} • ${year}${score}`;
 
-    // Update 6 progress bars cyclically
     const bars = document.querySelectorAll('#tinderProgressBars .t-bar');
     const activeIdx = tinderSessionSwiped % bars.length;
     bars.forEach((bar, i) => bar.classList.toggle('active', i === activeIdx));
@@ -2136,7 +2148,7 @@
         </button>
         <h3>${escapeHtml(title)}</h3>
         <div class="back-meta-chips" id="backMetaChips">${chipsHtml}</div>
-        <p class="overview">${escapeHtml(item.overview) || 'Опис українською мовою відсутній у базі TMDb.'}</p>
+        <p class="overview" id="backOverview">${escapeHtml(item.overview) || 'Завантаження опису...'}</p>
         <div class="back-footer">
           <span class="rating">TMDb: ★ ${item.vote_average ? item.vote_average.toFixed(1) : '—'}</span>
           <span class="runtime" id="backRuntime">${year}</span>
@@ -2156,9 +2168,23 @@
         const res = await fetch(`https://api.themoviedb.org/3/${item._mediaType}/${item.id}?api_key=${config.tmdbKey}&language=uk-UA`);
         if (res.ok) {
           details = await res.json();
+          // Fallback to English overview if Ukrainian overview is empty
+          if (!details.overview) {
+            const enRes = await fetch(`https://api.themoviedb.org/3/${item._mediaType}/${item.id}?api_key=${config.tmdbKey}&language=en-US`);
+            if (enRes.ok) {
+              const enData = await enRes.json();
+              if (enData.overview) details.overview = enData.overview;
+            }
+          }
           tinderDetailsCache.set(cacheKey, details);
         }
       } catch (e) {}
+    }
+
+    const overviewEl = card.querySelector('#backOverview');
+    if (overviewEl) {
+      const finalOverview = (details && details.overview) || item.overview || 'Опис для цієї стрічки поки відсутній у базі TMDb.';
+      overviewEl.textContent = finalOverview;
     }
 
     if (!details) return;
@@ -2238,7 +2264,7 @@
       const dy = currentY - startY;
       const rotate = -2.5 + dx * 0.055;
 
-      el.style.transform = `translate(${dx}px, ${dy}px) rotate(${rotate}deg)`;
+      el.style.transform = `translate3d(${dx}px, ${dy}px, 0px) rotate(${rotate}deg)`;
       el.classList.remove('glow-right', 'glow-left', 'glow-up', 'glow-down');
       stamp.classList.remove('gold-stamp');
 
@@ -2346,12 +2372,12 @@
 
       setTimeout(() => {
         swipedEl.style.transition = 'transform 0.38s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease';
-        swipedEl.style.transform = `translate(0px, ${y}px) scale(0.95)`;
+        swipedEl.style.transform = `translate3d(0px, ${y}px, 0px) scale(0.95)`;
         swipedEl.style.opacity = '0';
       }, 160);
     } else {
       swipedEl.style.transition = 'transform 0.36s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease';
-      swipedEl.style.transform = `translate(${x}px, ${y}px) rotate(${x * 0.04}deg)`;
+      swipedEl.style.transform = `translate3d(${x}px, ${y}px, 0px) rotate(${x * 0.04}deg)`;
       swipedEl.style.opacity = '0';
 
       if (direction === 'right') {
