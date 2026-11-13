@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#05070b" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <title>Мій Кінокаталог 4.3</title>
+  <title>Мій Кінокаталог 4.5</title>
   <style>
     :root {
       --bg: #05070b;
@@ -598,7 +598,7 @@
       margin-bottom: 12px;
     }
 
-    /* ================= TINDER 4.3 FANNED DECK OVERLAY ================= */
+    /* ================= TINDER 4.5 FANNED DECK OVERLAY ================= */
     .tinder-overlay { position: fixed; inset: 0; background: #05070b; z-index: 999; display: none; flex-direction: column; overflow: hidden; }
 
     .tinder-ambilight {
@@ -624,6 +624,7 @@
       background: rgba(5, 7, 11, 0.62);
       backdrop-filter: blur(14px);
       flex-wrap: wrap;
+      transition: opacity 0.2s ease;
     }
 
     .tinder-modes { display: flex; gap: 5px; background: rgba(15, 23, 42, 0.8); padding: 4px; border-radius: 11px; border: 1px solid rgba(255, 255, 255, 0.1); }
@@ -635,12 +636,13 @@
     .session-badge { font-size: 0.78rem; color: #cbd5e1; background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(255, 255, 255, 0.12); padding: 5px 10px; border-radius: 9px; font-weight: 600; white-space: nowrap; }
 
     .tinder-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; z-index: 5; padding: 10px 16px; }
+    .tinder-area.elevated { z-index: 25; }
 
     /* Fanned Deck Container */
     .tinder-stack {
       position: relative;
-      width: 276px;
-      height: 410px;
+      width: 282px;
+      height: 422px;
       perspective: 1400px;
       touch-action: none;
       margin-right: 26px;
@@ -649,7 +651,7 @@
       touch-action: pan-y;
     }
     @media (max-height: 750px) {
-      .tinder-stack { width: 224px; height: 332px; margin-right: 20px; }
+      .tinder-stack { width: 230px; height: 344px; margin-right: 20px; }
     }
 
     .tinder-card {
@@ -728,7 +730,7 @@
 
     .tinder-card.glow-right .tinder-card-face { border-color: var(--success); box-shadow: 0 0 32px rgba(16, 185, 129, 0.6); }
     .tinder-card.glow-left .tinder-card-face { border-color: var(--danger); box-shadow: 0 0 32px rgba(239, 68, 68, 0.6); }
-    .tinder-card.glow-up .tinder-card-face { border-color: var(--plan); box-shadow: 0 0 32px rgba(168, 85, 247, 0.6); }
+    .tinder-card.glow-up .tinder-card-face { border-color: var(--plan); box-shadow: 0 0 36px rgba(168, 85, 247, 0.75), inset 0 0 20px rgba(168, 85, 247, 0.25); }
 
     .tinder-card.glow-down .tinder-card-face {
       border: 3px solid #fbbf24;
@@ -746,6 +748,7 @@
     .tinder-card-front { z-index: 2; transform: rotateY(0deg); }
     .tinder-card-front img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
+    /* Adaptive Stamp Positioning */
     .card-stamp {
       position: absolute;
       top: 18px;
@@ -760,15 +763,30 @@
       opacity: 0;
       transform: rotate(-10deg) scale(0.82);
       transition: opacity 0.14s ease, transform 0.14s ease;
-      background: rgba(5, 7, 11, 0.86);
-      backdrop-filter: blur(6px);
+      background: rgba(5, 7, 11, 0.88);
+      backdrop-filter: blur(8px);
       pointer-events: none;
       z-index: 12;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      white-space: nowrap;
     }
     .card-stamp.visible { opacity: 1; transform: rotate(-7deg) scale(1); }
+
+    .card-stamp.bottom-stamp {
+      top: auto;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%) scale(0.84);
+      background: rgba(24, 12, 42, 0.92);
+      box-shadow: 0 8px 24px rgba(168, 85, 247, 0.45);
+    }
+    .card-stamp.bottom-stamp.visible {
+      opacity: 1;
+      transform: translateX(-50%) scale(1);
+    }
+
     .card-stamp.gold-stamp {
       background: linear-gradient(135deg, rgba(41, 26, 5, 0.95), rgba(85, 48, 8, 0.95));
       border-color: #fbbf24;
@@ -778,14 +796,14 @@
 
     /* Info Caption & Progress Bars Below Fanned Deck */
     .tinder-caption-area {
-      margin-top: 24px;
+      margin-top: 22px;
       text-align: center;
       z-index: 10;
       max-width: 340px;
       padding: 0 12px;
       transition: opacity 0.2s ease;
     }
-    @media (max-height: 750px) { .tinder-caption-area { margin-top: 18px; } }
+    @media (max-height: 750px) { .tinder-caption-area { margin-top: 16px; } }
 
     .tinder-tag-label {
       font-size: 0.72rem;
@@ -817,7 +835,7 @@
       display: flex;
       justify-content: center;
       gap: 6px;
-      margin-top: 12px;
+      margin-top: 10px;
     }
     .t-bar {
       width: 24px;
@@ -832,11 +850,11 @@
       box-shadow: 0 0 10px rgba(129, 140, 248, 0.8);
     }
 
-    /* ================= BACK FACE ARCHITECTURE (FIXED HEADER/FOOTER + INNER 3PX SCROLL) ================= */
+    /* ================= BACK FACE ARCHITECTURE + FRANCHISE STRIP ================= */
     .tinder-card-back {
       z-index: 1;
       transform: rotateY(180deg);
-      padding: 16px 16px 14px 16px;
+      padding: 15px 15px 12px 15px;
       overflow: hidden;
       background: linear-gradient(180deg, #131929 0%, #090d16 100%);
       color: var(--text);
@@ -849,22 +867,22 @@
       flex-shrink: 0;
     }
     .tinder-card-back h3 {
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       color: #f8fafc;
-      font-size: 1.12rem;
-      padding-right: 44px;
-      line-height: 1.25;
+      font-size: 1.08rem;
+      padding-right: 42px;
+      line-height: 1.24;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
-    .back-meta-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+    .back-meta-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
     .meta-chip {
-      font-size: 0.73rem;
+      font-size: 0.71rem;
       font-weight: 600;
-      padding: 3px 8px;
+      padding: 2px 8px;
       border-radius: 7px;
       background: rgba(59, 130, 246, 0.14);
       border: 1px solid rgba(96, 165, 250, 0.28);
@@ -876,11 +894,10 @@
       color: #fde68a;
     }
 
-    /* Isolated Synopsis Scroll Area with Bottom Fade-Out + Grab Scroll */
     .overview-scroll-wrap {
       position: relative;
       flex: 1;
-      min-height: 0;
+      min-height: 54px;
       display: flex;
       flex-direction: column;
       margin-bottom: 6px;
@@ -891,8 +908,8 @@
       bottom: 0;
       left: 0;
       right: 4px;
-      height: 22px;
-      background: linear-gradient(to bottom, rgba(10, 14, 24, 0), #0a0e18);
+      height: 18px;
+      background: linear-gradient(to bottom, rgba(10, 14, 24, 0), #0b101b);
       pointer-events: none;
     }
 
@@ -903,30 +920,118 @@
       -webkit-overflow-scrolling: touch;
       user-select: none;
       cursor: grab;
-      padding-right: 7px;
-      padding-bottom: 18px;
-      font-size: 0.88rem;
-      line-height: 1.54;
+      padding-right: 6px;
+      padding-bottom: 14px;
+      font-size: 0.85rem;
+      line-height: 1.48;
       color: #cbd5e1;
     }
     .tinder-card-back .overview.grabbing {
       cursor: grabbing;
     }
 
+    /* Franchise / Sequels & Prequels Block */
+    .franchise-box {
+      flex-shrink: 0;
+      margin-bottom: 8px;
+      padding-top: 7px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .franchise-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #93c5fd;
+      margin-bottom: 6px;
+    }
+    .franchise-strip {
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      touch-action: pan-x;
+      -webkit-overflow-scrolling: touch;
+    }
+    .f-part {
+      position: relative;
+      width: 52px;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+    .f-part:hover { transform: translateY(-2px); }
+    .f-poster-wrap {
+      position: relative;
+      width: 52px;
+      height: 76px;
+      border-radius: 7px;
+      overflow: hidden;
+      background: #05070b;
+      border: 1.5px solid rgba(255, 255, 255, 0.14);
+    }
+    .f-part.is-current .f-poster-wrap {
+      border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.55);
+    }
+    .f-part.is-watched .f-poster-wrap {
+      border-color: rgba(16, 185, 129, 0.65);
+    }
+    .f-part.is-plan .f-poster-wrap {
+      border-color: rgba(168, 85, 247, 0.75);
+    }
+    .f-poster-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .f-badge {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      font-size: 0.6rem;
+      font-weight: 800;
+      padding: 1px 4px;
+      border-radius: 4px;
+      background: rgba(5, 7, 11, 0.85);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      line-height: 1.15;
+    }
+    .f-badge.cur { background: var(--primary); border-color: var(--primary); }
+    .f-badge.ok { background: rgba(6, 78, 59, 0.92); border-color: var(--success); color: #6ee7b7; }
+    .f-badge.plan { background: rgba(88, 28, 135, 0.92); border-color: var(--plan); color: #e9d5ff; }
+    .f-badge.add { background: rgba(15, 23, 42, 0.85); color: #cbd5e1; }
+
+    .f-year {
+      font-size: 0.66rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .f-part.is-current .f-year { color: #93c5fd; font-weight: 700; }
+
     .tinder-card-back .back-footer {
       flex-shrink: 0;
-      padding-top: 10px;
+      padding-top: 8px;
       border-top: 1px solid rgba(255, 255, 255, 0.09);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.84rem;
+      font-size: 0.82rem;
       font-weight: 700;
     }
     .tinder-card-back .rating { color: var(--accent); }
     .tinder-card-back .runtime { color: var(--text-muted); font-weight: 600; }
 
-    /* Front Info Button */
     .tinder-flip-btn {
       position: absolute;
       top: 11px;
@@ -947,7 +1052,6 @@
     }
     .tinder-flip-btn:hover { background: rgba(30, 41, 59, 0.95); transform: scale(1.08); }
 
-    /* High-Contrast Back Return Button (‹) */
     .tinder-card-back .tinder-flip-btn {
       background: rgba(255, 255, 255, 0.14);
       border: 1.5px solid rgba(255, 255, 255, 0.38);
@@ -1041,7 +1145,7 @@
   <div class="catalog-grid" id="catalogGrid"></div>
 </div>
 
-<!-- TINDER 4.3 FANNED DECK OVERLAY -->
+<!-- TINDER 4.5 FANNED DECK OVERLAY -->
 <div class="tinder-overlay" id="tinderOverlay">
   <div class="tinder-ambilight" id="tinderAmbilight"></div>
 
@@ -1066,7 +1170,7 @@
     </div>
   </div>
 
-  <div class="tinder-area">
+  <div class="tinder-area" id="tinderArea">
     <div class="tinder-loading" id="tinderLoading">
       <div style="font-size: 2.2rem; margin-bottom: 10px;">⏳</div>
       <div>Завантаження карток з TMDb...</div>
@@ -1271,7 +1375,7 @@
   let activeItem = null;
   let selectedRating = null;
 
-  // Tinder 4.3 State
+  // Tinder 4.5 State
   let tinderMode = 'movie';
   let tinderDecade = 'all';
   let tinderQueue = [];
@@ -1283,6 +1387,7 @@
   let topCardEl = null;
   let activeSwipeCleanup = null;
   const tinderDetailsCache = new Map();
+  const tinderCollectionCache = new Map();
 
   // Roulette State
   let isRouletteSpinning = false;
@@ -2008,7 +2113,7 @@
     }, duration + 80);
   }
 
-  /* ================= TINDER 4.3 ================= */
+  /* ================= TINDER 4.5 (FRANCHISE SEQUELS & PREQUELS ON BACK) ================= */
   async function openTinderMode() {
     if (!config.tmdbKey) { showToast('Введіть TMDb API Key для Tinder-режиму!'); return openSettings(); }
     vibe([15, 25]);
@@ -2029,6 +2134,7 @@
       activeSwipeCleanup();
       activeSwipeCleanup = null;
     }
+    document.getElementById('tinderArea').classList.remove('elevated');
     document.getElementById('tinderOverlay').style.display = 'none';
     document.body.style.overflow = '';
     renderCatalog();
@@ -2165,6 +2271,9 @@
     }
 
     updateTinderHeaderControls();
+    const area = document.getElementById('tinderArea');
+    area.classList.remove('elevated');
+
     const stack = document.getElementById('tinderStack');
     stack.classList.remove('is-flipped');
     stack.innerHTML = '';
@@ -2229,7 +2338,7 @@
       <div class="tinder-card-face tinder-card-front">
         <div class="card-stamp" id="cardStamp"></div>
         <img src="${poster}" alt="" draggable="false" />
-        <button type="button" class="tinder-flip-btn" onclick="flipTinderCard(event)" title="Сюжет, жанр і країна">
+        <button type="button" class="tinder-flip-btn" onclick="flipTinderCard(event)" title="Сюжет, франшиза, жанр і країна">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
         </button>
       </div>
@@ -2244,6 +2353,10 @@
         <div class="overview-scroll-wrap">
           <p class="overview custom-scroll" id="backOverview">${escapeHtml(item.overview) || 'Завантаження опису...'}</p>
         </div>
+        <div class="franchise-box" id="franchiseBox" style="display:none;">
+          <div class="franchise-header" id="franchiseHeader"></div>
+          <div class="franchise-strip custom-scroll" id="franchiseStrip"></div>
+        </div>
         <div class="back-footer">
           <span class="rating">TMDb: ★ ${item.vote_average ? item.vote_average.toFixed(1) : '—'}</span>
           <span class="runtime" id="backRuntime">${year}</span>
@@ -2253,45 +2366,173 @@
     return card;
   }
 
-  /* Enables both Mouse Wheel AND Click-and-Drag / Touch scrolling inside 3D flipped card */
   function setupSynopsisScroll(card) {
     const overviewEl = card.querySelector('.overview');
-    if (!overviewEl) return;
+    if (overviewEl) {
+      overviewEl.addEventListener('wheel', (e) => {
+        e.stopPropagation();
+        if (overviewEl.scrollHeight > overviewEl.clientHeight) {
+          e.preventDefault();
+          overviewEl.scrollTop += e.deltaY;
+        }
+      }, { passive: false });
 
-    // 1. Explicit Mouse Wheel support (bypasses Chromium 3D backface wheel hit-test bug)
-    overviewEl.addEventListener('wheel', (e) => {
-      e.stopPropagation();
-      if (overviewEl.scrollHeight > overviewEl.clientHeight) {
-        e.preventDefault();
-        overviewEl.scrollTop += e.deltaY;
+      let isGrabbing = false;
+      let startY = 0;
+      let startScrollTop = 0;
+
+      overviewEl.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return;
+        isGrabbing = true;
+        startY = e.clientY;
+        startScrollTop = overviewEl.scrollTop;
+        overviewEl.classList.add('grabbing');
+        e.stopPropagation();
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isGrabbing) return;
+        const dy = e.clientY - startY;
+        overviewEl.scrollTop = startScrollTop - dy;
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (!isGrabbing) return;
+        isGrabbing = false;
+        overviewEl.classList.remove('grabbing');
+      });
+    }
+
+    const stripEl = card.querySelector('.franchise-strip');
+    if (stripEl) {
+      stripEl.addEventListener('wheel', (e) => {
+        e.stopPropagation();
+        if (stripEl.scrollWidth > stripEl.clientWidth) {
+          e.preventDefault();
+          stripEl.scrollLeft += (e.deltaY || e.deltaX);
+        }
+      }, { passive: false });
+    }
+  }
+
+  function renderFranchiseParts(card, collection, currentMovieId) {
+    const box = card.querySelector('#franchiseBox');
+    const header = card.querySelector('#franchiseHeader');
+    const strip = card.querySelector('#franchiseStrip');
+    if (!box || !header || !strip || !collection || !Array.isArray(collection.parts)) return;
+
+    const parts = [...collection.parts].sort((a, b) => {
+      const da = a.release_date || '9999-12-31';
+      const db = b.release_date || '9999-12-31';
+      return da.localeCompare(db);
+    });
+
+    if (parts.length <= 1) {
+      box.style.display = 'none';
+      return;
+    }
+
+    const cleanName = String(collection.name || 'Серія фільмів').replace(/\s*\(коллекция\)|\s*\(колекція\)/gi, '');
+    header.innerHTML = `<span>🎞️ ${escapeHtml(cleanName)}</span><span>${parts.length} част.</span>`;
+    strip.innerHTML = '';
+
+    parts.forEach(part => {
+      const partFullId = `movie_${part.id}`;
+      const isCurrent = part.id === currentMovieId;
+      const inCatalog = catalog.find(c => c.id === partFullId);
+      const year = part.release_date ? part.release_date.slice(0, 4) : 'Скоро';
+      const poster = part.poster_path ? `https://image.tmdb.org/t/p/w185${part.poster_path}` : NO_POSTER;
+
+      let stateClass = '';
+      let badgeHtml = `<span class="f-badge add">+</span>`;
+      let actionTitle = `${part.title} (${year}) — натисніть, щоб додати у «Буду дивитись»`;
+
+      if (isCurrent) {
+        stateClass = 'is-current';
+        badgeHtml = `<span class="f-badge cur">Тут</span>`;
+        actionTitle = `${part.title} (${year}) — поточна картка`;
+      } else if (inCatalog) {
+        if (inCatalog.status === 'plan') {
+          stateClass = 'is-plan';
+          badgeHtml = `<span class="f-badge plan">↑</span>`;
+          actionTitle = `${part.title} (${year}) — вже у «Буду дивитись»`;
+        } else {
+          stateClass = 'is-watched';
+          const score = inCatalog.rating ? inCatalog.rating : '✓';
+          badgeHtml = `<span class="f-badge ok">${score}</span>`;
+          actionTitle = `${part.title} (${year}) — вже переглянуто`;
+        }
       }
-    }, { passive: false });
 
-    // 2. Grab-to-scroll with mouse drag over the text
-    let isGrabbing = false;
-    let startY = 0;
-    let startScrollTop = 0;
+      const el = document.createElement('div');
+      el.className = `f-part ${stateClass}`;
+      el.title = actionTitle;
+      el.innerHTML = `
+        <div class="f-poster-wrap">
+          <img src="${poster}" alt="" loading="lazy" />
+          ${badgeHtml}
+        </div>
+        <div class="f-year">${year}</div>
+      `;
 
-    overviewEl.addEventListener('mousedown', (e) => {
-      if (e.button !== 0) return;
-      isGrabbing = true;
-      startY = e.clientY;
-      startScrollTop = overviewEl.scrollTop;
-      overviewEl.classList.add('grabbing');
-      e.stopPropagation();
+      el.onclick = (ev) => {
+        ev.stopPropagation();
+        if (isCurrent) return;
+        if (inCatalog) {
+          vibe(10);
+          showToast(inCatalog.status === 'plan'
+            ? `«${part.title}» вже у списку «Буду дивитись»`
+            : `«${part.title}» вже у переглянутих`);
+          return;
+        }
+        addFranchisePartToPlan(part, card, collection, currentMovieId);
+      };
+
+      strip.appendChild(el);
     });
 
-    window.addEventListener('mousemove', (e) => {
-      if (!isGrabbing) return;
-      const dy = e.clientY - startY;
-      overviewEl.scrollTop = startScrollTop - dy;
-    });
+    box.style.display = 'block';
 
-    window.addEventListener('mouseup', () => {
-      if (!isGrabbing) return;
-      isGrabbing = false;
-      overviewEl.classList.remove('grabbing');
+    // Auto-scroll strip so current part is visible
+    requestAnimationFrame(() => {
+      const curEl = strip.querySelector('.is-current');
+      if (curEl) {
+        strip.scrollLeft = Math.max(0, curEl.offsetLeft - strip.clientWidth / 2 + curEl.clientWidth / 2);
+      }
     });
+  }
+
+  function addFranchisePartToPlan(part, card, collection, currentMovieId) {
+    const partFullId = `movie_${part.id}`;
+    if (catalog.some(c => c.id === partFullId)) return;
+
+    const isDoc = Array.isArray(part.genre_ids) && part.genre_ids.includes(99);
+    const newEntry = {
+      id: partFullId,
+      tmdbId: part.id,
+      title: part.title,
+      year: part.release_date ? part.release_date.slice(0, 4) : '',
+      poster: part.poster_path ? `https://image.tmdb.org/t/p/w342${part.poster_path}` : '',
+      category: isDoc ? 'doc' : 'movie',
+      status: 'plan',
+      rating: null,
+      watchedDate: new Date().toISOString().slice(0, 10),
+      note: '',
+      updatedAt: Date.now()
+    };
+
+    catalog.unshift(newEntry);
+    if (skippedIds.has(partFullId)) {
+      skippedIds.delete(partFullId);
+      saveSkippedIds();
+    }
+    saveLocalCatalog();
+    backgroundGistSync();
+
+    vibe(25);
+    playSound('swipe');
+    showToast(`Додано у «Буду дивитись»: ${part.title}`);
+    renderFranchiseParts(card, collection, currentMovieId);
   }
 
   async function enrichTinderCardDetails(card, item) {
@@ -2345,6 +2586,24 @@
         runtimeEl.textContent = `Сезонів: ${details.number_of_seasons}`;
       }
     }
+
+    // Load Sequels & Prequels (Collection) for Movies
+    if (item._mediaType === 'movie' && details.belongs_to_collection && details.belongs_to_collection.id) {
+      const colId = details.belongs_to_collection.id;
+      let colData = tinderCollectionCache.get(colId);
+      if (!colData) {
+        try {
+          const cRes = await fetch(`https://api.themoviedb.org/3/collection/${colId}?api_key=${config.tmdbKey}&language=uk-UA`);
+          if (cRes.ok) {
+            colData = await cRes.json();
+            tinderCollectionCache.set(colId, colData);
+          }
+        } catch (e) {}
+      }
+      if (colData) {
+        renderFranchiseParts(card, colData, item.id);
+      }
+    }
   }
 
   function flipTinderCard(e) {
@@ -2368,6 +2627,7 @@
     let thresholdHit = false;
     let detectedDirection = null;
     const stamp = el.querySelector('#cardStamp');
+    const area = document.getElementById('tinderArea');
 
     function detectSwipeDirection(dx, dy) {
       const threshold = 85;
@@ -2385,6 +2645,7 @@
       thresholdHit = false;
       detectedDirection = null;
       el.classList.add('moving');
+      area.classList.add('elevated');
       startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
       startY = e.type.includes('mouse') ? e.clientY : e.touches[0].clientY;
       currentX = startX;
@@ -2399,10 +2660,11 @@
       const dx = currentX - startX;
       const dy = currentY - startY;
       const rotate = -2.5 + dx * 0.055;
+      const scale = dy < -20 ? Math.max(0.86, 1 + (dy + 20) * 0.0005) : 1;
 
-      el.style.transform = `translate3d(${dx}px, ${dy}px, 0px) rotate(${rotate}deg)`;
+      el.style.transform = `translate3d(${dx}px, ${dy}px, 0px) rotate(${rotate}deg) scale(${scale})`;
       el.classList.remove('glow-right', 'glow-left', 'glow-up', 'glow-down');
-      stamp.classList.remove('gold-stamp');
+      stamp.classList.remove('gold-stamp', 'bottom-stamp');
 
       detectedDirection = detectSwipeDirection(dx, dy);
 
@@ -2427,9 +2689,9 @@
       } else if (detectedDirection === 'up') {
         el.classList.add('glow-up');
         stamp.textContent = '↑ Буду дивитись';
-        stamp.style.color = 'var(--plan)';
+        stamp.style.color = '#e9d5ff';
         stamp.style.borderColor = 'var(--plan)';
-        stamp.classList.add('visible');
+        stamp.classList.add('visible', 'bottom-stamp');
       } else {
         stamp.classList.remove('visible');
       }
@@ -2446,7 +2708,7 @@
       if (!isDown) return;
       isDown = false;
       el.classList.remove('moving', 'glow-right', 'glow-left', 'glow-up', 'glow-down');
-      stamp.classList.remove('visible', 'gold-stamp');
+      stamp.classList.remove('visible', 'gold-stamp', 'bottom-stamp');
 
       const finalDir = detectedDirection;
 
@@ -2454,6 +2716,7 @@
         cleanupListeners();
         triggerSwipe(finalDir);
       } else {
+        area.classList.remove('elevated');
         el.style.transform = '';
       }
     };
@@ -2485,6 +2748,9 @@
       activeSwipeCleanup = null;
     }
 
+    const area = document.getElementById('tinderArea');
+    area.classList.add('elevated');
+
     const swipedEl = topCardEl;
     const item = tinderQueue.shift();
     topCardEl = null;
@@ -2493,13 +2759,14 @@
     document.getElementById('tinderStack').classList.remove('is-flipped');
 
     const x = direction === 'right' ? window.innerWidth * 1.2 : (direction === 'left' ? -window.innerWidth * 1.2 : 0);
-    const y = direction === 'up' ? -window.innerHeight * 1.2 : (direction === 'down' ? window.innerHeight * 1.2 : 0);
+    const y = direction === 'down' ? window.innerHeight * 1.2 : 0;
 
     swipedEl.classList.add(`glow-${direction}`);
 
     if (direction === 'down') {
       const stamp = swipedEl.querySelector('#cardStamp');
       if (stamp) {
+        stamp.classList.remove('bottom-stamp');
         stamp.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> ЗОЛОТА КАРТКА • 10/10`;
         stamp.classList.add('visible', 'gold-stamp');
       }
@@ -2512,9 +2779,24 @@
         swipedEl.style.transform = `translate3d(0px, ${y}px, 0px) scale(0.95)`;
         swipedEl.style.opacity = '0';
       }, 160);
+    } else if (direction === 'up') {
+      const stamp = swipedEl.querySelector('#cardStamp');
+      if (stamp) {
+        stamp.classList.remove('gold-stamp');
+        stamp.textContent = '↑ Буду дивитись';
+        stamp.style.color = '#e9d5ff';
+        stamp.style.borderColor = 'var(--plan)';
+        stamp.classList.add('visible', 'bottom-stamp');
+      }
+      vibe(30);
+      playSound('swipe');
+
+      swipedEl.style.transition = 'transform 0.42s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.36s ease';
+      swipedEl.style.transform = 'translate3d(0px, -135px, -220px) rotate(0deg) scale(0.42)';
+      swipedEl.style.opacity = '0';
     } else {
       swipedEl.style.transition = 'transform 0.36s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.32s ease';
-      swipedEl.style.transform = `translate3d(${x}px, ${y}px, 0px) rotate(${x * 0.04}deg)`;
+      swipedEl.style.transform = `translate3d(${x}px, 0px, 0px) rotate(${x * 0.04}deg)`;
       swipedEl.style.opacity = '0';
 
       if (direction === 'right') {
@@ -2523,9 +2805,6 @@
       } else if (direction === 'left') {
         vibe([12, 25, 12]);
         playSound('skip');
-      } else if (direction === 'up') {
-        vibe(30);
-        playSound('swipe');
       }
     }
 
@@ -2585,7 +2864,7 @@
     tinderHistory.push({ item, addedCatalogId, addedSkippedId });
     tinderSessionSwiped++;
 
-    setTimeout(() => renderTinderStack(), direction === 'down' ? 420 : 260);
+    setTimeout(() => renderTinderStack(), direction === 'down' ? 420 : (direction === 'up' ? 320 : 260));
   }
 
   function undoLastSwipe() {
