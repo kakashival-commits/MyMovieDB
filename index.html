@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#05070b" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <title>Мій Кінокаталог 4.2</title>
+  <title>Мій Кінокаталог 4.3</title>
   <style>
     :root {
       --bg: #05070b;
@@ -43,7 +43,7 @@
     /* Global Custom Ultra-Thin Scrollbar (3px) */
     .custom-scroll {
       scrollbar-width: thin;
-      scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
+      scrollbar-color: rgba(255, 255, 255, 0.24) transparent;
     }
     .custom-scroll::-webkit-scrollbar {
       width: 3px;
@@ -53,11 +53,11 @@
       background: transparent;
     }
     .custom-scroll::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.24);
       border-radius: 999px;
     }
     .custom-scroll::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.45);
+      background: rgba(255, 255, 255, 0.5);
     }
     .custom-scroll::-webkit-scrollbar-button {
       display: none;
@@ -598,7 +598,7 @@
       margin-bottom: 12px;
     }
 
-    /* ================= TINDER 4.2 FANNED DECK OVERLAY ================= */
+    /* ================= TINDER 4.3 FANNED DECK OVERLAY ================= */
     .tinder-overlay { position: fixed; inset: 0; background: #05070b; z-index: 999; display: none; flex-direction: column; overflow: hidden; }
 
     .tinder-ambilight {
@@ -644,6 +644,9 @@
       perspective: 1400px;
       touch-action: none;
       margin-right: 26px;
+    }
+    .tinder-stack.is-flipped {
+      touch-action: pan-y;
     }
     @media (max-height: 750px) {
       .tinder-stack { width: 224px; height: 332px; margin-right: 20px; }
@@ -873,7 +876,7 @@
       color: #fde68a;
     }
 
-    /* Isolated Synopsis Scroll Area with Bottom Fade-Out */
+    /* Isolated Synopsis Scroll Area with Bottom Fade-Out + Grab Scroll */
     .overview-scroll-wrap {
       position: relative;
       flex: 1;
@@ -897,11 +900,17 @@
       flex: 1;
       overflow-y: auto;
       touch-action: pan-y;
+      -webkit-overflow-scrolling: touch;
+      user-select: none;
+      cursor: grab;
       padding-right: 7px;
       padding-bottom: 18px;
       font-size: 0.88rem;
       line-height: 1.54;
       color: #cbd5e1;
+    }
+    .tinder-card-back .overview.grabbing {
+      cursor: grabbing;
     }
 
     .tinder-card-back .back-footer {
@@ -1032,7 +1041,7 @@
   <div class="catalog-grid" id="catalogGrid"></div>
 </div>
 
-<!-- TINDER 4.2 FANNED DECK OVERLAY -->
+<!-- TINDER 4.3 FANNED DECK OVERLAY -->
 <div class="tinder-overlay" id="tinderOverlay">
   <div class="tinder-ambilight" id="tinderAmbilight"></div>
 
@@ -1262,7 +1271,7 @@
   let activeItem = null;
   let selectedRating = null;
 
-  // Tinder 4.2 State
+  // Tinder 4.3 State
   let tinderMode = 'movie';
   let tinderDecade = 'all';
   let tinderQueue = [];
@@ -1999,7 +2008,7 @@
     }, duration + 80);
   }
 
-  /* ================= TINDER 4.2 ================= */
+  /* ================= TINDER 4.3 ================= */
   async function openTinderMode() {
     if (!config.tmdbKey) { showToast('Введіть TMDb API Key для Tinder-режиму!'); return openSettings(); }
     vibe([15, 25]);
@@ -2157,6 +2166,7 @@
 
     updateTinderHeaderControls();
     const stack = document.getElementById('tinderStack');
+    stack.classList.remove('is-flipped');
     stack.innerHTML = '';
 
     if (tinderQueue.length === 0) {
@@ -2191,6 +2201,7 @@
       if (stackPos === 0) {
         topCardEl = card;
         initSwipe(card);
+        setupSynopsisScroll(card);
       }
     });
   }
@@ -2240,6 +2251,47 @@
       </div>
     `;
     return card;
+  }
+
+  /* Enables both Mouse Wheel AND Click-and-Drag / Touch scrolling inside 3D flipped card */
+  function setupSynopsisScroll(card) {
+    const overviewEl = card.querySelector('.overview');
+    if (!overviewEl) return;
+
+    // 1. Explicit Mouse Wheel support (bypasses Chromium 3D backface wheel hit-test bug)
+    overviewEl.addEventListener('wheel', (e) => {
+      e.stopPropagation();
+      if (overviewEl.scrollHeight > overviewEl.clientHeight) {
+        e.preventDefault();
+        overviewEl.scrollTop += e.deltaY;
+      }
+    }, { passive: false });
+
+    // 2. Grab-to-scroll with mouse drag over the text
+    let isGrabbing = false;
+    let startY = 0;
+    let startScrollTop = 0;
+
+    overviewEl.addEventListener('mousedown', (e) => {
+      if (e.button !== 0) return;
+      isGrabbing = true;
+      startY = e.clientY;
+      startScrollTop = overviewEl.scrollTop;
+      overviewEl.classList.add('grabbing');
+      e.stopPropagation();
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isGrabbing) return;
+      const dy = e.clientY - startY;
+      overviewEl.scrollTop = startScrollTop - dy;
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (!isGrabbing) return;
+      isGrabbing = false;
+      overviewEl.classList.remove('grabbing');
+    });
   }
 
   async function enrichTinderCardDetails(card, item) {
@@ -2304,6 +2356,7 @@
     topCardEl.style.transform = '';
     const willShowBack = !topCardEl.classList.contains('flipped');
     topCardEl.classList.toggle('flipped');
+    document.getElementById('tinderStack').classList.toggle('is-flipped', willShowBack);
     if (willShowBack && currentTinderItem) {
       enrichTinderCardDetails(topCardEl, currentTinderItem);
     }
@@ -2437,6 +2490,7 @@
     topCardEl = null;
 
     swipedEl.classList.remove('flipped');
+    document.getElementById('tinderStack').classList.remove('is-flipped');
 
     const x = direction === 'right' ? window.innerWidth * 1.2 : (direction === 'left' ? -window.innerWidth * 1.2 : 0);
     const y = direction === 'up' ? -window.innerHeight * 1.2 : (direction === 'down' ? window.innerHeight * 1.2 : 0);
